@@ -1,2 +1,1 @@
-# 2020_3_SD3
-
+# Digital Concierge Mobile AR
