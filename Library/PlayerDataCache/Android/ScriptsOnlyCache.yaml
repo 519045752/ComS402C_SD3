@@ -13,6 +13,11 @@ ScriptsOnlyBuild:
     - UnityEngine.XR.ARFoundation.ARPlaneMeshVisualizer
     - UnityEngine.XR.ARFoundation.ARSession
     - UnityEngine.XR.ARFoundation.ARSessionOrigin
+    Unity.XR.Management.Editor.dll:
+    - UnityEditor.XR.Management.XRGeneralSettingsPerBuildTarget
+    Unity.XR.Management.dll:
+    - UnityEngine.XR.Management.XRGeneralSettings
+    - UnityEngine.XR.Management.XRManagerSettings
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -44,23 +49,23 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11586}
+      Script: {instanceID: 11596}
     - Class: 114
-      Script: {instanceID: 11786}
+      Script: {instanceID: 11796}
     - Class: 114
-      Script: {instanceID: 11820}
+      Script: {instanceID: 11830}
     - Class: 114
-      Script: {instanceID: 12092}
+      Script: {instanceID: 12102}
     - Class: 114
-      Script: {instanceID: 12642}
+      Script: {instanceID: 12652}
     - Class: 114
-      Script: {instanceID: 12842}
+      Script: {instanceID: 12852}
     - Class: 114
-      Script: {instanceID: 12990}
+      Script: {instanceID: 13000}
     - Class: 114
-      Script: {instanceID: 13160}
+      Script: {instanceID: 13170}
     - Class: 114
-      Script: {instanceID: 13298}
+      Script: {instanceID: 13308}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -691,4 +696,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: D:/Documents/College/F2020/402C/2020_3_sd3/Build/run.apk
+  playerPath: C:/edu/ComSeniorDesign/SeniorDesign.apk
