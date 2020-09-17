@@ -49,23 +49,23 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11596}
+      Script: {instanceID: 11602}
     - Class: 114
-      Script: {instanceID: 11796}
+      Script: {instanceID: 11802}
     - Class: 114
-      Script: {instanceID: 11830}
+      Script: {instanceID: 11836}
     - Class: 114
-      Script: {instanceID: 12102}
+      Script: {instanceID: 12108}
     - Class: 114
-      Script: {instanceID: 12652}
+      Script: {instanceID: 12658}
     - Class: 114
-      Script: {instanceID: 12852}
+      Script: {instanceID: 12858}
     - Class: 114
-      Script: {instanceID: 13000}
+      Script: {instanceID: 13006}
     - Class: 114
-      Script: {instanceID: 13170}
+      Script: {instanceID: 13176}
     - Class: 114
-      Script: {instanceID: 13308}
+      Script: {instanceID: 13314}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -696,4 +696,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/edu/ComSeniorDesign/SeniorDesign.apk
+  playerPath: D:/Documents/College/F2020/402C/2020_3_sd3/Build/run.apk
