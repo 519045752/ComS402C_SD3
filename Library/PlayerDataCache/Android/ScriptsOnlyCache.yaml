@@ -1,5 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
+    Assembly-CSharp.dll:
+    - PlacementIndicator
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.XR.ARCore.Editor.dll:
@@ -8,9 +10,8 @@ ScriptsOnlyBuild:
     - UnityEngine.XR.ARFoundation.ARCameraBackground
     - UnityEngine.XR.ARFoundation.ARCameraManager
     - UnityEngine.XR.ARFoundation.ARInputManager
-    - UnityEngine.XR.ARFoundation.ARPlane
     - UnityEngine.XR.ARFoundation.ARPlaneManager
-    - UnityEngine.XR.ARFoundation.ARPlaneMeshVisualizer
+    - UnityEngine.XR.ARFoundation.ARRaycastManager
     - UnityEngine.XR.ARFoundation.ARSession
     - UnityEngine.XR.ARFoundation.ARSessionOrigin
     Unity.XR.Management.Editor.dll:
@@ -40,35 +41,33 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 33
       Script: {instanceID: 0}
-    - Class: 48
+    - Class: 43
       Script: {instanceID: 0}
-    - Class: 64
+    - Class: 48
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11602}
+      Script: {instanceID: 11436}
     - Class: 114
-      Script: {instanceID: 11802}
+      Script: {instanceID: 11588}
     - Class: 114
-      Script: {instanceID: 11836}
+      Script: {instanceID: 11788}
     - Class: 114
-      Script: {instanceID: 12108}
+      Script: {instanceID: 12644}
     - Class: 114
-      Script: {instanceID: 12658}
+      Script: {instanceID: 12844}
     - Class: 114
-      Script: {instanceID: 12858}
+      Script: {instanceID: 12992}
     - Class: 114
-      Script: {instanceID: 13006}
+      Script: {instanceID: 13162}
     - Class: 114
-      Script: {instanceID: 13176}
+      Script: {instanceID: 13300}
     - Class: 114
-      Script: {instanceID: 13314}
+      Script: {instanceID: 13938}
     - Class: 115
-      Script: {instanceID: 0}
-    - Class: 120
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -693,6 +692,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlacementIndicator
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
