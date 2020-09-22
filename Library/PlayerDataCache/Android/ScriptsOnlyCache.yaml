@@ -1,8 +1,8 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - ObjectSpawner
     - PlacementIndicator
+    - ShowAndSubmit
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro.dll:
@@ -11,6 +11,7 @@ ScriptsOnlyBuild:
     - TMPro.TMP_Settings
     - TMPro.TMP_SpriteAsset
     - TMPro.TMP_StyleSheet
+    - TMPro.TextMeshPro
     - TMPro.TextMeshProUGUI
     Unity.XR.ARCore.Editor.dll:
     - UnityEditor.XR.ARCore.ARCoreSettings
@@ -88,8 +89,6 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11942}
     - Class: 114
-      Script: {instanceID: 12194}
-    - Class: 114
       Script: {instanceID: 12672}
     - Class: 114
       Script: {instanceID: 12686}
@@ -108,11 +107,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13190}
     - Class: 114
+      Script: {instanceID: 13302}
+    - Class: 114
       Script: {instanceID: 13328}
     - Class: 114
       Script: {instanceID: 13356}
     - Class: 114
       Script: {instanceID: 13436}
+    - Class: 114
+      Script: {instanceID: 14888}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -128,6 +131,8 @@ ScriptsOnlyBuild:
     - Class: 223
       Script: {instanceID: 0}
     - Class: 224
+      Script: {instanceID: 0}
+    - Class: 225
       Script: {instanceID: 0}
   scriptHashData:
   - hash:
@@ -414,7 +419,7 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
-      Hash: ff9a597add6a7d77fd5e4269edc8fad8
+      Hash: de5da8c1c4b98aaa9cfa35d0c68b4168
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ObjectSpawner
@@ -760,6 +765,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 32f2e4aed151bd07df3a26dbc1665944
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ShowAndSubmit
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
