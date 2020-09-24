@@ -3,7 +3,7 @@
 	USE ar_project;
     
 	CREATE TABLE `user`(
-		`uid` integer auto_increment, 
+		`uid` SERIAL, 
         `username` varchar(30) NOT NULL, 
 		`password` varchar(30) NOT NULL, 
 		`category` varchar(30), 
@@ -21,4 +21,4 @@ INSERT INTO `user` VALUES
 (null,'Lim','123321','tenant')
 ;
 SELECT * FROM user;
-SELECT uid,username,category FROM user WHERE username='admin' AND password = 'admin';
+-- SELECT uid,username,category FROM user WHERE username='admin' AND password = 'admin';

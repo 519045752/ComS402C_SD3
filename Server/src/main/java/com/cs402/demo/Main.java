@@ -15,7 +15,14 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 @SpringBootApplication
 public class Main {
@@ -39,17 +46,5 @@ public class Main {
 		};
 	}
 	
-	public String getRandomQuote() {
-		// Quote quote = restTemplate.getForObject("https://gturnquist-quoters.cfapps.io/api/random", Quote.class);
-		// String value = quote.getValue().getQuote();
-		// log.info(quote.toString());
-		// return new Greeting(counter.incrementAndGet(), String.format(template, name), value);
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
-				.build();
-		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-		requestFactory.setHttpClient(httpClient);
-		RestTemplate restTemplate = new RestTemplate(requestFactory);
-		RandomQuote randomQuote = restTemplate.getForObject("https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json", RandomQuote.class);
-		return randomQuote.toString();
-	}
+
 }

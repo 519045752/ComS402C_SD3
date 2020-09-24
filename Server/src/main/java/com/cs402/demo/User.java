@@ -5,7 +5,9 @@ import javax.persistence.*;
 @Entity
 public class User {
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	
+	@Column(columnDefinition = "serial")
 	private Long uid;
 	private String username;
 	private String password;
