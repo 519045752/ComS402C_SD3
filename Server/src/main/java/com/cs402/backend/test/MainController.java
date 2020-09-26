@@ -3,7 +3,7 @@ package com.cs402.backend.test;
 import com.cs402.backend.respond.RespondCodeEnum;
 import com.cs402.backend.respond.RespondJson;
 import com.cs402.backend.user.UserRepository;
-import com.sun.deploy.net.URLEncoder;
+import java.net.URLEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
