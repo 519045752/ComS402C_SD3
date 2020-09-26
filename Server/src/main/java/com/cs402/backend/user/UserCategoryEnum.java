@@ -1,8 +1,4 @@
-package com.cs402.backend;
-
-import java.sql.Array;
-import java.time.Period;
-import java.util.Arrays;
+package com.cs402.backend.user;
 
 public enum UserCategoryEnum {
 	admin, landLoad, tenant;

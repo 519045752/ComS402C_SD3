@@ -1,4 +1,4 @@
-package com.cs402.backend;
+package com.cs402.backend.respond;
 
 public class RespondJsonBase {
 	

@@ -27,7 +27,8 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
 	public void playSound() {
 		try {
 			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(new File("res\\sound\\GameOn.wav")));
+			InputStream is= this.getClass().getResourceAsStream("GameOn.wav");
+			clip.open(AudioSystem.getAudioInputStream(is));
 			clip.start();
 		}
 		catch (Exception e) {

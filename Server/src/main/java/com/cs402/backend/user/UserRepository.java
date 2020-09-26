@@ -1,4 +1,4 @@
-package com.cs402.backend;
+package com.cs402.backend.user;
 
 import com.cs402.backend.model.User;
 import org.springframework.data.jpa.repository.Query;

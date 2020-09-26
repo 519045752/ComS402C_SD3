@@ -1,5 +1,8 @@
-package com.cs402.backend;
+package com.cs402.backend.user;
 
+import com.cs402.backend.respond.RespondCodeEnum;
+import com.cs402.backend.respond.RespondJson;
+import com.cs402.backend.utility.Utility;
 import com.cs402.backend.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +85,7 @@ public class UserController {
 		user.setPassword(password);
 		user.setCategory(category);
 		userRepository.save(user);
-		return "[" + Utility.getServerTime() + "] : User [" + username + "] added!";
+		return "[" + Utility.getServerTime() + "] : user [" + username + "] added!";
 	}
 	
 	@GetMapping(value = "/userlist")

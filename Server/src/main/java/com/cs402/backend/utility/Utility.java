@@ -1,5 +1,7 @@
-package com.cs402.backend;
+package com.cs402.backend.utility;
 
+import com.cs402.backend.user.UserCategoryEnum;
+import com.cs402.backend.user.UserRepository;
 import com.cs402.backend.model.RandomQuote;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -11,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class Utility {
 	private UserRepository userRepository;
