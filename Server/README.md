@@ -1,7 +1,7 @@
 # Backend Server of the Coms402c AR_project 
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
-
+**Server Address: coms-402-sd-8.cs.iastate.edu:8080**
 The server is based on Spring and mySQL.
 It will be deployed to the university server after passing the first stage test.
   - Basic account server (Login, GetData, Register)
