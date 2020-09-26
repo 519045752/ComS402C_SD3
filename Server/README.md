@@ -10,14 +10,13 @@ It will be deployed to the university server after passing the first stage test.
 # Documents
   - API docs incoming!
 # Files
-  - Ar_backend.postman_collection.json:
-        Postman Testing File
-  - db_init.sql
-        Mysql initialization query
+- Ar_backend.postman_collection.json:
+    postman Testing File
+- db_init.sql
+    Mysql initialization query
+- ./sound
+    Server prompt sounds Storage
 ### API
-
-Dillinger is currently extended with the following plugins. Instructions on how to use them in your own application are linked below.
-
 | API |Status|explanation|Param.
 | ------ | ------ | ------ | ------ |
 | /greeting |✖|return a random quote|
@@ -32,5 +31,13 @@ Dillinger is currently extended with the following plugins. Instructions on how 
 | /user/setEmail |...|
 | /user/setPhone |...|
 
-
-
+### Status Code
+These are the status code returned by the server.
+| Code |Explanation|
+| ------ | ------ |
+|200|Request is done successfully.|
+|500|Failed to process the request, reason is unknown.|
+|501|Can't find the username in database.|
+|502|Either username doesn't exist or the username and password mismatch.|
+|520|Provided username is already used.|
+|521|Provided wrong info to register the account.|

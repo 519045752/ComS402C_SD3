@@ -1,8 +1,9 @@
-package com.cs402.demo;
+package com.cs402.backend.model;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name="user")
 public class User {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)

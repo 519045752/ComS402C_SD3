@@ -12,7 +12,10 @@ import javax.sound.sampled.Clip;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-
+/**
+   @description
+    This class prompts the sound when server is up.
+*/
 @Component
 public class ApplicationRunnerImpl implements ApplicationRunner {
 	@Override

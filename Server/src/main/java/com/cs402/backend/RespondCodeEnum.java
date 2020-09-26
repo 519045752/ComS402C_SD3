@@ -1,5 +1,9 @@
 package com.cs402.backend;
 
+/**
+   @description
+    This class enums the status codes and messages.
+*/
 public enum RespondCodeEnum {
 	
 	SUCCESS(200,"Success"),
