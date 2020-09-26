@@ -26,7 +26,7 @@ public class UserController {
 	@GetMapping("/{uid}")
 	public Object test(@PathVariable Long uid) {
 		try{
-			User user = uidSearch(uid).get(0);
+			User user = findUserByIdUtil(uid).get(0);
 			String username = user.getUsername();
 			RespondJson<User> ret = RespondJson.out(RespondCodeEnum.SUCCESS,user);
 			ret.setMsg(String.format(greeting,username));
@@ -46,7 +46,7 @@ public class UserController {
 	
 	@GetMapping("/getUserByID")
 	public Object findUserById(@RequestParam Long uid) {
-		List<User> list = uidSearch(uid);
+		List<User> list = findUserByIdUtil(uid);
 		if (list.isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
 		}else {
@@ -54,7 +54,7 @@ public class UserController {
 		}
 	}
 	
-	public List<User> uidSearch(Long uid) {
+	public List<User> findUserByIdUtil(Long uid) {
 		List<User> list = userRepository.findUserById(uid);
 		log.debug("[/getUserbyID] " + list.toString());
 		return list;
@@ -65,11 +65,12 @@ public class UserController {
 	public Object login(@RequestParam String username, @RequestParam String password) {
 		List<User> list = userRepository.login(username, password);
 		log.debug(list.toString());
-		if (!list.isEmpty()) {
+		if (list.isEmpty()) {
+			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
+		}else {
 			User userinfo = list.get(0);
 			return RespondJson.out(RespondCodeEnum.SUCCESS,userinfo);
 		}
-		return RespondJson.out(RespondCodeEnum.FAIL);
 	}
 	
 	//test only, please use /register
@@ -88,28 +89,28 @@ public class UserController {
 		return RespondJson.out(RespondCodeEnum.SUCCESS,userRepository.getUserlist(0));
 	}
 	
-
+	
+	public Boolean checkUsernameNotUsedUtil(String username) {
+		List<User> list = userRepository.checkIfExist(username);
+		return list.isEmpty();
+	}
+	
 	//true: not used
 	@ResponseBody
 	@GetMapping("/checkUsernameNotUsed")
-	public Boolean checkUsernameNotUsed(@RequestParam String username) {
-		List<User> list = userRepository.checkIfExist(username);
-		if (list.isEmpty()) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public Object checkUsernameNotUsed(@RequestParam String username) {
+		String res = checkUsernameNotUsedUtil(username).toString();
+		return RespondJson.out(RespondCodeEnum.SUCCESS,res);
 	}
 	
 	@RequestMapping(path = "/register")
 	@ResponseBody
-	public String register(@RequestParam String username, @RequestParam String password, @RequestParam String category) {
-		if (!checkUsernameNotUsed(username)) {
-			return "[" + Utility.getServerTime() + "] " + "Username is already used!";
+	public Object register(@RequestParam String username, @RequestParam String password, @RequestParam String category) {
+		if (!checkUsernameNotUsedUtil(username)) {
+			return RespondJson.out(RespondCodeEnum.FAIL_REGISTER_USERNAME_USED);
 		}
 		else if (!Utility.validateCategory(category)) {
-			return "[" + Utility.getServerTime() + "] " + "Wrong User Category!";
+			return RespondJson.out(RespondCodeEnum.FAIL_REGISTER_WRONG_INFO);
 		}
 		else {
 			User user = new User();
@@ -117,7 +118,7 @@ public class UserController {
 			user.setPassword(password);
 			user.setCategory(category);
 			userRepository.save(user);
-			return "[" + Utility.getServerTime() + "] : User [" + username + "] added!";
+			return RespondJson.out(RespondCodeEnum.SUCCESS,user);
 		}
 	}
 	
