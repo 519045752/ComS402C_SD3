@@ -19,27 +19,34 @@ It will be deployed to the university server after passing the first stage test.
 - ./sound
     Server prompt sounds Storage
 ### API
-| API |Status|explanation|Param.
-| ------ | ------ | ------ | ------ |
+| API |Status|explanation|Param.|
+| ------ | :-: | ------ |:-: |
 | /test |✔|greeting for the visitor|
+| /user/<UID> |✔|check the public user info and greet|append uid directly, e.g.: /user/<UID>
 | /user/all |✔|return info of all user|
-| /user/add |✔|add a new user directly|
-| /user/register |✔|register a user|<ins>username, password, category</ins>
-| /user/login |✔|login|username, password
+| /user/add |✔|add a new user directly <run db_init.sql after using>|
+| /user/register |✔|register a user|username, password, category
+| /user/login |✔|login|username, password|
+| /user/loginByUid |✔|login by uid|uid, password|
 | /user/getUserByID |✔|get user info by uid|uid
+|/findUidByUsername|✔|get uid by usernmae|usernmae
 | /user/checkUsernameNotUsed |✔|check if the username is NOT used|username
-| /user/logout |...|
-| /user/setAvator |...|
-| /user/setEmail |...|
-| /user/setPhone |...|
+| /user/logout |...|will come with session manager|
+| /user/setAvator |...|debugging
+| /user/setEmail |✔|set the email address| username, password, email|
+| /user/setPhone |✔|set the phone number|username, password, phone|
+| /user/setPassword |✔|reset password,require a uew passowrd|username, password, newPassword|
+| /user/setUsername |✔|reset username, require a unused and new username|username, password, newUsername|
 
 ### Status Code
 These are the status code returned by the server.
+
 | Code |Explanation|
 | ------ | ------ |
-|200|Request is done successfully.|
-|500|Failed to process the request, reason is unknown.|
+|200|Request is done successfully|
+|500|Failed to process the request, reason is unknown|
 |501|Can't find the username in database.|
 |502|Either username doesn't exist or the username and password mismatch.|
 |520|Provided username is already used.|
 |521|Provided wrong info to register the account.|
+|999|Something weird happened.|
