@@ -6,6 +6,17 @@
 	},
 	"item": [
 		{
+			"name": "TEST",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "get all user info",
 			"request": {
 				"method": "GET",
@@ -41,6 +52,17 @@
 						"user",
 						"userlist"
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
 				}
 			},
 			"response": []
@@ -148,7 +170,7 @@
 	],
 	"variable": [
 		{
-			"id": "01746b2e-bad3-4d00-a857-0ab9746ed6fa",
+			"id": "10c63244-bf27-4540-9c83-fe912ad5ca68",
 			"key": "username",
 			"value": "admi2n"
 		}
