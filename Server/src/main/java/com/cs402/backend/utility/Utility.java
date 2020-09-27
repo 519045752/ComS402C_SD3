@@ -57,6 +57,14 @@ public class Utility {
 		return true;
 	}
 	
+	public static boolean validateEmail(String password) {
+		return true;
+	}
+	
+	public static boolean validatePhone(String password) {
+		return true;
+	}
+	
 	public static boolean validateCategory(String category) {
 		if(!UserCategoryEnum.has(category) || category.equals("admin")){
 			return false;

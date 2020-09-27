@@ -31,6 +31,11 @@ public class RandomQuote {
 	
 	@Override
 	public String toString() {
-		return quoteText + "\n---by " + quoteAuthor;
+		StringBuilder str = new StringBuilder(quoteText);
+		for (int i = 0; i < quoteText.length()-8; i++) {
+			str.append(" ");
+		}
+		str.append("\n---by ").append(quoteAuthor);
+		return str.toString();
 	}
 }
