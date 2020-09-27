@@ -9,8 +9,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,7 +29,11 @@ public class Utility {
 		requestFactory.setHttpClient(httpClient);
 		RestTemplate restTemplate = new RestTemplate(requestFactory);
 		RandomQuote randomQuote = restTemplate.getForObject("https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json", RandomQuote.class);
-		return randomQuote.toString();
+		if (randomQuote != null) {
+			return randomQuote.toString();
+		}else {
+			return "Ops, random quote sever is down.";
+		}
 	}
 	
 	public static String getServerTime() {
@@ -57,5 +63,33 @@ public class Utility {
 		}else {
 			return true;
 		}
+	}
+	
+	public static String getIpAddress(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if(ip == null || ip.length() == 0 || "unknow".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length () == 0 || "unknown".equalsIgnoreCase (ip)) {
+			ip = request.getHeader ("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length () == 0 || "unknown".equalsIgnoreCase (ip)) {
+			ip = request.getRemoteAddr ();
+			if (ip.equals ("127.0.0.1")) {
+				InetAddress inet = null;
+				try {
+					inet = InetAddress.getLocalHost ();
+				} catch (Exception e) {
+					e.printStackTrace ();
+				}
+				ip = inet.getHostAddress ();
+			}
+		}
+		if (ip != null && ip.length () > 15) {
+			if (ip.indexOf (",") > 0) {
+				ip = ip.substring (0, ip.indexOf (","));
+			}
+		}
+		return ip;
 	}
 }

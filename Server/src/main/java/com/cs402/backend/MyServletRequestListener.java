@@ -1,5 +1,6 @@
 package com.cs402.backend;
 
+import com.cs402.backend.utility.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -25,7 +26,7 @@ public class MyServletRequestListener implements ServletRequestListener {
 	public void requestInitialized(ServletRequestEvent arg0) {
 		ServletRequest req= arg0.getServletRequest();
 		HttpServletRequest request = (HttpServletRequest) req;
-		String ip = LogFilter.getIpAddress(request);
+		String ip = Utility.getIpAddress(request);
 		String path = request.getRequestURI();
 		String parma = request.getQueryString();
 		String localAddr = request.getLocalAddr();

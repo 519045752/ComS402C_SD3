@@ -21,7 +21,7 @@ It will be deployed to the university server after passing the first stage test.
 ### API
 | API |Status|explanation|Param.
 | ------ | ------ | ------ | ------ |
-| /greeting |✖|return a random quote|
+| /test |✔|greeting for the visitor|
 | /user/all |✔|return info of all user|
 | /user/add |✔|add a new user directly|
 | /user/register |✔|register a user|<ins>username, password, category</ins>
