@@ -30,8 +30,9 @@ public class UserController {
 	@GetMapping("/{uid}")
 	public Object test(@PathVariable Long uid) {
 		try {
-			User user = findUserByIdUtil(uid).get(0);
+			User user = getUserByIdUtil(uid).get(0);
 			String username = user.getUsername();
+			user.setPassword("PRIVATE");
 			RespondJson<User> ret = RespondJson.out(RespondCodeEnum.SUCCESS, user);
 			ret.setMsg(String.format(greeting, username));
 			return ret;
@@ -48,8 +49,8 @@ public class UserController {
 	
 	
 	@GetMapping("/getUserByID")
-	public Object findUserById(@RequestParam Long uid) {
-		List<User> list = findUserByIdUtil(uid);
+	public Object getUserById(@RequestParam Long uid) {
+		List<User> list = getUserByIdUtil(uid);
 		if (list.isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
 		}
@@ -58,7 +59,7 @@ public class UserController {
 		}
 	}
 	
-	public List<User> findUserByIdUtil(Long uid) {
+	public List<User> getUserByIdUtil(Long uid) {
 		List<User> list = userRepository.findUserById(uid);
 		log.debug("[/getUserbyID] " + list.toString());
 		return list;
