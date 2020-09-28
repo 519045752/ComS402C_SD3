@@ -31,7 +31,7 @@ public class SwaggerConfig {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("AR_server")
-				.description("Backend of the Coms402c AR_project")
+				.description("Hi, welcome to the backend of the Coms402c AR_project, here is the API document!")
 				.termsOfServiceUrl("https://coms-402-sd-8.cs.iastate.edu:8080/terms")
 				.contact(new Contact("YizhenXu","https://github.com/519045752/ComS402C_SD3","yizhenx@iastate.edu"))
 				.version("0.0.2")

@@ -17,7 +17,8 @@ It will be deployed to the university server after passing the first stage test.
 - ./sound
     Server prompt sounds Storage
 ### API
-**please see the swagger documents**
+**please see the swagger documents at /apis or simply visit the server directly**
+coms-402-sd-8.cs.iastate.edu:8080
 
 | API |Status|explanation|Param.
 | ------ | :-: | ------ |:-: |
