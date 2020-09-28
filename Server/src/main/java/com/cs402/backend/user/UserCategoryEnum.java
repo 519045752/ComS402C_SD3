@@ -1,7 +1,7 @@
 package com.cs402.backend.user;
 
 public enum UserCategoryEnum {
-	admin, landLoad, tenant;
+	admin, landlord, tenant;
 	
 	public static boolean has(String str){
 		for(UserCategoryEnum choice:values())

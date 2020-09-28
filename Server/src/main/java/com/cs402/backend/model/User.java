@@ -1,5 +1,7 @@
 package com.cs402.backend.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +11,9 @@ public class User {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	
 	@Column(columnDefinition = "serial")
+	@ApiModelProperty(value="uid",name="_UID_")
 	private Long uid;
+	@ApiModelProperty(value="username",name="_USERNAME_")
 	private String username;
 	private String password;
 	private String category;

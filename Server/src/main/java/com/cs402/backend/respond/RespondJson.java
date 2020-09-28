@@ -1,7 +1,8 @@
 package com.cs402.backend.respond;
 
+
 public class RespondJson <T> extends RespondJsonBase {
-	
+
 	private T data;
 	
 	public RespondJson(RespondCodeEnum CodeEnum) {
