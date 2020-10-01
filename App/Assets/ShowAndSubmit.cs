@@ -13,6 +13,8 @@ public class ShowAndSubmit : MonoBehaviour
     public PlacementIndicator placementIndicator;
     public CanvasGroup canvasGroup;
     public TMP_InputField Input_Tex;
+
+    public Game data; // holds data for loaded scene
    
 
     // Start is called before the first frame update
@@ -37,6 +39,7 @@ public class ShowAndSubmit : MonoBehaviour
         canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
         objectToSpawn.text = msg;
         TMP_Text obj = Instantiate(objectToSpawn, placementIndicator.transform.position, placementIndicator.transform.rotation);
+        //data.AddObject(obj);
     }
 
     void Show()
