@@ -41,7 +41,8 @@ public class ShowAndSubmit : MonoBehaviour
         canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
         objectToSpawn.text = msg;
         TMP_Text obj = Instantiate(objectToSpawn, placementIndicator.transform.position, placementIndicator.transform.rotation);
-        data.CreateObject(0);
+        Debug.Log("Running Submit");
+        data.CreateObject(0, obj);
         //data.AddObject(obj);
     }
 
