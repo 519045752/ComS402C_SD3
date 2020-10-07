@@ -24,7 +24,7 @@ public class Game : PersistableObject {
 		objects.Clear();
 	}
 
-	void CreateObject (int type) {
+	public void CreateObject (int type) {
         // Switch case to handle different objects in future
         switch (type)
         {
