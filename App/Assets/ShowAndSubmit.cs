@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 
 /**
+ * Canvas --> Input Field
  * This class handles the input field, which gives the user an interface from which to enter the text description. On Submit, spawns text at touch
  * location, with input text
  */

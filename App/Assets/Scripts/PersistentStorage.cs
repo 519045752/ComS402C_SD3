@@ -6,7 +6,7 @@ public class PersistentStorage : MonoBehaviour {
 	string savePath;
 
 	void Awake () {
-		savePath = Path.Combine(Application.persistentDataPath, "saveFile");
+		savePath = Path.Combine(Application.persistentDataPath, "localSaveTemp");
 	}
 
 	public void Save (PersistableObject o) {
