@@ -16,7 +16,6 @@ public class ShowAndSubmit : MonoBehaviour
     public TMP_InputField Input_Tex;
 
     public Game data; 
-    public GameObject save; // holds data for loaded scene
 
 
     // Start is called before the first frame update

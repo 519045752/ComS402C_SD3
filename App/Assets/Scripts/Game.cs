@@ -69,7 +69,10 @@ public class Game : PersistableObject {
 	}
 
 	public override void Load (GameDataReader reader) {
-		int count = reader.ReadInt();
+        // get world position
+        //GetComponent<Camera>().getWorldPosition();
+
+        int count = reader.ReadInt();
         Debug.Log("Count is: " + count);
 		for (int i = 0; i < count; i++) {
             // need to handle differenct objects
