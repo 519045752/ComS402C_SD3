@@ -12,16 +12,14 @@ import java.util.List;
 @Table(name="house")
 public class House {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "hid")
 	private Long hid;
-
+	
 	// @Column(columnDefinition = "serial")
 	// @ApiModelProperty(value="hid",name="_HID_")
 	// private Long hid;
-	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "tenant_rents_house", joinColumns = @JoinColumn(name = "house_id", referencedColumnName = "uid"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "hid"))
-	private Set<User> tenant;
+	
 	private String address;
 	private String addressOpt;
 	private String latitude;
@@ -31,12 +29,12 @@ public class House {
 	private String info;
 	private String data;
 	
-	private Long uidLandlord;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "user" , referencedColumnName = "uid")
+	private User landlord;
 	
-	// @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
-	@ElementCollection
-	private Set<Long> uidTenants = new HashSet<>();
-	
+	@ManyToMany
+	private Set<User> tenant = new HashSet<>();
 	
 	
 	public Long getHid() {
@@ -103,22 +101,33 @@ public class House {
 		this.data = data;
 	}
 	
-	public Long getUidLandlord() {
-		return uidLandlord;
-	}
-	
-	public void setUidLandlord(Long uidLandlord) {
-		this.uidLandlord = uidLandlord;
-	}
+	// public Long getUidLandlord() {
+	// 	return uidLandlord;
+	// }
+	//
+	// public void setUidLandlord(Long uidLandlord) {
+	// 	this.uidLandlord = uidLandlord;
+	// }
 	
 	// public List<Long> getUidTenants() {
 	// 	return uidTenants;
 	// }
 	//
-	// public void setUidTenants(List<Long> uidTenants) {
-	// 	this.uidTenants = uidTenants;
-	// }
+	// public void setUidTenants(
 	
+	public User getLandlord() {
+		return landlord;
+	}
 	
-
+	public void setLandlord(User landlord) {
+		this.landlord = landlord;
+	}
+	
+	public Set<User> getTenant() {
+		return tenant;
+	}
+	
+	public void setTenant(Set<User> tenant) {
+		this.tenant = tenant;
+	}
 }

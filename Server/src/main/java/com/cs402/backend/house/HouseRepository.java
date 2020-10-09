@@ -9,6 +9,7 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 public interface HouseRepository extends CrudRepository<House, Long> {
+	
 	@Query(value="select * from ar_project.house order by hid",nativeQuery=true)
 	List<String> getHouselist();
 	

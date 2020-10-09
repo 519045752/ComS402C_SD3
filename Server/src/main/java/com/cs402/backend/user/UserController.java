@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class UserController {
 	
 	@Autowired
-	private UserRepository userRepository;
+	UserRepository userRepository;
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	private static final String greeting = "Hello,%s!";
 	private final AtomicLong counter = new AtomicLong();
@@ -39,7 +39,7 @@ public class UserController {
 	@ApiImplicitParam(name = "uid", value = "uid", required = true, dataType = "Long")
 	public Object test(@PathVariable Long uid) {
 		try {
-			User user = getUserByIdUtil(uid).get(0);
+			User user = getUserByIdUtil(uid);
 			String username = user.getUsername();
 			user.setPassword("PRIVATE");
 			RespondJson<User> ret = RespondJson.out(RespondCodeEnum.SUCCESS, user);
@@ -293,19 +293,19 @@ public class UserController {
 			@ApiImplicitParam(name = "uid", value = "exist username", required = true, paramType = "query", dataType = "Long")
 	})
 	public Object getUserById(@RequestParam Long uid) {
-		List<User> list = getUserByIdUtil(uid);
-		if (list.isEmpty()) {
+		User user = getUserByIdUtil(uid);
+		if (user == null) {
 			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else {
-			return RespondJson.out(RespondCodeEnum.SUCCESS, list.get(0));
+			return RespondJson.out(RespondCodeEnum.SUCCESS, user);
 		}
 	}
 	
-	public List<User> getUserByIdUtil(Long uid) {
-		List<User> list = userRepository.findUserById(uid);
-		log.debug("[/getUserbyID] " + list.toString());
-		return list;
+	public User getUserByIdUtil(Long uid) {
+		User user = userRepository.findUserById(uid);
+		log.debug("[/getUserbyID] " + user.toString());
+		return user;
 	}
 	
 	@PostMapping(path = "/findUidByUsername")

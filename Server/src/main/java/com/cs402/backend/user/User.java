@@ -1,24 +1,34 @@
 package com.cs402.backend.user;
 
+import com.cs402.backend.house.House;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="user")
 public class User {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	
-	@Column(columnDefinition = "serial")
-	@ApiModelProperty(value="uid",name="_UID_")
-	private Long uid;
+	@Column(name = "uid")
+	private long uid;
+	// @Column(columnDefinition = "serial")
+	// @ApiModelProperty(value="uid",name="_UID_")
+	// private Long uid;
+
 	@ApiModelProperty(value="username",name="_USERNAME_")
 	private String username;
 	private String password;
 	private String category;
 	private String email;
 	private String phone;
+	
+	@ManyToMany
+	private Set<House> rent_houses;
+	
+	@OneToMany
+	private Set<House> own_houses;
 	
 	public Long getUid() {
 		return uid;
@@ -66,5 +76,21 @@ public class User {
 	
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	
+	public Set<House> getRent_houses() {
+		return rent_houses;
+	}
+	
+	public void setRent_houses(Set<House> rent_houses) {
+		this.rent_houses = rent_houses;
+	}
+	
+	public Set<House> getOwn_houses() {
+		return own_houses;
+	}
+	
+	public void setOwn_houses(Set<House> own_houses) {
+		this.own_houses = own_houses;
 	}
 }
