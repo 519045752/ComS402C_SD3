@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -47,7 +46,7 @@ public class HouseController {
 			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
 			RespondCodeEnum res = RespondCodeEnum.FAIL;
@@ -74,7 +73,7 @@ public class HouseController {
 			@RequestParam Long uidLandlord, @RequestParam String address, @RequestParam String latitude, @RequestParam String longitude,
 			String addressOpt, String price, String info, String data) {
 		if (!checkUserExist(uidLandlord)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else {
 			House house = new House();
@@ -84,7 +83,7 @@ public class HouseController {
 			house.setLatitude(latitude);
 			house.setLongitude(longitude);
 			if (price == null) {
-				house.setPrice("TBA");
+				house.setPrice("TBA.");
 			}
 			else {
 				house.setPrice(price);
@@ -111,10 +110,10 @@ public class HouseController {
 	public Object addTenant(
 			@RequestParam Long hid, @RequestParam Long uid) {
 		if (!checkHouseExist(hid)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Hid_NOT_FOUND);
 		}
 		if (!checkUserExist(uid)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else {
 			House house = this.houseRepository.getHouseByHid(hid);
@@ -123,6 +122,75 @@ public class HouseController {
 			tenant.add(user);
 			houseRepository.save(house);
 			return RespondJson.out(RespondCodeEnum.SUCCESS, house);
+		}
+	}
+	
+	@PostMapping(path = "/removeTenant")
+	@ApiOperation(value = "remove an user from the house tenant list")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "hid", value = "house id", required = true, paramType = "query", dataType = "long"),
+			@ApiImplicitParam(name = "uid", value = "tenant id to be added", required = true, paramType = "query", dataType = "long")
+	})
+	public Object removeTenant(
+			@RequestParam Long hid, @RequestParam Long uid) {
+		if (!checkHouseExist(hid)) {
+			return RespondJson.out(RespondCodeEnum.FAIL_Hid_NOT_FOUND);
+		}
+		if (!checkUserExist(uid)) {
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
+		}
+		else {
+			House house = this.houseRepository.getHouseByHid(hid);
+			User user = this.userRepository.findUserById(uid);
+			Set<User> tenant = house.getTenant();
+			tenant.remove(user);
+			houseRepository.save(house);
+			return RespondJson.out(RespondCodeEnum.SUCCESS, house);
+		}
+	}
+	
+	@PostMapping(path = "/setInfo")
+	@ApiOperation(value = "set the information to the house")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "hid", value = "house id", required = true, paramType = "query", dataType = "long"),
+			@ApiImplicitParam(name = "addressOpt", value = "optional address", paramType = "query", dataType = "string"),
+			@ApiImplicitParam(name = "price", value = "rental", paramType = "query", dataType = "string"),
+			@ApiImplicitParam(name = "info", value = "information about the house", paramType = "query", dataType = "string"),
+			@ApiImplicitParam(name = "data", value = "AR data to be stored", paramType = "query", dataType = "string")
+	})
+	public Object setHouseInfo(
+			@RequestParam Long hid, String addressOpt, String price, String info, String data) {
+		if (!checkHouseExist(hid)) {
+			return RespondJson.out(RespondCodeEnum.FAIL_Hid_NOT_FOUND);
+		}
+		else {
+			House house = this.houseRepository.getHouseByHid(hid);
+			if (price == null) {
+				house.setPrice("TBA.");
+			}
+			else {
+				house.setPrice(price);
+			}
+			house.setAddressOpt(addressOpt);
+			house.setData(data);
+			house.setInfo(info);
+			return RespondJson.out(RespondCodeEnum.SUCCESS, house);
+		}
+	}
+	
+	
+	@PostMapping(path = "/removeHouse")
+	@ApiOperation(value = "remove the house from the list")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "hid", value = "house id", required = true, paramType = "query", dataType = "long")
+	})
+	public Object removeHouse(@RequestParam Long hid) {
+		if (!checkHouseExist(hid)) {
+			return RespondJson.out(RespondCodeEnum.FAIL_Hid_NOT_FOUND);
+		}
+		else {
+			this.houseRepository.deleteById(hid);
+			return RespondJson.out(RespondCodeEnum.SUCCESS);
 		}
 	}
 	

@@ -47,7 +47,7 @@ public class UserController {
 			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
 			RespondCodeEnum res = RespondCodeEnum.FAIL;
@@ -183,7 +183,7 @@ public class UserController {
 			return RespondJson.out(RespondCodeEnum.WTF);
 		}
 		else if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -212,7 +212,7 @@ public class UserController {
 			return RespondJson.out(RespondCodeEnum.WTF);
 		}
 		else if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -241,7 +241,7 @@ public class UserController {
 	})
 	public Object setEmail(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
 		if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -268,7 +268,7 @@ public class UserController {
 	})
 	public Object setPhone(@RequestParam String username, @RequestParam String password, @RequestParam String phone) {
 		if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -295,7 +295,7 @@ public class UserController {
 	public Object getUserById(@RequestParam Long uid) {
 		User user = getUserByIdUtil(uid);
 		if (user == null) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else {
 			return RespondJson.out(RespondCodeEnum.SUCCESS, user);
@@ -316,7 +316,7 @@ public class UserController {
 	public Object getUidByUsername(@RequestParam String username) {
 		Long uid = getUidByUsernameUtil(username);
 		if (uid == null) {
-			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else {
 			return RespondJson.out(RespondCodeEnum.SUCCESS, uid);

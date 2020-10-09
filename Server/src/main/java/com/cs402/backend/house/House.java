@@ -29,7 +29,7 @@ public class House {
 	private String info;
 	private String data;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.DETACH)
 	@JoinColumn(name = "user" , referencedColumnName = "uid")
 	private User landlord;
 	
