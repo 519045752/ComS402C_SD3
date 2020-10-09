@@ -1,6 +1,5 @@
 package com.cs402.backend.user;
 
-import com.cs402.backend.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

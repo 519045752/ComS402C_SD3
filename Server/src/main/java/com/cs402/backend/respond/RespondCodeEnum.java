@@ -9,7 +9,7 @@ public enum RespondCodeEnum {
 	SUCCESS(200,"Success"),
 	
 	FAIL(500,"Fail"),
-	FAIL_USER_NOT_FOUND(501,"user Not Found"),
+	FAIL_NOT_FOUND(501,"ID Not Found"),
 	FAIL_LOGIN_MISMATCH(502,"Username/Password Doesn't Match"),
 	FAIL_USERNAME_USED(520,"Username is already in used"),
 	FAIL_WRONG_INFO(521,"Wrong info provided, check format"),

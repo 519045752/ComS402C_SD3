@@ -3,7 +3,6 @@ package com.cs402.backend.user;
 import com.cs402.backend.respond.RespondCodeEnum;
 import com.cs402.backend.respond.RespondJson;
 import com.cs402.backend.utility.Utility;
-import com.cs402.backend.model.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -48,7 +47,7 @@ public class UserController {
 			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
 			RespondCodeEnum res = RespondCodeEnum.FAIL;
@@ -184,7 +183,7 @@ public class UserController {
 			return RespondJson.out(RespondCodeEnum.WTF);
 		}
 		else if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -213,7 +212,7 @@ public class UserController {
 			return RespondJson.out(RespondCodeEnum.WTF);
 		}
 		else if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -242,7 +241,7 @@ public class UserController {
 	})
 	public Object setEmail(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
 		if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -269,7 +268,7 @@ public class UserController {
 	})
 	public Object setPhone(@RequestParam String username, @RequestParam String password, @RequestParam String phone) {
 		if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -296,7 +295,7 @@ public class UserController {
 	public Object getUserById(@RequestParam Long uid) {
 		List<User> list = getUserByIdUtil(uid);
 		if (list.isEmpty()) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else {
 			return RespondJson.out(RespondCodeEnum.SUCCESS, list.get(0));
@@ -317,7 +316,7 @@ public class UserController {
 	public Object getUidByUsername(@RequestParam String username) {
 		Long uid = getUidByUsernameUtil(username);
 		if (uid == null) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else {
 			return RespondJson.out(RespondCodeEnum.SUCCESS, uid);

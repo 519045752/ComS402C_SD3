@@ -1,4 +1,4 @@
-package com.cs402.backend.model;
+package com.cs402.backend.user;
 
 import io.swagger.annotations.ApiModelProperty;
 
