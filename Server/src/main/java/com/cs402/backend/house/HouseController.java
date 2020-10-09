@@ -79,7 +79,7 @@ public class HouseController {
 		else {
 			House house = new House();
 			User landlord = userRepository.findUserById(uidLandlord);
-			house.setLandlord(landlord);//TODO set landlord
+			house.setLandlord(landlord);
 			house.setAddress(address);
 			house.setLatitude(latitude);
 			house.setLongitude(longitude);
@@ -98,14 +98,8 @@ public class HouseController {
 	}
 	
 	public Boolean checkUserExist(Long uid) {
-		User user = null;
-		try {
-			user = this.userRepository.findUserById(uid);
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+		User user = this.userRepository.findUserById(uid);
+		return !(user == null);
 	}
 	
 	@PostMapping(path = "/addTenant")
@@ -119,7 +113,7 @@ public class HouseController {
 		if (!checkHouseExist(hid)) {
 			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
-		if (!checkUserExist(hid)) {
+		if (!checkUserExist(uid)) {
 			return RespondJson.out(RespondCodeEnum.FAIL_NOT_FOUND);
 		}
 		else {
