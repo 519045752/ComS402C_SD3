@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class PersistentStorage : MonoBehaviour {
 
-	string savePath;
+	public string savePath;
 
 	void Awake () {
-		savePath = Path.Combine(Application.persistentDataPath, "saveFile");
+		savePath = Path.Combine(Application.persistentDataPath, "savePath");
 	}
 
 	public void Save (PersistableObject o) {
@@ -14,6 +14,7 @@ public class PersistentStorage : MonoBehaviour {
 			var writer = new BinaryWriter(File.Open(savePath, FileMode.Create))
 		) {
 			o.Save(new GameDataWriter(writer));
+            Debug.Log("Saved to: " + savePath);
 		}
 	}
 
@@ -21,7 +22,7 @@ public class PersistentStorage : MonoBehaviour {
 		using (
 			var reader = new BinaryReader(File.Open(savePath, FileMode.Open))
 		) {
-			o.Load(new GameDataReader(reader));
+            o.Load(new GameDataReader(reader));
 		}
 	}
 }

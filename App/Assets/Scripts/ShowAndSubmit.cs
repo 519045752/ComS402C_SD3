@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 
 /**
+ * Canvas --> Input Field
  * This class handles the input field, which gives the user an interface from which to enter the text description. On Submit, spawns text at touch
  * location, with input text
  */
@@ -14,8 +15,8 @@ public class ShowAndSubmit : MonoBehaviour
     public CanvasGroup canvasGroup;
     public TMP_InputField Input_Tex;
 
-    public Game data; // holds data for loaded scene
-   
+    public Game data; 
+
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,8 @@ public class ShowAndSubmit : MonoBehaviour
         canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
         objectToSpawn.text = msg;
         TMP_Text obj = Instantiate(objectToSpawn, placementIndicator.transform.position, placementIndicator.transform.rotation);
+        Debug.Log("Running Submit");
+        data.CreateObject(0, obj);
         //data.AddObject(obj);
     }
 
