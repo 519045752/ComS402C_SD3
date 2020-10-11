@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GoogleARCore;
 using UnityEngine;
 using TMPro;
 
@@ -40,6 +41,17 @@ public class ShowAndSubmit : MonoBehaviour
         canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
         objectToSpawn.text = msg;
         TMP_Text obj = Instantiate(objectToSpawn, placementIndicator.transform.position, placementIndicator.transform.rotation);
+
+        //TrackableHit hit;
+
+        //TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
+        //TrackableHitFlags.FeaturePointWithSurfaceNormal;
+        //bool foundHit = Frame.Raycast(
+        //    Screen.width / 2, Screen.height / 2, raycastFilter, out hit);
+
+        //var anchor = hit.Trackable.CreateAnchor(hit.Pose);
+        //obj.transform.parent = anchor.transform;
+
         Debug.Log("Running Submit");
         data.CreateObject(0, obj);
         //data.AddObject(obj);
