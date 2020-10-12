@@ -1092,7 +1092,7 @@ MonoBehaviour:
   canvasGroup: {fileID: 965774248}
   Input_Tex: {fileID: 1371345429292344925}
   objectType: 0
-  data: {fileID: 0}
+  data: {fileID: 877793417}
 --- !u!114 &627916104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1762,8 +1762,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751a150eed9dd4fed859e8940f91bbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: 
-  type: 0
   TextObj: {fileID: 5680802556791913446, guid: d4e107ca15442214c8fd75f5b6bd1669, type: 3}
   storage: {fileID: 1723544663}
 --- !u!1 &902159483
@@ -5147,6 +5145,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5448237119480711119, guid: 1ab082585993abe43962bc1d286ab37e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5448237119480711119, guid: 1ab082585993abe43962bc1d286ab37e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5448237119480711119, guid: 1ab082585993abe43962bc1d286ab37e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5448237119480711119, guid: 1ab082585993abe43962bc1d286ab37e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5448237119480711119, guid: 1ab082585993abe43962bc1d286ab37e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ab082585993abe43962bc1d286ab37e, type: 3}

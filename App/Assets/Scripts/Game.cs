@@ -81,10 +81,10 @@ public class Game : MonoBehaviour {
 			objects.Add(o);
 
 
-            // Add obj to map
-            TextObj.transform.localPosition = o.transform.localPosition;
-            TextObj.transform.localRotation = o.transform.localRotation;
-            TextObj.transform.localScale = o.transform.localScale;
+            // Add obj to map (need cloud anchors)
+            TextObj.transform.localPosition = o.localPosition;
+            TextObj.transform.localRotation = o.localRotation;
+            TextObj.transform.localScale = o.localScale;
 
             TextObj.transform.GetComponent<TMP_Text>().text = "I AM AT INDEX " + i;
 

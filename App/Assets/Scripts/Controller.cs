@@ -51,24 +51,22 @@ using Input = GoogleARCore.InstantPreviewInput;
         /// A prefab to place when a raycast from a user touch hits a feature point.
         /// </summary>
         public GameObject GameObjectPointPrefab;
+    
+        // holds reference to most recencly placed object
+        private GameObject gameRef;
+        private bool CanPlace = true;
+        private bool submitter = false;
 
-        /// <summary>
-        /// The rotation in degrees need to apply to prefab when it is placed.
-        /// </summary>
-        private const float _prefabRotation = 180.0f;
+    /// <summary>
+    /// The rotation in degrees need to apply to prefab when it is placed.
+    /// </summary>
+    private const float _prefabRotation = 180.0f;
 
         /// <summary>
         /// True if the app is in the process of quitting due to an ARCore connection error,
         /// otherwise false.
         /// </summary>
         private bool _isQuitting = false;
-
-    private TrackableHit HIT;
-
-    // Choose the prefab based on the Trackable that got hit.
-    private GameObject prefab;
-
-    private bool endPlace = true;
 
     // parent of placed objects
     public CanvasGroup canvasGroup;
@@ -94,125 +92,116 @@ using Input = GoogleARCore.InstantPreviewInput;
             objectType = 0;
         }
 
-        /// <summary>
-        /// The Unity Update() method.
-        /// </summary>
-        public void Update()
+
+    public void Update()
+    {
+        UpdateApplicationLifecycle();
+
+        // If the player has not touched the screen, we are done with this update.
+        Touch touch;
+        if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
-            UpdateApplicationLifecycle();
+            return;
+        }
 
-            // If the player has not touched the screen, we are done with this update.
-            Touch touch;
-            if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
-            {
-                return;
-            }
+        // Should not handle input if the player is pointing on UI.
+        if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+        {
+            return;
+        }
 
-            // Should not handle input if the player is pointing on UI.
-            if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-            {
-                return;
-            }
+        // Raycast against the location the player touched to search for planes.
+        TrackableHit hit;
+        bool foundHit = false;
+        if (InstantPlacementMenu.IsInstantPlacementEnabled())
+        {
+            foundHit = Frame.RaycastInstantPlacement(
+                touch.position.x, touch.position.y, 1.0f, out hit);
+        }
+        else
+        {
+            TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
+                TrackableHitFlags.FeaturePointWithSurfaceNormal;
+            foundHit = Frame.Raycast(
+                touch.position.x, touch.position.y, raycastFilter, out hit);
+        }
 
-            // Raycast against the location the player touched to search for planes.
-            bool foundHit = false;
-            TrackableHit hit;
-            if (InstantPlacementMenu.IsInstantPlacementEnabled())
+        if (foundHit && CanPlace)
+        {
+
+            Debug.Log("PLACING OBJ");
+
+            // Use hit pose and camera pose to check if hittest is from the
+            // back of the plane, if it is, no need to create the anchor.
+            if ((hit.Trackable is DetectedPlane) &&
+                Vector3.Dot(FirstPersonCamera.transform.position - hit.Pose.position,
+                    hit.Pose.rotation * Vector3.up) < 0)
             {
-                foundHit = Frame.RaycastInstantPlacement(
-                    touch.position.x, touch.position.y, 1.0f, out hit);
+                Debug.Log("Hit at back of the current DetectedPlane");
             }
             else
             {
-                TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
-                    TrackableHitFlags.FeaturePointWithSurfaceNormal;
-                foundHit = Frame.Raycast(
-                    touch.position.x, touch.position.y, raycastFilter, out hit);
-            }
-
-            if (foundHit)
-            {
-                // Use hit pose and camera pose to check if hittest is from the
-                // back of the plane, if it is, no need to create the anchor.
-                if ((hit.Trackable is DetectedPlane) &&
-                    Vector3.Dot(FirstPersonCamera.transform.position - hit.Pose.position,
-                        hit.Pose.rotation * Vector3.up) < 0)
+                // Place objcet in world!
+                if (DepthMenu != null)
                 {
-                    Debug.Log("Hit at back of the current DetectedPlane");
+                    // Show depth card window if necessary.
+                    DepthMenu.ConfigureDepthBeforePlacingFirstAsset();
                 }
-                else
-                {
-                    if (DepthMenu != null)
-                    {
-                        // Show depth card window if necessary.
-                        DepthMenu.ConfigureDepthBeforePlacingFirstAsset();
-                    }
 
-                GameObject prefabL;
-                    if (hit.Trackable is InstantPlacementPoint)
+                // Choose the prefab based on the Trackable that got hit.
+                GameObject prefab;
+                if (hit.Trackable is InstantPlacementPoint)
+                {
+                    prefab = InstantPlacementPrefab;
+                }
+                else if (hit.Trackable is FeaturePoint)
+                {
+                    prefab = GameObjectPointPrefab;
+                }
+                else if (hit.Trackable is DetectedPlane)
+                {
+                    DetectedPlane detectedPlane = hit.Trackable as DetectedPlane;
+                    if (detectedPlane.PlaneType == DetectedPlaneType.Vertical)
                     {
-                    prefabL = InstantPlacementPrefab;
-                    }
-                    else if (hit.Trackable is FeaturePoint)
-                    {
-                    prefabL = GameObjectPointPrefab;
-                    }
-                    else if (hit.Trackable is DetectedPlane)
-                    {
-                        DetectedPlane detectedPlane = hit.Trackable as DetectedPlane;
-                        if (detectedPlane.PlaneType == DetectedPlaneType.Vertical)
-                        {
-                        prefabL = GameObjectVerticalPlanePrefab;
-                        }
-                        else
-                        {
-                        prefabL = GameObjectHorizontalPlanePrefab;
-                        }
+                        prefab = GameObjectVerticalPlanePrefab;
                     }
                     else
                     {
-                    prefabL = GameObjectHorizontalPlanePrefab;
+                        prefab = GameObjectHorizontalPlanePrefab;
                     }
-
-                switch (objectType)
+                }
+                else
                 {
-                    case 0:
-                        if (endPlace)
-                        {
-                            endPlace = false;
-                            prefab = prefabL;
-                            HIT = hit;
-                            Show();
-                        }
-                        break;
-                    default:
-                        break;
+                    prefab = GameObjectHorizontalPlanePrefab;
                 }
 
-
-                // added game object -> you know drill
-
+                // Instantiate prefab at the hit pose.
+                gameRef = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
 
                 // Compensate for the hitPose rotation facing away from the raycast (i.e.
                 // camera).
-                gameObject.transform.Rotate(0, _prefabRotation, 0, Space.Self);
+                gameRef.transform.Rotate(0, _prefabRotation, 0, Space.Self);
 
-                    // Create an anchor to allow ARCore to track the hitpoint as understanding of
-                    // the physical world evolves.
-                    var anchor = hit.Trackable.CreateAnchor(hit.Pose);
+                // Create an anchor to allow ARCore to track the hitpoint as understanding of
+                // the physical world evolves.
+                var anchor = hit.Trackable.CreateAnchor(hit.Pose);
 
-                    // Make game object a child of the anchor.
-                    gameObject.transform.parent = anchor.transform;
+                // Make game object a child of the anchor.
+                gameRef.transform.SetParent(anchor.gameObject.transform);
 
-                    // Initialize Instant Placement Effect.
-                    if (hit.Trackable is InstantPlacementPoint)
-                    {
-                        gameObject.GetComponentInChildren<InstantPlacementEffect>()
-                            .InitializeWithTrackable(hit.Trackable);
-                    }
-                }
+                // Initialize Instant Placement Effect.
+                //if (hit.Trackable is InstantPlacementPoint)
+                //{
+                //    gameRef.GetComponentInChildren<InstantPlacementEffect>()
+                //        .InitializeWithTrackable(hit.Trackable);
+                //}
+
+                //holdPlacedObject = gameObject;
+                int typeObj = 0; // check if this is the correct type
+                if (typeObj == 0) Show();
             }
         }
+    }
 
 
     void Show()
@@ -220,6 +209,7 @@ using Input = GoogleARCore.InstantPreviewInput;
         Input_Tex.text = "";
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+        CanPlace = false;
         // to debug: adb logcat -s Unity PackageManager dalvikvm DEBUG
 
     }
@@ -227,19 +217,13 @@ using Input = GoogleARCore.InstantPreviewInput;
     // If not text, msg = ""
     void Submit(string msg)
     {
+        Debug.Log("Running Submit");
         canvasGroup.alpha = 0f; //this makes everything transparent
         canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
-        //TMP_Text obj = Instantiate(objectToSpawn, placementIndicator.transform.position, placementIndicator.transform.rotation);
-
-        if (prefab != null)
-        {
-            var gameObject = Instantiate(prefab, HIT.Pose.position, HIT.Pose.rotation);
-            if (msg != "") gameObject.transform.GetComponent<TMP_Text>().text = msg;
-            data.CreateObject(0, gameObject);
-            endPlace = true;
-        }
-        Debug.Log("Running Submit");
+        gameRef.transform.GetComponent<TMP_Text>().text = msg;
+        data.CreateObject(0, gameRef);
+        CanPlace = true;      
     }
 
     /// <summary>
