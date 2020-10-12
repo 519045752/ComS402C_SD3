@@ -53,7 +53,7 @@ public class ShowAndSubmit : MonoBehaviour
         //obj.transform.parent = anchor.transform;
 
         Debug.Log("Running Submit");
-        data.CreateObject(0, obj);
+        //data.CreateObject(0, obj);
         //data.AddObject(obj);
     }
 

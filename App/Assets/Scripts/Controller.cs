@@ -63,11 +63,12 @@ using Input = GoogleARCore.InstantPreviewInput;
         /// </summary>
         private bool _isQuitting = false;
 
-    private TrackableHit hit;
+    private TrackableHit HIT;
 
     // Choose the prefab based on the Trackable that got hit.
     private GameObject prefab;
 
+    private bool endPlace = true;
 
     // parent of placed objects
     public CanvasGroup canvasGroup;
@@ -77,6 +78,9 @@ using Input = GoogleARCore.InstantPreviewInput;
 
     // Sets the object type to spawn
     public int objectType;
+
+    // holds info related to game processing (e.g. saving/loading)
+    public Game data;
 
     /// <summary>
     /// The Unity Awake() method.
@@ -112,6 +116,7 @@ using Input = GoogleARCore.InstantPreviewInput;
 
             // Raycast against the location the player touched to search for planes.
             bool foundHit = false;
+            TrackableHit hit;
             if (InstantPlacementMenu.IsInstantPlacementEnabled())
             {
                 foundHit = Frame.RaycastInstantPlacement(
@@ -143,35 +148,42 @@ using Input = GoogleARCore.InstantPreviewInput;
                         DepthMenu.ConfigureDepthBeforePlacingFirstAsset();
                     }
 
+                GameObject prefabL;
                     if (hit.Trackable is InstantPlacementPoint)
                     {
-                        prefab = InstantPlacementPrefab;
+                    prefabL = InstantPlacementPrefab;
                     }
                     else if (hit.Trackable is FeaturePoint)
                     {
-                        prefab = GameObjectPointPrefab;
+                    prefabL = GameObjectPointPrefab;
                     }
                     else if (hit.Trackable is DetectedPlane)
                     {
                         DetectedPlane detectedPlane = hit.Trackable as DetectedPlane;
                         if (detectedPlane.PlaneType == DetectedPlaneType.Vertical)
                         {
-                            prefab = GameObjectVerticalPlanePrefab;
+                        prefabL = GameObjectVerticalPlanePrefab;
                         }
                         else
                         {
-                            prefab = GameObjectHorizontalPlanePrefab;
+                        prefabL = GameObjectHorizontalPlanePrefab;
                         }
                     }
                     else
                     {
-                        prefab = GameObjectHorizontalPlanePrefab;
+                    prefabL = GameObjectHorizontalPlanePrefab;
                     }
 
-                   switch(objectType)
+                switch (objectType)
                 {
                     case 0:
-                        Show();
+                        if (endPlace)
+                        {
+                            endPlace = false;
+                            prefab = prefabL;
+                            HIT = hit;
+                            Show();
+                        }
                         break;
                     default:
                         break;
@@ -208,9 +220,8 @@ using Input = GoogleARCore.InstantPreviewInput;
         Input_Tex.text = "";
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+        // to debug: adb logcat -s Unity PackageManager dalvikvm DEBUG
 
-        // Instantiate prefab at the hit pose.
-        
     }
 
     // If not text, msg = ""
@@ -220,16 +231,15 @@ using Input = GoogleARCore.InstantPreviewInput;
         canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
         //TMP_Text obj = Instantiate(objectToSpawn, placementIndicator.transform.position, placementIndicator.transform.rotation);
-        var gameObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
-        
-        if (msg != "") gameObject.transform.GetComponent<TMP_Text>().text = msg;
-        
 
-        prefab = null;
-
+        if (prefab != null)
+        {
+            var gameObject = Instantiate(prefab, HIT.Pose.position, HIT.Pose.rotation);
+            if (msg != "") gameObject.transform.GetComponent<TMP_Text>().text = msg;
+            data.CreateObject(0, gameObject);
+            endPlace = true;
+        }
         Debug.Log("Running Submit");
-        //data.CreateObject(0, obj);
-        //data.AddObject(obj);
     }
 
     /// <summary>
