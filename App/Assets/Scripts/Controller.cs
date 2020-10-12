@@ -1,40 +1,19 @@
-//-----------------------------------------------------------------------
-// <copyright file="HelloARController.cs" company="Google LLC">
-//
-// Copyright 2020 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
-//-----------------------------------------------------------------------
-
-namespace GoogleARCore.Examples.HelloAR
-{
-    using System.Collections.Generic;
+ using System.Collections.Generic;
     using GoogleARCore;
     using GoogleARCore.Examples.Common;
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using TMPro;
 
 #if UNITY_EDITOR
-    // Set up touch input propagation while using Instant Preview in the editor.
-    using Input = InstantPreviewInput;
+// Set up touch input propagation while using Instant Preview in the editor.
+using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
     /// <summary>
     /// Controls the HelloAR example.
     /// </summary>
-    public class HelloARController : MonoBehaviour
+    public class Controller : MonoBehaviour
     {
         /// <summary>
         /// The Depth Setting Menu.
@@ -84,14 +63,31 @@ namespace GoogleARCore.Examples.HelloAR
         /// </summary>
         private bool _isQuitting = false;
 
-        /// <summary>
-        /// The Unity Awake() method.
-        /// </summary>
-        public void Awake()
+    private TrackableHit hit;
+
+    // Choose the prefab based on the Trackable that got hit.
+    private GameObject prefab;
+
+
+    // parent of placed objects
+    public CanvasGroup canvasGroup;
+
+    // get input from user
+    public TMP_InputField Input_Tex;
+
+    // Sets the object type to spawn
+    public int objectType;
+
+    /// <summary>
+    /// The Unity Awake() method.
+    /// </summary>
+    public void Awake()
         {
             // Enable ARCore to target 60fps camera capture frame rate on supported devices.
             // Note, Application.targetFrameRate is ignored when QualitySettings.vSyncCount != 0.
             Application.targetFrameRate = 60;
+            Input_Tex.onSubmit.AddListener(Submit);
+            objectType = 0;
         }
 
         /// <summary>
@@ -115,7 +111,6 @@ namespace GoogleARCore.Examples.HelloAR
             }
 
             // Raycast against the location the player touched to search for planes.
-            TrackableHit hit;
             bool foundHit = false;
             if (InstantPlacementMenu.IsInstantPlacementEnabled())
             {
@@ -148,8 +143,6 @@ namespace GoogleARCore.Examples.HelloAR
                         DepthMenu.ConfigureDepthBeforePlacingFirstAsset();
                     }
 
-                    // Choose the prefab based on the Trackable that got hit.
-                    GameObject prefab;
                     if (hit.Trackable is InstantPlacementPoint)
                     {
                         prefab = InstantPlacementPrefab;
@@ -175,12 +168,22 @@ namespace GoogleARCore.Examples.HelloAR
                         prefab = GameObjectHorizontalPlanePrefab;
                     }
 
-                    // Instantiate prefab at the hit pose.
-                    var gameObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
+                   switch(objectType)
+                {
+                    case 0:
+                        Show();
+                        break;
+                    default:
+                        break;
+                }
 
-                    // Compensate for the hitPose rotation facing away from the raycast (i.e.
-                    // camera).
-                    gameObject.transform.Rotate(0, _prefabRotation, 0, Space.Self);
+
+                // added game object -> you know drill
+
+
+                // Compensate for the hitPose rotation facing away from the raycast (i.e.
+                // camera).
+                gameObject.transform.Rotate(0, _prefabRotation, 0, Space.Self);
 
                     // Create an anchor to allow ARCore to track the hitpoint as understanding of
                     // the physical world evolves.
@@ -199,10 +202,40 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-        /// <summary>
-        /// Check and update the application lifecycle.
-        /// </summary>
-        private void UpdateApplicationLifecycle()
+
+    void Show()
+    {
+        Input_Tex.text = "";
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+
+        // Instantiate prefab at the hit pose.
+        
+    }
+
+    // If not text, msg = ""
+    void Submit(string msg)
+    {
+        canvasGroup.alpha = 0f; //this makes everything transparent
+        canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
+
+        //TMP_Text obj = Instantiate(objectToSpawn, placementIndicator.transform.position, placementIndicator.transform.rotation);
+        var gameObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
+        
+        if (msg != "") gameObject.transform.GetComponent<TMP_Text>().text = msg;
+        
+
+        prefab = null;
+
+        Debug.Log("Running Submit");
+        //data.CreateObject(0, obj);
+        //data.AddObject(obj);
+    }
+
+    /// <summary>
+    /// Check and update the application lifecycle.
+    /// </summary>
+    private void UpdateApplicationLifecycle()
         {
             // Exit the app when the 'back' button is pressed.
             if (Input.GetKey(KeyCode.Escape))
@@ -273,4 +306,4 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
     }
-}
+
