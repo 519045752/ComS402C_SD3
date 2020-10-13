@@ -5,41 +5,60 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class LoginHandler : MonoBehaviour
+public class RegisterHandler : MonoBehaviour
 {
     [SerializeField]
     private GameObject ufield;
     [SerializeField]
     private GameObject pfield;
     [SerializeField]
-    private GameObject loginResult;
+    private GameObject efield;
+    [SerializeField]
+    private GameObject nfield;
+    [SerializeField]
+    private GameObject registerResult;
     [SerializeField]
     private string username;
     [SerializeField]
     private string password;
+    [SerializeField]
+    private string email;
+    [SerializeField]
+    private string phone;
+
+    private WWWForm form;
 
     public UnityWebRequest request;
 
-    private static string login_url = "coms-402-sd-8.cs.iastate.edu:8080/user/login";
+    private static string register_url = "coms-402-sd-8.cs.iastate.edu:8080/user/register";
 
     // Start is called before the first frame update
     void Start()
     {
-        ufield = GameObject.Find("Username/Text Area/Text");
-        pfield = GameObject.Find("Password/Text Area/Text");
+
     }
 
-    public void LoginAttempt()
+    public void RegisterAttempt(string userType)
     {
         username = ufield.GetComponent<TextMeshProUGUI>().text;
         password = pfield.GetComponent<TextMeshProUGUI>().text;
+        email = efield.GetComponent<TextMeshProUGUI>().text;
+        phone = nfield.GetComponent<TextMeshProUGUI>().text;
 
-        StartCoroutine(Login());
+        form = new WWWForm();
+        form.AddField("category", userType);
+        form.AddField("username", username);
+        form.AddField("password", password);
+        form.AddField("email", email);
+        form.AddField("phone", phone);
+
+
+        StartCoroutine(Register());
 
     }
-    IEnumerator Login()
+    IEnumerator Register()
     {
-        var txt = loginResult.GetComponent<TextMeshProUGUI>();
+        var txt = registerResult.GetComponent<TextMeshProUGUI>();
         yield return StartCoroutine(Upload());
 
         Credentials user = JsonUtility.FromJson<Credentials>(request.downloadHandler.text);
@@ -47,10 +66,10 @@ public class LoginHandler : MonoBehaviour
         switch (user.code)
         {
             case 200:
-                txt.text = "Login Sucessful!";
+                txt.text = "Register Sucessful!";
                 break;
-            case 502:
-                txt.text = "Username/Password Incorrect";
+            case 520:
+                txt.text = "Username already in use";
                 break;
             default:
                 txt.text = "Error: Code #" + request.responseCode;
@@ -59,8 +78,8 @@ public class LoginHandler : MonoBehaviour
         }
     }
     IEnumerator Upload()
-    { 
-        request = UnityWebRequest.Get(CreateURL(username,password));
+    {
+        request = UnityWebRequest.Post(register_url, form);
 
         yield return request.SendWebRequest();
 
@@ -74,15 +93,9 @@ public class LoginHandler : MonoBehaviour
             Debug.Log(request.downloadHandler.text);
         }
     }
-    private string CreateURL(string username, string password)
-    {
-        string urlText = login_url + "?password=" + password + "&username=" + username;
-        Debug.Log(urlText);
-        return urlText;
-    }
 
-    public void Register()
-    {
-        SceneManager.LoadScene("Register");
-    }
+    public void RegisterTenant() => RegisterAttempt("tenant");
+
+    public void RegisterLandlord() => RegisterAttempt("landlord");
+
 }
