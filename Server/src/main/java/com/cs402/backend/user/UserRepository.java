@@ -1,6 +1,5 @@
 package com.cs402.backend.user;
 
-import com.cs402.backend.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -24,7 +23,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	List<User> loginByUid(Long uid, String password);
 	
 	@Query(value="select * from ar_project.user where uid=?1" ,nativeQuery = true)
-	List<User> findUserById(Long uid);
+	User findUserById(Long uid);
 	
 	@Query(value="select uid from ar_project.user where username=?1" ,nativeQuery = true)
 	public Long findUidByUsername(String username);

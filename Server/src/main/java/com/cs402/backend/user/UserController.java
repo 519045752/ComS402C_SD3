@@ -3,7 +3,6 @@ package com.cs402.backend.user;
 import com.cs402.backend.respond.RespondCodeEnum;
 import com.cs402.backend.respond.RespondJson;
 import com.cs402.backend.utility.Utility;
-import com.cs402.backend.model.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -23,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class UserController {
 	
 	@Autowired
-	private UserRepository userRepository;
+	UserRepository userRepository;
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	private static final String greeting = "Hello,%s!";
 	private final AtomicLong counter = new AtomicLong();
@@ -40,7 +39,7 @@ public class UserController {
 	@ApiImplicitParam(name = "uid", value = "uid", required = true, dataType = "Long")
 	public Object test(@PathVariable Long uid) {
 		try {
-			User user = getUserByIdUtil(uid).get(0);
+			User user = getUserByIdUtil(uid);
 			String username = user.getUsername();
 			user.setPassword("PRIVATE");
 			RespondJson<User> ret = RespondJson.out(RespondCodeEnum.SUCCESS, user);
@@ -48,7 +47,7 @@ public class UserController {
 			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
 			RespondCodeEnum res = RespondCodeEnum.FAIL;
@@ -184,7 +183,7 @@ public class UserController {
 			return RespondJson.out(RespondCodeEnum.WTF);
 		}
 		else if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -213,7 +212,7 @@ public class UserController {
 			return RespondJson.out(RespondCodeEnum.WTF);
 		}
 		else if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -242,7 +241,7 @@ public class UserController {
 	})
 	public Object setEmail(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
 		if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -269,7 +268,7 @@ public class UserController {
 	})
 	public Object setPhone(@RequestParam String username, @RequestParam String password, @RequestParam String phone) {
 		if (checkUsernameNotUsedUtil(username)) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else if (userRepository.login(username, password).isEmpty()) {
 			return RespondJson.out(RespondCodeEnum.FAIL_LOGIN_MISMATCH);
@@ -294,19 +293,19 @@ public class UserController {
 			@ApiImplicitParam(name = "uid", value = "exist username", required = true, paramType = "query", dataType = "Long")
 	})
 	public Object getUserById(@RequestParam Long uid) {
-		List<User> list = getUserByIdUtil(uid);
-		if (list.isEmpty()) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+		User user = getUserByIdUtil(uid);
+		if (user == null) {
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else {
-			return RespondJson.out(RespondCodeEnum.SUCCESS, list.get(0));
+			return RespondJson.out(RespondCodeEnum.SUCCESS, user);
 		}
 	}
 	
-	public List<User> getUserByIdUtil(Long uid) {
-		List<User> list = userRepository.findUserById(uid);
-		log.debug("[/getUserbyID] " + list.toString());
-		return list;
+	public User getUserByIdUtil(Long uid) {
+		User user = userRepository.findUserById(uid);
+		log.debug("[/getUserbyID] " + user.toString());
+		return user;
 	}
 	
 	@PostMapping(path = "/findUidByUsername")
@@ -317,7 +316,7 @@ public class UserController {
 	public Object getUidByUsername(@RequestParam String username) {
 		Long uid = getUidByUsernameUtil(username);
 		if (uid == null) {
-			return RespondJson.out(RespondCodeEnum.FAIL_USER_NOT_FOUND);
+			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		}
 		else {
 			return RespondJson.out(RespondCodeEnum.SUCCESS, uid);

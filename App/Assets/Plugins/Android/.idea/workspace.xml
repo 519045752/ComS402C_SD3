@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="50073050-b8db-4244-bdc5-e27366e247ba" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Samples.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/.sample.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/SampleBuildProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/SampleBuildProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/SampleMetadata.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/SampleMetadata.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/SampleSettingsEditor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/SampleSettingsEditor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/Unity.XR.Management.Samples.Editor.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Editor/Unity.XR.Management.Samples.Editor.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/SampleConstants.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/SampleConstants.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/SampleLoader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/SampleLoader.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/SampleSettings.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/SampleSettings.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Unity.XR.Management.Samples.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Samples/XR Plugin Management/3.2.15/Example XR Management implementation/Unity.XR.Management.Samples.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Scripts/ShowAndSubmit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../Scripts/ShowAndSubmit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ProjectSettings/ProjectSettings.asset" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="D:\Documents\College\F2020\402C\pr\2020_3_sd3\App\Assets\Plugins\Android\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1ikH0xPGSiWsxdwjyhNaEq6Kpoc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="C:/NVPACK/android-sdk-windows" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="50073050-b8db-4244-bdc5-e27366e247ba" name="Default Changelist" comment="" />
+      <created>1602444451449</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1602444451449</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="-1455" y="194" key="com.intellij.ide.util.TipDialog" timestamp="1602444459613">
+      <screen x="-1920" y="0" width="1536" height="864" />
+    </state>
+    <state x="-1455" y="194" key="com.intellij.ide.util.TipDialog/0.0.1536.864/-1920.0.1536.864@-1920.0.1536.864" timestamp="1602444459613" />
+    <state x="-1494" y="168" width="672" height="677" key="run.anything.popup" timestamp="1602444554516">
+      <screen x="-1920" y="0" width="1536" height="864" />
+    </state>
+    <state x="-1494" y="168" width="672" height="677" key="run.anything.popup/0.0.1536.864/-1920.0.1536.864@-1920.0.1536.864" timestamp="1602444554516" />
+  </component>
+</project>
