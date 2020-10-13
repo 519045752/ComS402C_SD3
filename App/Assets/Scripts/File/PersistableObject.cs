@@ -25,8 +25,8 @@ public class PersistableObject : MonoBehaviour {
     public PersistableObject(int type, GameObject obj)
     {
         this.type = type;
-        this.localPosition = obj.transform.localPosition;
-        this.localRotation = obj.transform.localRotation;
+        this.localPosition = obj.transform.parent.localPosition; // get anchor
+        this.localRotation = obj.transform.parent.localRotation; // get anchor
         this.localScale = obj.transform.localScale;
     }
 
