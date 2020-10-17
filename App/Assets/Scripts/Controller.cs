@@ -4,6 +4,7 @@
     using UnityEngine;
     using UnityEngine.EventSystems;
     using TMPro;
+using GoogleARCore.CrossPlatform;
 
 #if UNITY_EDITOR
 // Set up touch input propagation while using Instant Preview in the editor.
@@ -188,6 +189,7 @@ using Input = GoogleARCore.InstantPreviewInput;
 
                 // Make game object a child of the anchor.
                 gameRef.transform.SetParent(anchor.gameObject.transform);
+                XPSession.CreateCloudAnchor(anchor);
 
                 // Initialize Instant Placement Effect.
                 //if (hit.Trackable is InstantPlacementPoint)
