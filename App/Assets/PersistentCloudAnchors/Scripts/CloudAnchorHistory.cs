@@ -18,8 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace GoogleARCore.Examples.PersistentCloudAnchors
-{
     using System;
     using System.Collections.Generic;
     using UnityEngine;
@@ -99,4 +97,3 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
         /// </summary>
         public List<CloudAnchorHistory> Collection = new List<CloudAnchorHistory>();
     }
-}

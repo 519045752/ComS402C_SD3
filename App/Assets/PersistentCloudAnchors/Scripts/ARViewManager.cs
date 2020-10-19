@@ -1,23 +1,23 @@
 
 
-namespace GoogleARCore.Examples.PersistentCloudAnchors
-{
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using GoogleARCore.CrossPlatform;
-    using UnityEngine;
+    using GoogleARCore.Examples.Common;
+    using GoogleARCore;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
     using TMPro;
+    using UnityEngine;
 
 #if ARCORE_IOS_SUPPORT
     using UnityEngine.XR.iOS;
 #endif
 
-    /// <summary>
-    /// A manager component that helps with hosting and resolving Cloud Anchors.
-    /// </summary>
-    public class ARViewManager : MonoBehaviour
+/// <summary>
+/// A manager component that helps with hosting and resolving Cloud Anchors.
+/// </summary>
+public class ARViewManager : MonoBehaviour
     {
         /// <summary>
         /// The main controller for Persistent Cloud Anchors sample.
@@ -818,4 +818,3 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
         }
 #endif
     }
-}
