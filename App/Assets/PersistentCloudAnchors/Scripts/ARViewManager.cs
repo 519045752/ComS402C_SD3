@@ -1,22 +1,4 @@
-//-----------------------------------------------------------------------
-// <copyright file="ARViewManager.cs" company="Google LLC">
-//
-// Copyright 2020 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
-//-----------------------------------------------------------------------
+
 
 namespace GoogleARCore.Examples.PersistentCloudAnchors
 {
@@ -694,10 +676,15 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
                 Invoke("DoHideInstructionBar", 1.5f);
                 DebugText.text = "Succeed to host cloud anchor: " + response;
 
-                // Display name panel and hide instruction bar.
-                NameField.text = _hostedCloudAnchor.Name;
-                NamePanel.SetActive(true);
-                SetSaveButtonActive(true);
+                _hostedCloudAnchor.Name = _hostedCloudAnchor.Name;
+                Controller.SaveCloudAnchorHistory(_hostedCloudAnchor);
+
+                DebugText.text = string.Format("Saved Cloud Anchor:\n{0}.", _hostedCloudAnchor.Name);
+
+                //// Display name panel and hide instruction bar.
+                //NameField.text = _hostedCloudAnchor.Name;
+                //NamePanel.SetActive(true);
+                //SetSaveButtonActive(true);
             }
             else
             {
