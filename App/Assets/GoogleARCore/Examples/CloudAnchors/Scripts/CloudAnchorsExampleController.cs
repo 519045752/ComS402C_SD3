@@ -21,7 +21,6 @@
 namespace GoogleARCore.Examples.CloudAnchors
 {
     using GoogleARCore;
-    //using Google.XR.ARCoreExtensions;
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.Networking;
@@ -235,11 +234,6 @@ namespace GoogleARCore.Examples.CloudAnchors
             // Enable ARCore to target 60fps camera capture frame rate on supported devices.
             // Note, Application.targetFrameRate is ignored when QualitySettings.vSyncCount != 0.
             Application.targetFrameRate = 60;
-
-            // string keyJSON = JObject.Parse();
-            // ARAnchorManager.SetAuthToken("test");
-            // GARSession* session = [GARSession sessionWithError: &error];
-
         }
 
         /// <summary>

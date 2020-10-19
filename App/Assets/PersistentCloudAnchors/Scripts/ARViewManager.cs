@@ -26,6 +26,7 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
+    using TMPro;
 
 #if ARCORE_IOS_SUPPORT
     using UnityEngine.XR.iOS;
@@ -151,6 +152,27 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
 
         private Color _activeColor;
 
+        // holds reference to most recencly placed object
+        private GameObject gameRef;
+        public GameObject prefabToPlace;
+        private bool CanPlace = true;
+        private string cloudid;
+
+        // parent of placed objects
+        public CanvasGroup canvasGroup;
+
+        // get input from user
+        public TMP_InputField Input_Tex;
+
+        // Sets the object type to spawn
+        public int objectType;
+
+        // holds info related to game processing (e.g. saving/loading)
+        public Game data;
+
+        // trackable hit
+        TrackableHit arcoreHitResult;
+
 #if ARCORE_IOS_SUPPORT
         private List<ARHitTestResult> _hitResultList = new List<ARHitTestResult>();
         private Dictionary<string, ARPlaneAnchorAlignment> _arPlaneAligmentMapping =
@@ -239,6 +261,8 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
         /// </summary>
         public void Awake()
         {
+            Input_Tex.onSubmit.AddListener(Submit);
+            objectType = 0;
             _activeColor = SaveButton.GetComponentInChildren<Text>().color;
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -373,8 +397,8 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
                 {
                     // If the player has not touched the screen then the update is complete.
                     Touch touch;
-                    if (Input.touchCount < 1 ||
-                        (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
+                    if ((Input.touchCount < 1 ||
+                        (touch = Input.GetTouch(0)).phase != TouchPhase.Began) && CanPlace)
                     {
                         return;
                     }
@@ -453,7 +477,7 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
             }
             else
             {
-                TrackableHit arcoreHitResult = new TrackableHit();
+                arcoreHitResult = new TrackableHit();
                 if (Frame.Raycast(touchPos.x, touchPos.y, TrackableHitFlags.PlaneWithinPolygon,
                     out arcoreHitResult))
                 {
@@ -488,6 +512,32 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
 
                 // Hide plane generator so users can focus on the object they placed.
                 Controller.PlaneGenerator.SetActive(false);
+            }
+        }
+
+        void Show()
+        {
+            Input_Tex.text = "";
+            canvasGroup.alpha = 1f;
+            canvasGroup.blocksRaycasts = true;
+            CanPlace = false;
+            // to debug: adb logcat -s Unity PackageManager dalvikvm DEBUG
+
+        }
+
+        // If not text, msg = ""
+        void Submit(string msg)
+        {
+            if (cloudid != null)
+            {
+                Debug.Log("Running Submit");
+                canvasGroup.alpha = 0f; //this makes everything transparent
+                canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
+
+                gameRef.transform.GetComponent<TMP_Text>().text = msg;
+                data.CreateObject(0, gameRef, cloudid);
+                CanPlace = true;
+                cloudid = null;
             }
         }
 
@@ -549,6 +599,19 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
             var anchor = (Anchor)_anchorComponent;
 #endif
 
+            // Instantiate prefab at the hit pose.
+            gameRef = Instantiate(prefabToPlace , arcoreHitResult.Pose.position, arcoreHitResult.Pose.rotation);
+
+            // Compensate for the hitPose rotation facing away from the raycast (i.e.
+            // camera).
+            gameRef.transform.Rotate(0, 180.0f, 0, Space.Self);
+
+            // Make game object a child of the anchor.
+            gameRef.transform.SetParent(anchor.gameObject.transform);
+
+            int typeObj = 0; // check if this is the correct type
+            if (typeObj == 0) Show();
+
             // Creating a Cloud Anchor with lifetime = 1 day.
             // This is configurable up to 365 days when keyless authentication is used.
             XPSession.CreateCloudAnchor(anchor, 1).ThenAction(result =>
@@ -571,6 +634,7 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
                     _hostedCloudAnchor =
                         new CloudAnchorHistory("CloudAnchor" + count, result.Anchor.CloudId);
                     OnAnchorHostedFinished(true, result.Anchor.CloudId);
+                    cloudid = result.Anchor.CloudId;
                 }
             });
         }
@@ -609,6 +673,9 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
                         Debug.LogFormat("Succeed to resolve cloud anchor: {0}", cloudId);
                         OnAnchorResolvedFinished(true, cloudId);
                         Instantiate(CloudAnchorPrefab, result.Anchor.transform);
+                        _cachedComponents.Add(result.Anchor);
+
+                        Instantiate(prefabToPlace, result.Anchor.transform);
                         _cachedComponents.Add(result.Anchor);
                     }
                 });

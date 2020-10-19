@@ -33,4 +33,12 @@ public class GameDataReader {
 		value.z = reader.ReadSingle();
 		return value;
 	}
+
+    public string ReadString()
+    {
+        string value;
+        value = reader.ReadString();
+        Debug.Log("The value of cloudid was read as " + value);
+        return value;
+    }
 }
