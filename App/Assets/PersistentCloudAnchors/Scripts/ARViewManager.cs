@@ -606,7 +606,7 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
 
             // Compensate for the hitPose rotation facing away from the raycast (i.e.
             // camera).
-            gameRef.transform.Rotate(0, 180.0f, 0, Space.Self);
+            gameRef.transform.Rotate(0, 0f, 0, Space.Self);
 
             // Make game object a child of the anchor.
             gameRef.transform.SetParent(anchor.gameObject.transform);
