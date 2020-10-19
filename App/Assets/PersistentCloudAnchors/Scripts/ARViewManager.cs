@@ -395,10 +395,12 @@ namespace GoogleARCore.Examples.PersistentCloudAnchors
                 // Perform hit test and place an anchor on the hit test result.
                 if (_hitPose == null)
                 {
+
+                    if (!CanPlace)
+                        return;
                     // If the player has not touched the screen then the update is complete.
                     Touch touch;
-                    if ((Input.touchCount < 1 ||
-                        (touch = Input.GetTouch(0)).phase != TouchPhase.Began) && CanPlace)
+                    if ((Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began))
                     {
                         return;
                     }
