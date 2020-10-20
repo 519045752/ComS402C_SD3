@@ -14,12 +14,12 @@ public class Game : MonoBehaviour {
 	void Awake () {
 		objects = new List<PersistableObject>();
         savePath = Path.Combine(Application.persistentDataPath, "savePath");
-        Debug.Log("Load from: " + savePath);
-        using (
-            var reader = new BinaryReader(File.Open(savePath, FileMode.Open)))
-        {
-            Load(new GameDataReader(reader));
-        }
+        //Debug.Log("Load from: " + savePath);
+        //using (
+        //    var reader = new BinaryReader(File.Open(savePath, FileMode.Open)))
+        //{
+        //    Load(new GameDataReader(reader));
+        //}
     }
 
 	void Update () {
@@ -33,7 +33,7 @@ public class Game : MonoBehaviour {
 		objects.Clear();
 	}
 
-	public void CreateObject (int type, GameObject newO) {
+	public void CreateObject (int type, GameObject newO, string cloudid) {
 
         PersistableObject o;
 
@@ -41,8 +41,8 @@ public class Game : MonoBehaviour {
         switch (type)
         {
             case 0: // add text
-                o = new PersistableObject(type, newO);
-                o.text = newO.transform.GetComponent<TMP_Text>().text;
+                o = new PersistableObject(cloudid, type, newO);
+                o.text = newO.transform.GetChild(0).GetComponent<TMP_Text>().text;
                 objects.Add(o);
                 break;
         }
@@ -86,7 +86,7 @@ public class Game : MonoBehaviour {
             TextObj.transform.localRotation = o.localRotation;
             TextObj.transform.localScale = o.localScale;
 
-            TextObj.transform.GetComponent<TMP_Text>().text = "I AM AT INDEX " + i;
+            TextObj.transform.GetChild(0).GetComponent<TMP_Text>().text = "I AM AT INDEX " + i;
 
             Instantiate(TextObj);
 
