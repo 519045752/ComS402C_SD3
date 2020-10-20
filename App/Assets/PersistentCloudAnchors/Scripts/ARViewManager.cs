@@ -136,7 +136,10 @@ public class ARViewManager : MonoBehaviour
 
         // holds reference to most recencly placed object
         private GameObject gameRef;
+
+        // prefab contains text data
         public GameObject prefabToPlace;
+        private GameObject textInfoWindow; // this holds reference to text object, a child of prefabToPlace
         private bool CanPlace = true;
         private string cloudid;
 
@@ -243,6 +246,9 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
+        // G
+            textInfoWindow = prefabToPlace.transform.Find("textInfoWindow").gameObject;
+            textInfoWindow.SetActive(false);
             Input_Tex.onSubmit.AddListener(Submit);
             objectType = 0;
             _activeColor = SaveButton.GetComponentInChildren<Text>().color;
@@ -518,7 +524,7 @@ public class ARViewManager : MonoBehaviour
                 canvasGroup.alpha = 0f; //this makes everything transparent
                 canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
-                gameRef.transform.GetComponent<TMP_Text>().text = msg;
+                textInfoWindow.transform.GetComponent<TMP_Text>().text = msg;
                 data.CreateObject(0, gameRef, cloudid);
                 CanPlace = true;
                 cloudid = null;
@@ -584,7 +590,7 @@ public class ARViewManager : MonoBehaviour
 #endif
 
             // Instantiate prefab at the hit pose.
-            gameRef = Instantiate(prefabToPlace , arcoreHitResult.Pose.position, arcoreHitResult.Pose.rotation);
+            gameRef = Instantiate(prefabToPlace, arcoreHitResult.Pose.position, arcoreHitResult.Pose.rotation);
 
             // Compensate for the hitPose rotation facing away from the raycast (i.e.
             // camera).
@@ -615,10 +621,10 @@ public class ARViewManager : MonoBehaviour
                 {
                     Debug.LogFormat("Succeed to host cloud anchor: {0}", result.Anchor.CloudId);
                     int count = Controller.LoadCloudAnchorHistory().Collection.Count;
-                    _hostedCloudAnchor =
-                        new CloudAnchorHistory("CloudAnchor" + count, result.Anchor.CloudId);
-                    OnAnchorHostedFinished(true, result.Anchor.CloudId);
                     cloudid = result.Anchor.CloudId;
+                    _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
+                    OnAnchorHostedFinished(true, result.Anchor.CloudId);
+                    
                 }
             });
         }

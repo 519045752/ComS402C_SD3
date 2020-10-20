@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1745,7 +1745,7 @@ MonoBehaviour:
   DebugText: {fileID: 645328230}
   SaveButton: {fileID: 2054425934}
   ShareButton: {fileID: 269160621}
-  prefabToPlace: {fileID: 5680802556791913446, guid: d4e107ca15442214c8fd75f5b6bd1669,
+  prefabToPlace: {fileID: 8205901762350832311, guid: 183b850f53378ab4b93b8a13de4dc75a,
     type: 3}
   canvasGroup: {fileID: 1519431723}
   Input_Tex: {fileID: 1519431722}

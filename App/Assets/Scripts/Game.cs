@@ -42,7 +42,7 @@ public class Game : MonoBehaviour {
         {
             case 0: // add text
                 o = new PersistableObject(cloudid, type, newO);
-                o.text = newO.transform.GetComponent<TMP_Text>().text;
+                o.text = newO.transform.GetChild(0).GetComponent<TMP_Text>().text;
                 objects.Add(o);
                 break;
         }
@@ -86,7 +86,7 @@ public class Game : MonoBehaviour {
             TextObj.transform.localRotation = o.localRotation;
             TextObj.transform.localScale = o.localScale;
 
-            TextObj.transform.GetComponent<TMP_Text>().text = "I AM AT INDEX " + i;
+            TextObj.transform.GetChild(0).GetComponent<TMP_Text>().text = "I AM AT INDEX " + i;
 
             Instantiate(TextObj);
 
