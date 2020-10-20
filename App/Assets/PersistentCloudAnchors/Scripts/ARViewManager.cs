@@ -139,7 +139,6 @@ public class ARViewManager : MonoBehaviour
 
         // prefab contains text data
         public GameObject prefabToPlace;
-        private GameObject textInfoWindow; // this holds reference to text object, a child of prefabToPlace
         private List<GameObject> prefabsOnMap; // list of prefabs on map
         private bool CanPlace = true;
         private string cloudid;
@@ -247,9 +246,7 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
-        // G
-            textInfoWindow = prefabToPlace.transform.Find("textInfoWindow").gameObject;
-            textInfoWindow.SetActive(false);
+            prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
             Input_Tex.onSubmit.AddListener(Submit);
             objectType = 0;
@@ -561,7 +558,7 @@ public class ARViewManager : MonoBehaviour
                 canvasGroup.alpha = 0f; //this makes everything transparent
                 canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
-                textInfoWindow.transform.GetComponent<TMP_Text>().text = msg;
+                gameRef.transform.Find("textInfoWindow").gameObject.transform.GetComponent<TMP_Text>().text = msg;
                 data.CreateObject(0, gameRef, cloudid);
                 CanPlace = true;
                 cloudid = null;
