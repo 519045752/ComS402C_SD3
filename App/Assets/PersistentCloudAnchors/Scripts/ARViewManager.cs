@@ -140,6 +140,7 @@ public class ARViewManager : MonoBehaviour
         // prefab contains text data
         public GameObject prefabToPlace;
         private GameObject textInfoWindow; // this holds reference to text object, a child of prefabToPlace
+        private List<GameObject> prefabsOnMap; // list of prefabs on map
         private bool CanPlace = true;
         private string cloudid;
 
@@ -249,6 +250,7 @@ public class ARViewManager : MonoBehaviour
         // G
             textInfoWindow = prefabToPlace.transform.Find("textInfoWindow").gameObject;
             textInfoWindow.SetActive(false);
+            prefabsOnMap = new List<GameObject>();
             Input_Tex.onSubmit.AddListener(Submit);
             objectType = 0;
             _activeColor = SaveButton.GetComponentInChildren<Text>().color;
@@ -356,8 +358,22 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Update()
         {
-            // Give ARCore some time to prepare for hosting or resolving.
-            if (_timeSinceStart < _startPrepareTime)
+
+        // Check if touching object
+        if (Input.touchCount > 0) {
+            Touch touch = Input.GetTouch(0);
+            if (!((touch.phase != TouchPhase.Began) || EventSystem.current.IsPointerOverGameObject(touch.fingerId)))
+            {
+                // Detect if raycast hits object
+                Debug.Log("Raycasting to see if touch is on object.");
+                touchObject();
+            }
+        }
+
+
+
+        // Give ARCore some time to prepare for hosting or resolving.
+        if (_timeSinceStart < _startPrepareTime)
             {
                 _timeSinceStart += Time.deltaTime;
                 if (_timeSinceStart >= _startPrepareTime)
@@ -376,7 +392,7 @@ public class ARViewManager : MonoBehaviour
 
             if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Resolving)
             {
-                ResolvingCloudAnchors();
+                ResolvingCloudAnchors();              
             }
             else if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Hosting)
             {
@@ -406,6 +422,27 @@ public class ARViewManager : MonoBehaviour
                 HostingCloudAnchor();
             }
         }
+
+    private void touchObject()
+    {
+        Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+        RaycastHit raycastHit;
+        if (Physics.Raycast(raycast, out raycastHit))
+        {
+            string name = raycastHit.collider.name;
+            Debug.Log(name + " was hit");
+
+            foreach (GameObject objName in prefabsOnMap)
+            {
+                if (objName.name == name)
+                {
+                    objName.transform.Find("textInfoWindow").gameObject.SetActive(!objName.transform.Find("textInfoWindow").gameObject.activeSelf);
+                    return;
+                }
+            }
+        }
+    }
+
 
         private void PerformHitTest(Vector2 touchPos)
         {
@@ -589,22 +626,9 @@ public class ARViewManager : MonoBehaviour
             var anchor = (Anchor)_anchorComponent;
 #endif
 
-            // Instantiate prefab at the hit pose.
-            gameRef = Instantiate(prefabToPlace, arcoreHitResult.Pose.position, arcoreHitResult.Pose.rotation);
-
-            // Compensate for the hitPose rotation facing away from the raycast (i.e.
-            // camera).
-            gameRef.transform.Rotate(0, 0f, 0, Space.Self);
-
-            // Make game object a child of the anchor.
-            gameRef.transform.SetParent(anchor.gameObject.transform);
-
-            int typeObj = 0; // check if this is the correct type
-            if (typeObj == 0) Show();
-
-            // Creating a Cloud Anchor with lifetime = 1 day.
-            // This is configurable up to 365 days when keyless authentication is used.
-            XPSession.CreateCloudAnchor(anchor, 1).ThenAction(result =>
+        // Creating a Cloud Anchor with lifetime = 1 day.
+        // This is configurable up to 365 days when keyless authentication is used.
+        XPSession.CreateCloudAnchor(anchor, 1).ThenAction(result =>
             {
                 if (!_isHosting)
                 {
@@ -624,7 +648,14 @@ public class ARViewManager : MonoBehaviour
                     cloudid = result.Anchor.CloudId;
                     _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
                     OnAnchorHostedFinished(true, result.Anchor.CloudId);
-                    
+
+                    // Instantiate prefab at the hit pose.
+                    gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
+                    prefabsOnMap.Add(gameRef);
+
+                    int typeObj = 0; // check if this is the correct type
+                    if (typeObj == 0) Show();
+
                 }
             });
         }
@@ -662,10 +693,9 @@ public class ARViewManager : MonoBehaviour
                     {
                         Debug.LogFormat("Succeed to resolve cloud anchor: {0}", cloudId);
                         OnAnchorResolvedFinished(true, cloudId);
-                        Instantiate(CloudAnchorPrefab, result.Anchor.transform);
-                        _cachedComponents.Add(result.Anchor);
 
-                        Instantiate(prefabToPlace, result.Anchor.transform);
+                        GameObject obj = Instantiate(prefabToPlace, result.Anchor.transform);
+                        prefabsOnMap.Add(obj);
                         _cachedComponents.Add(result.Anchor);
                     }
                 });
@@ -682,9 +712,8 @@ public class ARViewManager : MonoBehaviour
                 Invoke("DoHideInstructionBar", 1.5f);
                 DebugText.text = "Succeed to host cloud anchor: " + response;
 
-                _hostedCloudAnchor.Name = _hostedCloudAnchor.Name;
+                _hostedCloudAnchor.Name = cloudid;
                 Controller.SaveCloudAnchorHistory(_hostedCloudAnchor);
-
                 DebugText.text = string.Format("Saved Cloud Anchor:\n{0}.", _hostedCloudAnchor.Name);
 
                 //// Display name panel and hide instruction bar.
