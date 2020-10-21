@@ -281,7 +281,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 401597039}
         m_MethodName: SceneChange
         m_Mode: 5
         m_Arguments:
@@ -289,7 +289,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: AR_Edit
+          m_StringArgument: Set_Password
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &50121793
@@ -876,7 +876,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 401597039}
         m_MethodName: SceneChange
         m_Mode: 5
         m_Arguments:
@@ -884,7 +884,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: AR_Edit
+          m_StringArgument: Set_Username
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &391448162
@@ -1131,7 +1131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &420592108
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1836,15 +1836,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e5b533863df9b46901cac3658659ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ufield: {fileID: 1826680822}
-  pfield: {fileID: 1205944729}
-  efield: {fileID: 740753801}
-  nfield: {fileID: 481832364}
-  registerResult: {fileID: 0}
-  username: 
-  password: 
-  email: 
-  phone: 
 --- !u!1 &794561276
 GameObject:
   m_ObjectHideFlags: 0
@@ -2743,7 +2734,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 401597039}
         m_MethodName: SceneChange
         m_Mode: 5
         m_Arguments:
@@ -2751,7 +2742,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: AR_Edit
+          m_StringArgument: Set_Phone
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1319001543
