@@ -1,12 +1,9 @@
 package com.cs402.backend.house;
 
 import com.cs402.backend.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.util.*;
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name="house")
@@ -36,6 +33,8 @@ public class House {
 	@ManyToMany
 	private Set<User> tenant = new HashSet<>();
 	
+	@OneToMany
+	private Set<Anchor> anchors;
 	
 	public Long getHid() {
 		return hid;
@@ -129,5 +128,13 @@ public class House {
 	
 	public void setTenant(Set<User> tenant) {
 		this.tenant = tenant;
+	}
+	
+	public Set<Anchor> getAnchors() {
+		return anchors;
+	}
+	
+	public void setAnchors(Set<Anchor> has_anchors) {
+		this.anchors = has_anchors;
 	}
 }

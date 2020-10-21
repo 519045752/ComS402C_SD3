@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,6 +26,8 @@ public class HouseController {
 	HouseRepository houseRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	AnchorRepository anchorRepository;
 	private static final Logger log = LoggerFactory.getLogger(HouseController.class);
 	private static final String greeting = "Hello,%s!";
 	private final AtomicLong counter = new AtomicLong();
@@ -100,6 +103,8 @@ public class HouseController {
 		User user = this.userRepository.findUserById(uid);
 		return !(user == null);
 	}
+	
+
 	
 	@PostMapping(path = "/addTenant")
 	@ApiOperation(value = "add an user to the house as a tenant")

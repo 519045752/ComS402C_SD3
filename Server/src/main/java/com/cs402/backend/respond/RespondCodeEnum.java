@@ -11,7 +11,7 @@ public enum RespondCodeEnum {
 	FAIL(500,"Fail"),
 	FAIL_Uid_NOT_FOUND(501,"User ID Not Found"),
 	FAIL_Hid_NOT_FOUND(502,"House ID Not Found"),
-
+	FAIL_Aid_NOT_FOUND(503,"Anchor ID Not Found"),
 	FAIL_USERNAME_USED(520,"Username is already in used"),
 	FAIL_LOGIN_MISMATCH(521,"Username/Password Doesn't Match"),
 	
