@@ -3,10 +3,9 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 
-public class Game : PersistableObject {
+public class Game : MonoBehaviour {
 
-	public PersistableObject prefab;
-    public PersistableObject prefabText;
+	public GameObject TextObj;
 	public PersistentStorage storage;
 
 	List<PersistableObject> objects;
@@ -15,12 +14,12 @@ public class Game : PersistableObject {
 	void Awake () {
 		objects = new List<PersistableObject>();
         savePath = Path.Combine(Application.persistentDataPath, "savePath");
-        Debug.Log("Load from: " + savePath);
-        using (
-            var reader = new BinaryReader(File.Open(savePath, FileMode.Open)))
-        {
-            Load(new GameDataReader(reader));
-        }
+        //Debug.Log("Load from: " + savePath);
+        //using (
+        //    var reader = new BinaryReader(File.Open(savePath, FileMode.Open)))
+        //{
+        //    Load(new GameDataReader(reader));
+        //}
     }
 
 	void Update () {
@@ -34,7 +33,7 @@ public class Game : PersistableObject {
 		objects.Clear();
 	}
 
-	public void CreateObject (int type, TMP_Text newO) {
+	public void CreateObject (int type, GameObject newO, string cloudid) {
 
         PersistableObject o;
 
@@ -42,10 +41,8 @@ public class Game : PersistableObject {
         switch (type)
         {
             case 0: // add text
-                o = Instantiate(prefabText);
-                o.transform.localPosition = newO.transform.localPosition;
-                o.transform.localRotation = newO.transform.localRotation;
-                o.transform.localScale = newO.transform.localScale;
+                o = new PersistableObject(cloudid, type, newO);
+                o.text = newO.transform.GetChild(0).GetComponent<TMP_Text>().text;
                 objects.Add(o);
                 break;
         }
@@ -60,7 +57,7 @@ public class Game : PersistableObject {
 
     }
 
-	public override void Save (GameDataWriter writer) {
+	public void Save (GameDataWriter writer) {
 		writer.Write(objects.Count);
 		for (int i = 0; i < objects.Count; i++) {
             Debug.Log("Saved object:" + i);
@@ -68,7 +65,7 @@ public class Game : PersistableObject {
 		}
 	}
 
-	public override void Load (GameDataReader reader) {
+	public void Load (GameDataReader reader) {
         // get world position
         //GetComponent<Camera>().getWorldPosition();
 
@@ -77,9 +74,23 @@ public class Game : PersistableObject {
 		for (int i = 0; i < count; i++) {
             // need to handle differenct objects
             Debug.Log("Load object:" + i);
-            PersistableObject o = Instantiate(prefabText);
+
+            // todo - check for type to decide if text should be read or not (else we will get corrupt readings from file)
+            PersistableObject o = new PersistableObject();
 			o.Load(reader);
 			objects.Add(o);
-		}
+
+
+            // Add obj to map (need cloud anchors)
+            TextObj.transform.localPosition = o.localPosition;
+            TextObj.transform.localRotation = o.localRotation;
+            TextObj.transform.localScale = o.localScale;
+
+            TextObj.transform.GetChild(0).GetComponent<TMP_Text>().text = "I AM AT INDEX " + i;
+
+            Instantiate(TextObj);
+
+
+        }
 	}
 }
