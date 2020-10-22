@@ -34,7 +34,7 @@ public class House {
 	private Set<User> tenant = new HashSet<>();
 	
 	@OneToMany
-	private Set<Anchor> anchors;
+	private Set<ArObject> arObjects;
 	
 	public Long getHid() {
 		return hid;
@@ -130,11 +130,11 @@ public class House {
 		this.tenant = tenant;
 	}
 	
-	public Set<Anchor> getAnchors() {
-		return anchors;
+	public Set<ArObject> getArObjects() {
+		return arObjects;
 	}
 	
-	public void setAnchors(Set<Anchor> has_anchors) {
-		this.anchors = has_anchors;
+	public void setArObjects(Set<ArObject> has_arObjects) {
+		this.arObjects = has_arObjects;
 	}
 }

@@ -45,7 +45,7 @@ public class UserController {
 			RespondJson<User> ret = RespondJson.out(RespondCodeEnum.SUCCESS, user);
 			ret.setMsg(String.format(greeting, username));
 			return ret;
-		} catch (IndexOutOfBoundsException e) {
+		} catch (IndexOutOfBoundsException|NullPointerException e) {
 			e.printStackTrace();
 			return RespondJson.out(RespondCodeEnum.FAIL_Uid_NOT_FOUND);
 		} catch (Exception e) {
@@ -55,9 +55,6 @@ public class UserController {
 			return RespondJson.out(res);
 		}
 	}
-	
-	
-
 	
 	
 	@GetMapping("/login")
@@ -97,7 +94,7 @@ public class UserController {
 	}
 	
 	//test only, please use /register
-	@GetMapping(path = "/add")
+	@PostMapping(path = "/add")
 	@ApiOperation(value = "TEST ONLY! get all information from the database")
 	public String addNewUser(@RequestParam String username, @RequestParam String password, @RequestParam String category) {
 		User user = new User();
@@ -169,7 +166,6 @@ public class UserController {
 		}
 	}
 	
-
 	
 	@PostMapping(path = "/setPassword")
 	@ApiOperation(value = "reset the password for a user")
@@ -284,7 +280,6 @@ public class UserController {
 			return RespondJson.out(RespondCodeEnum.SUCCESS, user);
 		}
 	}
-	
 	
 	
 	@GetMapping("/getUserByID")

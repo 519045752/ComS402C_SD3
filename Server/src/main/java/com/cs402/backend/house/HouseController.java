@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,7 +26,7 @@ public class HouseController {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
-	AnchorRepository anchorRepository;
+	ArObjectRepository arObjectRepository;
 	private static final Logger log = LoggerFactory.getLogger(HouseController.class);
 	private static final String greeting = "Hello,%s!";
 	private final AtomicLong counter = new AtomicLong();

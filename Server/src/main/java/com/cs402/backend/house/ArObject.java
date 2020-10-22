@@ -1,16 +1,14 @@
 package com.cs402.backend.house;
 
-import com.cs402.backend.user.User;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name="anchor")
-public class Anchor {
+@Table(name="ar_object")
+public class ArObject {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		@Column(name = "aid")
-		private Long aid;
+		@Column(name = "oid")
+		private Long oid;
 	
 		@ManyToOne(cascade=CascadeType.DETACH)
 		@JoinColumn(name = "hid" , referencedColumnName = "hid")
@@ -20,8 +18,8 @@ public class Anchor {
 		private int type;
 		private String description;
 	
-	public Long getAid() {
-		return aid;
+	public Long getOid() {
+		return oid;
 	}
 	
 	public String getCloudid() {
