@@ -177,6 +177,13 @@ public class ArObjectController {
 			return RespondJson.out(RespondCodeEnum.SUCCESS);
 		}
 	}
+	
+	@PostMapping(path = "/removeAll")
+	@ApiOperation(value = "remove ALL the arObject")
+	public Object removeAll() {
+			arObjectRepository.deleteAll();
+			return RespondJson.out(RespondCodeEnum.SUCCESS);
+	}
 	// @PostMapping(path = "/setArObject")
 	// @ApiOperation(value = "change the info of the certain arObject")
 	// @ApiImplicitParams({

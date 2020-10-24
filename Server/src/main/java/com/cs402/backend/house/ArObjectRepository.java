@@ -21,4 +21,7 @@ public interface ArObjectRepository extends CrudRepository<ArObject, Long> {
 	
 	@Query(value="select * from ar_project.ar_object where cloudid=?1",nativeQuery=true)
 	ArObject findObjectByCloudId(String cloudid);
+	
+	@Query(value="delete from ar_project.ar_object;", nativeQuery=true)
+	ArObject removeAllObjects();
 }
