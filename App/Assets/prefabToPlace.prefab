@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7974066606817154516}
   - component: {fileID: 4012257843385849483}
   - component: {fileID: 925721880204705247}
+  - component: {fileID: 1191846620253278068}
   m_Layer: 0
   m_Name: prefabToPlace
   m_TagString: Untagged
@@ -94,7 +95,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5526975115624419805
+--- !u!114 &1191846620253278068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8205901762350832311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6002fedea350df44db6267b39d1f4186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+--- !u!114 &7915522074801836331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,10 +117,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9204597183425790042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6002fedea350df44db6267b39d1f4186, type: 3}
+  m_Script: {fileID: 11500000, guid: 092d8c8698ddb0c4291e3518ae3d70bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
 --- !u!1001 &3560957028867357628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -187,7 +200,7 @@ PrefabInstance:
     - target: {fileID: 5779033012611592176, guid: d4e107ca15442214c8fd75f5b6bd1669,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5779033012611592176, guid: d4e107ca15442214c8fd75f5b6bd1669,
         type: 3}
@@ -244,7 +257,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.20390417
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7847642015274345637, guid: d4e107ca15442214c8fd75f5b6bd1669, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d4e107ca15442214c8fd75f5b6bd1669, type: 3}
 --- !u!1 &9204597183425790042 stripped
 GameObject:
