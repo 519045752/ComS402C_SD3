@@ -144,6 +144,7 @@ public class ARViewManager : MonoBehaviour
         private List<GameObject> prefabsOnMap; // list of prefabs on map
         private bool CanPlace = true;
         private string cloudid;
+        private bool submitLock;
 
         // parent of placed objects
         public CanvasGroup canvasGroup;
@@ -555,7 +556,7 @@ public class ARViewManager : MonoBehaviour
         // If not text, msg = ""
         void Submit(string msg)
         {
-            if (cloudid != null)
+            if (submitlock)
             {
                 Debug.Log("Running Submit");
                 canvasGroup.alpha = 0f; //this makes everything transparent
@@ -564,7 +565,7 @@ public class ARViewManager : MonoBehaviour
                 gameRef.transform.Find("textInfoWindow").gameObject.transform.GetComponent<TMP_Text>().text = msg;
                 networker.AddCloudID(cloudid, msg, 1, objectType); // adds cloud id to network
                 CanPlace = true;
-                cloudid = null;
+                submitlock = false;
                 
             }
         }
@@ -647,6 +648,7 @@ public class ARViewManager : MonoBehaviour
                     Debug.LogFormat("Succeed to host cloud anchor: {0}", result.Anchor.CloudId);
                     int count = Controller.LoadCloudAnchorHistory().Collection.Count;
                     cloudid = result.Anchor.CloudId;
+                    submitlock = true;
                     _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
                     OnAnchorHostedFinished(true, result.Anchor.CloudId);
 
@@ -655,7 +657,10 @@ public class ARViewManager : MonoBehaviour
                     prefabsOnMap.Add(gameRef);
 
                     int typeObj = 0; // check if this is the correct type
-                    if (typeObj == 0) Show();
+                    if (typeObj == 0) { Show(); }
+                    else {
+                        networker.AddCloudID(cloudid, "", 1, objectType);
+                    };
 
                 }
             });

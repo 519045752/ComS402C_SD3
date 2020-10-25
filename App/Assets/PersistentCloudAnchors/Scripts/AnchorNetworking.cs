@@ -36,7 +36,12 @@ public class AnchorNetworking : MonoBehaviour
     // example POST: http://coms-402-sd-8.cs.iastate.edu:8080/arObject/add?cloudid=testid&description=this%20is%20some%20text&hid=1&type=0
     public void AddCloudID(string cloudid, string desc, int hid, int type)
     {
-        Upload(cloudid,desc,hid,type);
+        // creating local variables, as these values are reset
+        string id = cloudid;
+        string description = desc;
+        int house = hid;
+        int t = type;
+        StartCoroutine(Upload(id, description, house, t));
     }
 
     IEnumerator Upload(string cloudid, string desc, int hid, int type)
