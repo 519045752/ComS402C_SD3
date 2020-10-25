@@ -137,14 +137,14 @@ public class ARViewManager : MonoBehaviour
         // holds reference to most recencly placed object
         private GameObject gameRef;
 
-        private AnchorNetworking networker;
+        public AnchorNetworking networker;
 
         // prefab contains text data
         public GameObject prefabToPlace;
         private List<GameObject> prefabsOnMap; // list of prefabs on map
         private bool CanPlace = true;
         private string cloudid;
-        private bool submitLock;
+        private bool submitlock = false;
 
         // parent of placed objects
         public CanvasGroup canvasGroup;
@@ -249,7 +249,6 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
-            networker = new AnchorNetworking();
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
             Input_Tex.onSubmit.AddListener(Submit);
@@ -558,14 +557,21 @@ public class ARViewManager : MonoBehaviour
         {
             if (submitlock)
             {
+                submitlock = false;
                 Debug.Log("Running Submit");
                 canvasGroup.alpha = 0f; //this makes everything transparent
                 canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
                 gameRef.transform.Find("textInfoWindow").gameObject.transform.GetComponent<TMP_Text>().text = msg;
                 networker.AddCloudID(cloudid, msg, 1, objectType); // adds cloud id to network
-                CanPlace = true;
-                submitlock = false;
+
+                string id = cloudid;
+                string description = msg;
+                int t = objectType;
+                StartCoroutine(networker.AddCloudID(id, description, 1, t));
+
+            CanPlace = true;
+                
                 
             }
         }

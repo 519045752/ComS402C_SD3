@@ -1,23 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
+
 
 public class AnchorNetworking : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject ufield;
-    [SerializeField]
-    private GameObject pfield;
-    [SerializeField]
-    private GameObject loginResult;
-    [SerializeField]
-    private string username;
-    [SerializeField]
-    private string password;
-
     public UnityWebRequest request;
 
     private static string baseurl = "coms-402-sd-8.cs.iastate.edu:8080/arObject/";
@@ -44,7 +31,7 @@ public class AnchorNetworking : MonoBehaviour
         StartCoroutine(Upload(id, description, house, t));
     }
 
-    IEnumerator Upload(string cloudid, string desc, int hid, int type)
+    public IEnumerator Upload(string cloudid, string desc, int hid, int type)
     {
 
         Debug.Log("Begin Upload");
