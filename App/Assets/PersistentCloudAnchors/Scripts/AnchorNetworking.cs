@@ -36,8 +36,32 @@ public class AnchorNetworking : MonoBehaviour
     // example POST: http://coms-402-sd-8.cs.iastate.edu:8080/arObject/add?cloudid=testid&description=this%20is%20some%20text&hid=1&type=0
     public void AddCloudID(string cloudid, string desc, int hid, int type)
     {
-        var url = baseurl + "add?cloudid=" + cloudid + "&description=" + desc + "&hid= " + hid + "&type=" + type;
-        Debug.Log("Posting arobject as: " + url);
-        UnityWebRequest.Post(url, "");
+        Upload(cloudid,desc,hid,type);
+    }
+
+    IEnumerator Upload(string cloudid, string desc, int hid, int type)
+    {
+
+        Debug.Log("Begin Upload");
+        WWWForm form = new WWWForm();
+        form.AddField("cloudid", cloudid);
+        form.AddField("description", desc);
+        form.AddField("hid", hid);
+        form.AddField("type", type);
+
+        // from https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest.Post.html
+        using (UnityWebRequest www = UnityWebRequest.Post(baseurl + "add", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("ARObject: Form upload complete!");
+            }
+        }
     }
 }
