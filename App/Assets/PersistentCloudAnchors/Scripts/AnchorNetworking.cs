@@ -36,13 +36,8 @@ public class AnchorNetworking : MonoBehaviour
     // example POST: http://coms-402-sd-8.cs.iastate.edu:8080/arObject/add?cloudid=testid&description=this%20is%20some%20text&hid=1&type=0
     public void AddCloudID(string cloudid, string desc, int hid, int type)
     {
-        UnityWebRequest.Post(baseurl + "add?cloudid=" + cloudid + "&description=" + desc + "&hid= " + hid + "&type=" + type, "");
-    }
-
-    private string CreateURL(string username, string password)
-    {
-        string urlText = baseurl + "?password=" + password + "&username=" + username;
-        Debug.Log("Created query url as: " + urlText);
-        return urlText;
+        var url = baseurl + "add?cloudid=" + cloudid + "&description=" + desc + "&hid= " + hid + "&type=" + type;
+        Debug.Log("Posting arobject as: " + url);
+        UnityWebRequest.Post(url, "");
     }
 }
