@@ -10,16 +10,14 @@ public class FaceCamera : MonoBehaviour
     void Start()
     {
         cam = GameObject.Find("Camera").GetComponent<Camera>();
-        Debug.Log("Finding Camera");
-        
+        Debug.Log("Finding Camera");  
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Camera position:" + cam.transform);
+        //Debug.Log("Camera position:" + cam.transform);
         transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
-
-        Debug.Log("Anchor position:" + this.transform);
+        //Debug.Log("Anchor position:" + this.transform);
     }
 }

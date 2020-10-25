@@ -19,6 +19,10 @@ public class FaceParent : MonoBehaviour
         //transform.rotation = new Quaternion(transform.parent.rotation.x, transform.parent.rotation.y, 0, transform.parent.rotation.w);
         transform.localPosition = new Vector3(1, 1, 0);
         transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
-        
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.parent.position);
+
+
     }
 }
