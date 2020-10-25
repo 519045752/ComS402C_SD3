@@ -2,11 +2,14 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
-
+using System.IO;
+using SimpleJSON;
 
 public class AnchorNetworking : MonoBehaviour
 {
     public UnityWebRequest request;
+
+    private string jsonString;
 
     private static string baseurl = "coms-402-sd-8.cs.iastate.edu:8080/arObject/";
 
@@ -41,10 +44,10 @@ public class AnchorNetworking : MonoBehaviour
         }
     }
 
-    public IEnumerator getCloudId(List<string> cloudids)
+    public IEnumerator getCloudIds(List<string> cloudids)
     {
 
-        Debug.Log("Begin getCloudId");
+        Debug.Log("Begin getCloudIds");
 
         // from https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest.Post.html
         using (UnityWebRequest www = UnityWebRequest.Get(baseurl + "all"))
@@ -58,9 +61,18 @@ public class AnchorNetworking : MonoBehaviour
             else
             {
                 Debug.Log("ARObject: result of get was --> \n " + www.downloadHandler.text);
-                for (int i = 0; i < 1; i++)
+
+                jsonString = File.ReadAllText(www.downloadHandler.text);
+                JSONNode data = JSON.Parse(jsonString);
+
+                foreach (JSONNode record in data["data"])
                 {
-                    
+                    Debug.Log("Added object with fields: cloudid: " + record["cloudid"].Value + "\n" +
+                        "description: " + record["description"].Value + "\n" +
+                        "hid: " + record["hid"].AsInt + "\n" +
+                        "type: " + record["type"].AsInt + "\n" +
+                        "oid: " + record["oid"].AsInt);
+                    cloudids.Add(record["cloudid"].Value);
                 }
             }
         }
