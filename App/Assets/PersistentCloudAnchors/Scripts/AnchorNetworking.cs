@@ -60,10 +60,12 @@ public class AnchorNetworking : MonoBehaviour
             }
             else
             {
-                Debug.Log("ARObject: result of get was --> \n " + www.downloadHandler.text);
+                string jsonstring = www.downloadHandler.text;
+                JSONNode data = JSON.Parse(jsonstring);
 
-                jsonString = File.ReadAllText(www.downloadHandler.text);
-                JSONNode data = JSON.Parse(jsonString);
+                Debug.Log("ARObject: Begin get--> \n " + data["data"]);
+
+
 
                 foreach (JSONNode record in data["data"])
                 {
@@ -74,6 +76,7 @@ public class AnchorNetworking : MonoBehaviour
                         "oid: " + record["oid"].AsInt);
                     cloudids.Add(record["cloudid"].Value);
                 }
+                Debug.Log("Num of cloudids = " + cloudids.Count);
             }
         }
     }
