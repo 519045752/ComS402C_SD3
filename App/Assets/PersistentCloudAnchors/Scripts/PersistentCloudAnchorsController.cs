@@ -165,7 +165,7 @@
         public void OnResolveButtonClicked()
         {
             Mode = ApplicationMode.Resolving;
-            SwitchToResolveMenu();
+            SwitchToPrivacyPrompt();
         }
 
         /// <summary>

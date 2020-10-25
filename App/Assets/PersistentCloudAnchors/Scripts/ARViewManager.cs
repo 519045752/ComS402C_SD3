@@ -252,7 +252,7 @@ public class ARViewManager : MonoBehaviour
         public void Awake()
         {
             mapCloudIDs = new List<string>();
-            StartCoroutine(networker.getCloudIds(mapCloudIDs));
+            StartCoroutine(networker.getCloudIds(Controller.ResolvingSet));
 
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();

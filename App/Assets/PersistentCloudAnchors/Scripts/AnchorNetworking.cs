@@ -44,7 +44,7 @@ public class AnchorNetworking : MonoBehaviour
         }
     }
 
-    public IEnumerator getCloudIds(List<string> cloudids)
+    public IEnumerator getCloudIds(HashSet<string> cloudids)
     {
 
         Debug.Log("Begin getCloudIds");
