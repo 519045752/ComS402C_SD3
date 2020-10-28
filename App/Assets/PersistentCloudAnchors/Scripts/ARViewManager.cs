@@ -40,10 +40,7 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public GameObject InstructionBar;
 
-        /// <summary>
-        /// The UI panel that allows the user to name the Cloud Anchor.
-        /// </summary>
-        public GameObject NamePanel;
+        
 
         /// <summary>
         /// The UI panel that allows the user to copy the Cloud Anchor Id and share it.
@@ -163,6 +160,18 @@ public class ARViewManager : MonoBehaviour
         // trackable hit
         TrackableHit arcoreHitResult;
 
+        //Store the list of all placable prefab from path "Resources/Prefab"
+        private GameObject[] prefabList;
+
+        //the Dropdown menu for showing all placable prefab
+        public Dropdown prefabDropdown;
+        
+        //Spawn prefab from dropdown menu;
+        private PrefabGallery prefabGallery;
+
+        //
+        private Button confirmButton;
+
 #if ARCORE_IOS_SUPPORT
         private List<ARHitTestResult> _hitResultList = new List<ARHitTestResult>();
         private Dictionary<string, ARPlaneAnchorAlignment> _arPlaneAligmentMapping =
@@ -218,7 +227,7 @@ public class ARViewManager : MonoBehaviour
 
             DebugText.text = string.Format("Saved Cloud Anchor:\n{0}.", _hostedCloudAnchor.Name);
             ShareButton.gameObject.SetActive(true);
-            NamePanel.SetActive(false);
+            //NamePanel.SetActive(false);
         }
 
         /// <summary>
@@ -282,7 +291,7 @@ public class ARViewManager : MonoBehaviour
             _cachedComponents.Clear();
 
             InstructionBar.SetActive(true);
-            NamePanel.SetActive(false);
+            //NamePanel.SetActive(false);
             CopyPanel.SetActive(false);
             InputFieldWarning.SetActive(false);
             ShareButton.gameObject.SetActive(false);
@@ -662,8 +671,14 @@ public class ARViewManager : MonoBehaviour
                     submitlock = true;
                     _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
                     OnAnchorHostedFinished(true, result.Anchor.CloudId);
+                    //todo, work on this part
+                    //load available prefrab from Resource/Prefab
+                    //Do Dropdown List, allow user to select the prefab. 
+                    //then press confirm(Button) to spawn prefab at the hitpose.
 
                     // Instantiate prefab at the hit pose.
+                    prefabGallery = new PrefabGallery(prefabDropdown,confirmButton,result.Anchor.transform);
+                    
                     gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
                     prefabsOnMap.Add(gameRef);
 
