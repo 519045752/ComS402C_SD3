@@ -230,10 +230,13 @@ public class ARViewManager : MonoBehaviour
         public void Awake()
         {
             StartCoroutine(networker.getCloudIds(Controller.ResolvingSet));
-
+            Debug.Log("WE JUST STARTED COROUTIN __________________________________________________________________________________________________________");
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
+                        Debug.Log("WE JUST STARTED prefabToPlace __________________________________________________________________________________________________________");
             prefabsOnMap = new List<GameObject>();
+                        Debug.Log("WE JUST STARTED prefabsOnMap __________________________________________________________________________________________________________");
             Input_Tex.onSubmit.AddListener(Submit);
+                        Debug.Log("WE JUST STARTED Input_Tex __________________________________________________________________________________________________________");
             objectType = 0;
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
