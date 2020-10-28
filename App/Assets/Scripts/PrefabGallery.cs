@@ -23,11 +23,11 @@ public class PrefabGallery : MonoBehaviour
     //Confirm button pressed
     bool confirm = false;
 
-    public PrefabGallery(Dropdown drp, Button btn, GameObject spwnPt)
+    public PrefabGallery(Dropdown drp, Button btn, Transform spwnPt)
     {
         prefabDropdown = drp;
         confirmButton = btn;
-        spawnPoint = spwnPt;
+        spawnPoint.transform.SetPositionAndRotation(spwnPt.position,spwnPt.rotation);
     }
 
     void Start()
