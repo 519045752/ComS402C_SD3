@@ -40,10 +40,7 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public GameObject InstructionBar;
 
-        /// <summary>
-        /// The UI panel that allows the user to name the Cloud Anchor.
-        /// </summary>
-        public GameObject NamePanel;
+        
 
         /// <summary>
         /// The UI panel that allows the user to copy the Cloud Anchor Id and share it.
@@ -56,11 +53,6 @@ public class ARViewManager : MonoBehaviour
         public GameObject InputFieldWarning;
 
         /// <summary>
-        /// The input field for naming Cloud Anchor.
-        /// </summary>
-        public InputField NameField;
-
-        /// <summary>
         /// The instruction text in the top instruction bar.
         /// </summary>
         public Text InstructionText;
@@ -69,11 +61,6 @@ public class ARViewManager : MonoBehaviour
         /// The debug text in bottom snack bar.
         /// </summary>
         public Text DebugText;
-
-        /// <summary>
-        /// The button to save the typed name.
-        /// </summary>
-        public Button SaveButton;
 
         /// <summary>
         /// The button to save current cloud anchor id into clipboard.
@@ -142,7 +129,6 @@ public class ARViewManager : MonoBehaviour
         // prefab contains text data
         public GameObject prefabToPlace;
         private List<GameObject> prefabsOnMap; // list of prefabs on map
-        private List<string> mapCloudIDs; // list of prefabs on map
 
     private bool CanPlace = true;
         private string cloudid;
@@ -162,6 +148,18 @@ public class ARViewManager : MonoBehaviour
 
         // trackable hit
         TrackableHit arcoreHitResult;
+
+        //Store the list of all placable prefab from path "Resources/Prefab"
+        private GameObject[] prefabList;
+
+        //the Dropdown menu for showing all placable prefab
+        public Dropdown prefabDropdown;
+        
+        //Spawn prefab from dropdown menu;
+        private PrefabGallery prefabGallery;
+
+        //
+        private Button confirmButton;
 
 #if ARCORE_IOS_SUPPORT
         private List<ARHitTestResult> _hitResultList = new List<ARHitTestResult>();
@@ -197,31 +195,6 @@ public class ARViewManager : MonoBehaviour
         }
 
         /// <summary>
-        /// Callback handling the validaton of the input field.
-        /// </summary>
-        /// <param name="inputString">The current value of the input field.</param>
-        public void OnInputFieldValueChanged(string inputString)
-        {
-            // Cloud Anchor name should only contains: letters, numbers, hyphen(-), underscore(_).
-            var regex = new Regex("^[a-zA-Z0-9-_]*$");
-            InputFieldWarning.SetActive(!regex.IsMatch(inputString));
-            SetSaveButtonActive(!InputFieldWarning.activeSelf && inputString.Length > 0);
-        }
-
-        /// <summary>
-        /// Callback handling "Ok" button click event for input field.
-        /// </summary>
-        public void OnSaveButtonClicked()
-        {
-            _hostedCloudAnchor.Name = NameField.text;
-            Controller.SaveCloudAnchorHistory(_hostedCloudAnchor);
-
-            DebugText.text = string.Format("Saved Cloud Anchor:\n{0}.", _hostedCloudAnchor.Name);
-            ShareButton.gameObject.SetActive(true);
-            NamePanel.SetActive(false);
-        }
-
-        /// <summary>
         /// Callback handling "Share" button click event.
         /// </summary>
         public void OnShareButtonClicked()
@@ -251,14 +224,12 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
-            mapCloudIDs = new List<string>();
             StartCoroutine(networker.getCloudIds(Controller.ResolvingSet));
-
+            
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
             Input_Tex.onSubmit.AddListener(Submit);
             objectType = 0;
-            _activeColor = SaveButton.GetComponentInChildren<Text>().color;
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
@@ -282,7 +253,7 @@ public class ARViewManager : MonoBehaviour
             _cachedComponents.Clear();
 
             InstructionBar.SetActive(true);
-            NamePanel.SetActive(false);
+            //NamePanel.SetActive(false);
             CopyPanel.SetActive(false);
             InputFieldWarning.SetActive(false);
             ShareButton.gameObject.SetActive(false);
@@ -662,8 +633,14 @@ public class ARViewManager : MonoBehaviour
                     submitlock = true;
                     _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
                     OnAnchorHostedFinished(true, result.Anchor.CloudId);
+                    //todo, work on this part
+                    //load available prefrab from Resource/Prefab
+                    //Do Dropdown List, allow user to select the prefab. 
+                    //then press confirm(Button) to spawn prefab at the hitpose.
 
                     // Instantiate prefab at the hit pose.
+                    prefabGallery = new PrefabGallery(prefabDropdown,confirmButton,result.Anchor.transform);
+                    
                     gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
                     prefabsOnMap.Add(gameRef);
 
@@ -732,11 +709,6 @@ public class ARViewManager : MonoBehaviour
                 _hostedCloudAnchor.Name = cloudid;
                 Controller.SaveCloudAnchorHistory(_hostedCloudAnchor);
                 DebugText.text = string.Format("Saved Cloud Anchor:\n{0}.", _hostedCloudAnchor.Name);
-
-                //// Display name panel and hide instruction bar.
-                //NameField.text = _hostedCloudAnchor.Name;
-                //NamePanel.SetActive(true);
-                //SetSaveButtonActive(true);
             }
             else
             {
@@ -833,11 +805,6 @@ public class ARViewManager : MonoBehaviour
             InstructionBar.SetActive(false);
         }
 
-        private void SetSaveButtonActive(bool active)
-        {
-            SaveButton.enabled = active;
-            SaveButton.GetComponentInChildren<Text>().color = active ? _activeColor : Color.gray;
-        }
 
 #if ARCORE_IOS_SUPPORT
         private void AddARPlane(ARPlaneAnchor arPlane)
