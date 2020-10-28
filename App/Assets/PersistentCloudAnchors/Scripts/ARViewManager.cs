@@ -53,11 +53,6 @@ public class ARViewManager : MonoBehaviour
         public GameObject InputFieldWarning;
 
         /// <summary>
-        /// The input field for naming Cloud Anchor.
-        /// </summary>
-        public InputField NameField;
-
-        /// <summary>
         /// The instruction text in the top instruction bar.
         /// </summary>
         public Text InstructionText;
