@@ -74,10 +74,10 @@ public class PrefabGallery : MonoBehaviour
     void ButtonOnclick()
     {
 
-        Button btn = confirmButton.GetComponent<Button>();
-        btn.onClick.AddListener(SpawnPrefabOnScene);
-        //unable to spawn anymore stuff after press the button
-        btn.enabled = false;
+        
+        confirmButton.onClick.AddListener(SpawnPrefabOnScene);
+        //unable to spawn anymore stuff after click button once
+        
     }
     /// <summary>
     /// Handles event when user select an item from dropdown menu
@@ -103,7 +103,8 @@ public class PrefabGallery : MonoBehaviour
         confirm = true;
         //change this to hitpose
         Instantiate(prefabToSpawn,spawnPoint.transform);
-
+        //disable button after spawn;
+       confirmButton.enabled = false;
     }
 
 
