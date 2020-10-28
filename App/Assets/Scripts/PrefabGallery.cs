@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PrefabGallery : MonoBehaviour
 {
     //where to spawn the object. todo change to hitpose
-    public Transform spawnPoint;
+    public GameObject spawnPoint;
 
     //list that store all the prefabs from path "Resources/Prefab"
     private Object[] prefabList;
@@ -23,20 +23,25 @@ public class PrefabGallery : MonoBehaviour
     //Confirm button pressed
     bool confirm = false;
 
-    public PrefabGallery(Dropdown drp, Button btn, Transform spwnPt)
+    public PrefabGallery(Dropdown drp, Button btn, GameObject spwnPt)
     {
         prefabDropdown = drp;
         confirmButton = btn;
         spawnPoint = spwnPt;
     }
+
+    void Start()
+    {
+        DropdownController();
+    }
     /// <summary>
     ///  Main method to spawn prefab from dropdown menu and a confirm button
     /// </summary>
-    void DropdownController()
+    public void DropdownController()
     {
 
         LoadDropdownMenu();
-
+        ButtonOnclick();
 
     }
     /// <summary>
@@ -58,30 +63,35 @@ public class PrefabGallery : MonoBehaviour
             dropdown.options.Add(new Dropdown.OptionData() { text = p.name });
 
         }
-        dropdown.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdown); });
-        ButtonOnclick();
+        prefabToSpawn = (GameObject)prefabList[0];
+        dropdown.onValueChanged.AddListener(delegate { prefabToSpawn = getDropdownItemSelected(dropdown); });
+        
+
     }
     /// <summary>
     /// Handles Button onclick event
     /// </summary>
     void ButtonOnclick()
     {
+
         Button btn = confirmButton.GetComponent<Button>();
         btn.onClick.AddListener(SpawnPrefabOnScene);
-
+        //unable to spawn anymore stuff after press the button
+        btn.enabled = false;
     }
     /// <summary>
     /// Handles event when user select an item from dropdown menu
     /// </summary>
     /// <param name="dropdown"></param>
-    void DropdownItemSelected(Dropdown dropdown)
+    public GameObject getDropdownItemSelected(Dropdown dropdown)
     {
 
         int index = dropdown.value;
-        prefabToSpawn = (GameObject)prefabList[index];
+        GameObject prefab = (GameObject)prefabList[index];
 
         var temp = (Resources.Load<GameObject>("Prefab/" + prefabToSpawn.name));
-        prefabToSpawn = temp as GameObject;
+        prefab = temp as GameObject;
+        return prefab;
 
     }
     /// <summary>
@@ -92,7 +102,7 @@ public class PrefabGallery : MonoBehaviour
 
         confirm = true;
         //change this to hitpose
-        Instantiate(prefabToSpawn,spawnPoint);
+        Instantiate(prefabToSpawn,spawnPoint.transform);
 
     }
 

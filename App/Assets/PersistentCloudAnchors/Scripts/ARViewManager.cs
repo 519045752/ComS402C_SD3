@@ -676,13 +676,26 @@ public class ARViewManager : MonoBehaviour
                     //Do Dropdown List, allow user to select the prefab. 
                     //then press confirm(Button) to spawn prefab at the hitpose.
 
+                    
                     // Instantiate prefab at the hit pose.
                     prefabGallery = new PrefabGallery(prefabDropdown,confirmButton,result.Anchor.transform);
+                    prefabGallery.DropdownController();
                     
                     gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
+
                     prefabsOnMap.Add(gameRef);
 
-                    int typeObj = 0; // check if this is the correct type
+                    int typeObj = 0;
+                    switch(typeObj)
+                    {
+                        case 0:
+                            Show();
+                        break;
+
+                        case 1:
+                        break;
+                    }    
+                     // check if this is the correct type
                     if (typeObj == 0) { Show(); }
                     else {
                         networker.AddCloudID(cloudid, "", 1, objectType);
