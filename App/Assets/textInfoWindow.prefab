@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8168337903035463093}
   - component: {fileID: 5394167860821267243}
   - component: {fileID: 2654745068077431960}
+  - component: {fileID: 2572224956851071203}
   m_Layer: 0
   m_Name: textInfoWindow
   m_TagString: Untagged
@@ -175,3 +176,16 @@ MonoBehaviour:
   m_maskType: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+--- !u!114 &2572224956851071203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680802556791913446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092d8c8698ddb0c4291e3518ae3d70bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
