@@ -162,8 +162,7 @@ public class ARViewManager : MonoBehaviour
         //
         public Button confirmButton;
 
-    //to change
-    public Text checkIfLoadSucceed;
+    
 
 #if ARCORE_IOS_SUPPORT
         private List<ARHitTestResult> _hitResultList = new List<ARHitTestResult>();
