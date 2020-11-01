@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PrefabGallery : MonoBehaviour
 {
-    //where to spawn the object. todo change to hitpose
-    public Transform spawnPoint;
+
+
 
     //list that store all the prefabs from path "Resources/Prefab"
     private Object[] prefabList;
@@ -20,81 +20,74 @@ public class PrefabGallery : MonoBehaviour
     //confirm button to spawn prefab
     public Button confirmButton;
 
-    //Confirm button pressed
-    bool confirm = false;
 
-    public PrefabGallery(Dropdown drp, Button btn, Transform spwnPt)
+
+
+    void Start()
     {
-        prefabDropdown = drp;
-        confirmButton = btn;
-        spawnPoint = spwnPt;
+        populateDropdown();
     }
+
     /// <summary>
-    ///  Main method to spawn prefab from dropdown menu and a confirm button
+    /// Populate the dropdown menu with every available prefabs
     /// </summary>
-    void DropdownController()
-    {
-
-        LoadDropdownMenu();
-
-
-    }
-    /// <summary>
-    /// Store prefabs from folder to dropdown menu. Handles event change of dropdown menu
-    /// </summary>
-    void LoadDropdownMenu()
+    public void populateDropdown()
     {
         //get all the prefab from the folder "Asset/Resources/Prefab"
         prefabList = Resources.LoadAll("Prefab", typeof(GameObject));
 
-        Dropdown dropdown = prefabDropdown.GetComponent<Dropdown>();
 
 
-        dropdown.options.Clear();
+        prefabDropdown.options.Clear();
 
-        //adding all the prefabs name into dropdown button
+        //showing the name of prefab on the dropdown menu
         foreach (var p in prefabList)
         {
-            dropdown.options.Add(new Dropdown.OptionData() { text = p.name });
+            prefabDropdown.options.Add(new Dropdown.OptionData() { text = p.name });
 
         }
-        dropdown.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdown); });
-        ButtonOnclick();
     }
     /// <summary>
     /// Handles Button onclick event
     /// </summary>
-    void ButtonOnclick()
+    public void ButtonOnclick()
     {
-        Button btn = confirmButton.GetComponent<Button>();
-        btn.onClick.AddListener(SpawnPrefabOnScene);
+
+        confirmButton.onClick.AddListener(ConfirmButtonClicked);
+
+
+    }
+    public void dropdownValueChange(int index)
+    {
+        prefabToSpawn = (GameObject)prefabList[index];
+
+        ButtonOnclick();
 
     }
     /// <summary>
     /// Handles event when user select an item from dropdown menu
     /// </summary>
     /// <param name="dropdown"></param>
-    void DropdownItemSelected(Dropdown dropdown)
+    public void getDropdownItemSelected(int index)
     {
-
-        int index = dropdown.value;
-        prefabToSpawn = (GameObject)prefabList[index];
-
-        var temp = (Resources.Load<GameObject>("Prefab/" + prefabToSpawn.name));
+        //load the prefab from "Prefab" folder
+        var temp = (Resources.Load<GameObject>("Prefab/" + prefabList[index].name));
         prefabToSpawn = temp as GameObject;
+
+
 
     }
     /// <summary>
     /// Spawn prefab to scene
     /// </summary>
-    public void SpawnPrefabOnScene()
+    void ConfirmButtonClicked()
     {
-
-        confirm = true;
-        //change this to hitpose
-        Instantiate(prefabToSpawn,spawnPoint);
+        //disable button and dropdown menu after confirm button is pressed;
+        confirmButton.enabled = false;
+        prefabDropdown.enabled = false;
 
     }
+
 
 
 }

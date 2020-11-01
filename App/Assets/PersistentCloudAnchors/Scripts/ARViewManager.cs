@@ -27,7 +27,8 @@ public class ARViewManager : MonoBehaviour
         /// <summary>
         /// The 3D object that represents a Cloud Anchor.
         /// </summary>
-        public GameObject CloudAnchorPrefab;
+        /// to change back to public.
+         public GameObject CloudAnchorPrefab;
 
         /// <summary>
         /// The game object that includes <see cref="MapQualityIndicator"/> to visualize
@@ -159,7 +160,10 @@ public class ARViewManager : MonoBehaviour
         private PrefabGallery prefabGallery;
 
         //
-        private Button confirmButton;
+        public Button confirmButton;
+
+    //to change
+    public Text checkIfLoadSucceed;
 
 #if ARCORE_IOS_SUPPORT
         private List<ARHitTestResult> _hitResultList = new List<ARHitTestResult>();
@@ -501,6 +505,7 @@ public class ARViewManager : MonoBehaviour
 
             if (_anchorComponent != null)
             {
+            
                 Instantiate(CloudAnchorPrefab, _anchorComponent.transform);
 
                 // Attach map quality indicator to this pawn.
@@ -638,8 +643,20 @@ public class ARViewManager : MonoBehaviour
                     //Do Dropdown List, allow user to select the prefab. 
                     //then press confirm(Button) to spawn prefab at the hitpose.
 
-                    // Instantiate prefab at the hit pose.
-                    prefabGallery = new PrefabGallery(prefabDropdown,confirmButton,result.Anchor.transform);
+                    
+                    //Store all prefab from "Resources/Prefab" in the array
+                    prefabList = Resources.LoadAll<GameObject>("Prefab");
+                    if (prefabList == null)
+                    {
+                        Debug.Log("prefab List is null, Resources.LoadAll failed");
+                    }
+                    //get the index of prefab selected by user from the dropdown menu
+                    //might be because of null exception, since nothing is chosen yet.
+                    int prefabSelectedIndex = prefabDropdown.GetComponent<Dropdown>().value;
+                   
+                    //Get the prefab from folder "Resources/Prefab/{Name of object selected}"
+                    prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabSelectedIndex].name) as GameObject;
+                    
                     
                     gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
                     prefabsOnMap.Add(gameRef);
