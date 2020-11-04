@@ -130,8 +130,9 @@ public class ARViewManager : MonoBehaviour
         // prefab contains text data
         public GameObject prefabToPlace;
         private List<GameObject> prefabsOnMap; // list of prefabs on map
+        private Transform currentCloudTransform;
 
-    private bool CanPlace = true;
+        private bool CanPlace = true;
         private string cloudid;
         private bool submitlock = false;
 
@@ -231,7 +232,8 @@ public class ARViewManager : MonoBehaviour
             
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
-            Input_Tex.onSubmit.AddListener(Submit);
+            //Input_Tex.onSubmit.AddListener(Submit);
+            confirmButton.onClick.AddListener(Submit);
             objectType = 0;
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -535,12 +537,26 @@ public class ARViewManager : MonoBehaviour
         }
 
         // If not text, msg = ""
-        void Submit(string msg)
+        void Submit()
         {
             if (submitlock)
             {
                 submitlock = false;
                 Debug.Log("Running Submit");
+
+                string msg = Input_Tex.text;
+
+                //get the index of prefab selected by user from the dropdown menu
+                //might be because of null exception, since nothing is chosen yet.
+                //Get the prefab from folder "Resources/Prefab/{Name of object selected}"
+                prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name) as GameObject;
+
+                gameRef = Instantiate(prefabToPlace,);
+                prefabsOnMap.Add(gameRef);
+                
+                prefabDropdown.gameObject.SetActive(false);
+                confirmButton.gameObject.SetActive(false);
+
                 canvasGroup.alpha = 0f; //this makes everything transparent
                 canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
@@ -647,29 +663,16 @@ public class ARViewManager : MonoBehaviour
                     InstructionText.text = "Please select a prefab to place";
                     prefabDropdown.gameObject.SetActive(true);
                     confirmButton.gameObject.SetActive(true);
+
+
+                    currentCloudTransform = result.Anchor.transform;
+
                     //Store all prefab from "Resources/Prefab" in the array
                     prefabList = Resources.LoadAll<GameObject>("Prefab");
                     if (prefabList == null)
                     {
                         Debug.Log("prefab List is null, Resources.LoadAll failed");
                     }
-                    //get the index of prefab selected by user from the dropdown menu
-                    //might be because of null exception, since nothing is chosen yet.
-                    int prefabSelectedIndex = prefabDropdown.GetComponent<Dropdown>().value;
-                   
-                    //Get the prefab from folder "Resources/Prefab/{Name of object selected}"
-                    prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabSelectedIndex].name) as GameObject;
-
-                    
-                    //Go to hosting cloud anchor after confirm button is pressed
-                    confirmButton.onClick.AddListener(delegate { 
-                       gameRef = Instantiate(prefabToPlace,result.Anchor.transform);
-                        prefabsOnMap.Add(gameRef);
-                        prefabDropdown.gameObject.SetActive(false);
-                        confirmButton.gameObject.SetActive(false);
-                    });
-                    //gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
-                   
                     int typeObj = 0; // check if this is the correct type
                     if (typeObj == 0) { Show(); }
                     else {
