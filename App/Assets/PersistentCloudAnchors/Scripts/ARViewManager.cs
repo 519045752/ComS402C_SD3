@@ -398,22 +398,16 @@ public class ARViewManager : MonoBehaviour
                     // Perform hit test and place a pawn object.
                     PerformHitTest(touch.position);
                 }
-            //todo
-            InstructionText.text = "Please select a prefab to place";
-            prefabDropdown.gameObject.SetActive(true);
-            confirmButton.gameObject.SetActive(true);
-            //Go to hosting cloud anchor after confirm button is pressed
-            confirmButton.onClick.AddListener(()=>HostingCloudAnchor());
-            //HostingCloudAnchor();
-            }
+            
+            
+            HostingCloudAnchor();
+        }
         }
 
     private void touchObject()
     {
         Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
         RaycastHit raycastHit;
-        confirmButton.gameObject.SetActive(true);
-        prefabDropdown.gameObject.SetActive(true);
         if (Physics.Raycast(raycast, out raycastHit))
         {
             string name = raycastHit.collider.name;
@@ -650,8 +644,9 @@ public class ARViewManager : MonoBehaviour
                     //Do Dropdown List, allow user to select the prefab. 
                     //then press confirm(Button) to spawn prefab at the hitpose.
 
-                    confirmButton.gameObject.SetActive(false);
-                    prefabDropdown.gameObject.SetActive(false);
+                    InstructionText.text = "Please select a prefab to place";
+                    prefabDropdown.gameObject.SetActive(true);
+                    confirmButton.gameObject.SetActive(true);
                     //Store all prefab from "Resources/Prefab" in the array
                     prefabList = Resources.LoadAll<GameObject>("Prefab");
                     if (prefabList == null)
@@ -664,11 +659,14 @@ public class ARViewManager : MonoBehaviour
                    
                     //Get the prefab from folder "Resources/Prefab/{Name of object selected}"
                     prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabSelectedIndex].name) as GameObject;
-                    
-                    
-                    gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
-                    prefabsOnMap.Add(gameRef);
 
+                    
+                    //Go to hosting cloud anchor after confirm button is pressed
+                    confirmButton.onClick.AddListener(delegate { gameRef = Instantiate(prefabToPlace,result.Anchor.transform); });
+                    //gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
+                    prefabsOnMap.Add(gameRef);
+                    prefabDropdown.gameObject.SetActive(false);
+                    confirmButton.gameObject.SetActive(false);
                     int typeObj = 0; // check if this is the correct type
                     if (typeObj == 0) { Show(); }
                     else {
