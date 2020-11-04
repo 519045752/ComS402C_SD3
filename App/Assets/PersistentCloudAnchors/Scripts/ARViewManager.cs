@@ -662,11 +662,14 @@ public class ARViewManager : MonoBehaviour
 
                     
                     //Go to hosting cloud anchor after confirm button is pressed
-                    confirmButton.onClick.AddListener(delegate { gameRef = Instantiate(prefabToPlace,result.Anchor.transform); });
+                    confirmButton.onClick.AddListener(delegate { 
+                       gameRef = Instantiate(prefabToPlace,result.Anchor.transform);
+                        prefabsOnMap.Add(gameRef);
+                        prefabDropdown.gameObject.SetActive(false);
+                        confirmButton.gameObject.SetActive(false);
+                    });
                     //gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
-                    prefabsOnMap.Add(gameRef);
-                    prefabDropdown.gameObject.SetActive(false);
-                    confirmButton.gameObject.SetActive(false);
+                   
                     int typeObj = 0; // check if this is the correct type
                     if (typeObj == 0) { Show(); }
                     else {
