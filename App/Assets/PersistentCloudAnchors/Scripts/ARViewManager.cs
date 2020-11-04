@@ -161,7 +161,7 @@ public class ARViewManager : MonoBehaviour
 
         //
         public Button confirmButton;
-
+        bool isConfirmButtonPressed = false;
     
 
 #if ARCORE_IOS_SUPPORT
@@ -261,7 +261,8 @@ public class ARViewManager : MonoBehaviour
             InputFieldWarning.SetActive(false);
             ShareButton.gameObject.SetActive(false);
             Controller.PlaneGenerator.SetActive(true);
-
+            prefabDropdown.gameObject.SetActive(false);
+            confirmButton.gameObject.SetActive(false);
             switch (Controller.Mode)
             {
                 case PersistentCloudAnchorsController.ApplicationMode.Ready:
@@ -397,8 +398,13 @@ public class ARViewManager : MonoBehaviour
                     // Perform hit test and place a pawn object.
                     PerformHitTest(touch.position);
                 }
-
-                HostingCloudAnchor();
+            //todo
+            InstructionText.text = "Please select a prefab to place";
+            prefabDropdown.gameObject.SetActive(true);
+            confirmButton.gameObject.SetActive(true);
+            //Go to hosting cloud anchor after confirm button is pressed
+            confirmButton.onClick.AddListener(()=>HostingCloudAnchor());
+            //HostingCloudAnchor();
             }
         }
 
@@ -406,6 +412,8 @@ public class ARViewManager : MonoBehaviour
     {
         Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
         RaycastHit raycastHit;
+        confirmButton.gameObject.SetActive(true);
+        prefabDropdown.gameObject.SetActive(true);
         if (Physics.Raycast(raycast, out raycastHit))
         {
             string name = raycastHit.collider.name;
@@ -642,7 +650,8 @@ public class ARViewManager : MonoBehaviour
                     //Do Dropdown List, allow user to select the prefab. 
                     //then press confirm(Button) to spawn prefab at the hitpose.
 
-                    
+                    confirmButton.gameObject.SetActive(false);
+                    prefabDropdown.gameObject.SetActive(false);
                     //Store all prefab from "Resources/Prefab" in the array
                     prefabList = Resources.LoadAll<GameObject>("Prefab");
                     if (prefabList == null)
@@ -821,6 +830,9 @@ public class ARViewManager : MonoBehaviour
             InstructionBar.SetActive(false);
         }
 
+   
+
+   
 
 #if ARCORE_IOS_SUPPORT
         private void AddARPlane(ARPlaneAnchor arPlane)
