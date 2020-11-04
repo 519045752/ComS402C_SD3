@@ -9,6 +9,7 @@
     using UnityEngine.UI;
     using TMPro;
     using UnityEngine;
+using Assets.PersistentCloudAnchors.Scripts;
 
 #if ARCORE_IOS_SUPPORT
     using UnityEngine.XR.iOS;
@@ -136,6 +137,9 @@ public class ARViewManager : MonoBehaviour
         private string cloudid;
         private bool submitlock = false;
 
+        private HashSet<ServerObject> svrObjects;
+        private GameObject prevText;
+
         // parent of placed objects
         public CanvasGroup canvasGroup;
 
@@ -228,12 +232,22 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
-            StartCoroutine(networker.getCloudIds(Controller.ResolvingSet));
-            
+
+            svrObjects = new HashSet<ServerObject>();
+            StartCoroutine(networker.getCloudIds(svrObjects));
+            foreach (ServerObject obj in svrObjects) { Controller.ResolvingSet.Add(obj.cloudid); }
+
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
             //Input_Tex.onSubmit.AddListener(Submit);
-            confirmButton.onClick.AddListener(Submit);
+
+            //Store all prefab from "Resources/Prefab" in the array
+            prefabList = Resources.LoadAll<GameObject>("Prefab");
+            if (prefabList == null)
+            {
+                Debug.Log("prefab List is null, Resources.LoadAll failed");
+            }
+        confirmButton.onClick.AddListener(Submit);
             objectType = 0;
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -341,6 +355,9 @@ public class ARViewManager : MonoBehaviour
         public void Update()
         {
 
+        if (submitlock) Debug.Log("Current value for " + prefabDropdown.GetComponent<Dropdown>().value + 
+            " is: " + "Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name);
+
         // Check if touching object
         if (Input.touchCount > 0) {
             Touch touch = Input.GetTouch(0);
@@ -374,7 +391,7 @@ public class ARViewManager : MonoBehaviour
 
             if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Resolving)
             {
-                ResolvingCloudAnchors();              
+                ResolvingCloudAnchors();    // called every update           
             }
             else if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Hosting)
             {
@@ -412,16 +429,33 @@ public class ARViewManager : MonoBehaviour
         RaycastHit raycastHit;
         if (Physics.Raycast(raycast, out raycastHit))
         {
-            string name = raycastHit.collider.name;
+            string name = raycastHit.collider.transform.parent.gameObject.name;
             Debug.Log(name + " was hit");
 
             foreach (GameObject objName in prefabsOnMap)
             {
+                Debug.Log("The name was objname:" + objName.name);
                 if (objName.name == name)
                 {
-                    objName.transform.Find("textInfoWindow").gameObject.SetActive(!objName.transform.Find("textInfoWindow").gameObject.activeSelf);
+                    var tex = objName.transform.Find("textInfoWindow").gameObject;
+                    if (tex.activeSelf)
+                    {
+                        prevText.transform.Find("textInfoWindow").gameObject.SetActive(false);
+                        prevText = null;
+                    }
+                    else
+                    {
+                        if (prevText) prevText.transform.Find("textInfoWindow").gameObject.SetActive(false);
+
+                        tex.SetActive(true);
+                        prevText = objName;
+
+                        Debug.LogFormat(tex.transform.GetComponent<TMP_Text>().text);
+                    }
                     return;
                 }
+
+                
             }
         }
     }
@@ -551,7 +585,7 @@ public class ARViewManager : MonoBehaviour
                 //Get the prefab from folder "Resources/Prefab/{Name of object selected}"
                 prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name) as GameObject;
 
-                gameRef = Instantiate(prefabToPlace,);
+                gameRef = Instantiate(prefabToPlace,currentCloudTransform);
                 prefabsOnMap.Add(gameRef);
                 
                 prefabDropdown.gameObject.SetActive(false);
@@ -561,14 +595,12 @@ public class ARViewManager : MonoBehaviour
                 canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
                 gameRef.transform.Find("textInfoWindow").gameObject.transform.GetComponent<TMP_Text>().text = msg;
-                networker.AddCloudID(cloudid, msg, 1, objectType); // adds cloud id to network
 
                 string id = cloudid;
                 string description = msg;
                 int t = objectType;
-                StartCoroutine(networker.AddCloudID(id, description, 1, t));
-
-            CanPlace = true;
+                StartCoroutine(networker.AddCloudID(id, description, 1, prefabDropdown.GetComponent<Dropdown>().value));
+                CanPlace = true;
                 
                 
             }
@@ -667,24 +699,17 @@ public class ARViewManager : MonoBehaviour
 
                     currentCloudTransform = result.Anchor.transform;
 
-                    //Store all prefab from "Resources/Prefab" in the array
-                    prefabList = Resources.LoadAll<GameObject>("Prefab");
-                    if (prefabList == null)
-                    {
-                        Debug.Log("prefab List is null, Resources.LoadAll failed");
-                    }
-                    int typeObj = 0; // check if this is the correct type
-                    if (typeObj == 0) { Show(); }
-                    else {
-                        networker.AddCloudID(cloudid, "", 1, objectType);
-                    };
 
+                    Show();
                 }
             });
         }
 
         private void ResolvingCloudAnchors()
         {
+
+            var hash = new HashSet<string>();
+
             // No Cloud Anchor for resolving.
             if (Controller.ResolvingSet.Count == 0)
             {
@@ -700,31 +725,38 @@ public class ARViewManager : MonoBehaviour
             Debug.LogFormat("Attempting to resolve {0} anchor(s): {1}",
                 Controller.ResolvingSet.Count,
                 string.Join(",", new List<string>(Controller.ResolvingSet).ToArray()));
-            foreach (string cloudId in Controller.ResolvingSet)
+            foreach (ServerObject obj in svrObjects)
             {
+                string cloudId = obj.cloudid;
+
                 _pendingTask.Add(cloudId);
                 XPSession.ResolveCloudAnchor(cloudId).ThenAction(result =>
                 {
                     _pendingTask.Remove(cloudId);
                     if (result.Response != CloudServiceResponse.Success)
                     {
-                        Debug.LogFormat("Faild to resolve cloud anchor {0} for {1}",
+                        Debug.LogFormat("Failed to resolve cloud anchor {0} for {1}",
                             cloudId, result.Response);
                         OnAnchorResolvedFinished(false, result.Response.ToString());
+                        hash.Add(cloudid);
                     }
                     else
                     {
                         Debug.LogFormat("Succeed to resolve cloud anchor: {0}", cloudId);
                         OnAnchorResolvedFinished(true, cloudId);
 
-                        GameObject obj = Instantiate(prefabToPlace, result.Anchor.transform);
-                        prefabsOnMap.Add(obj);
+                        prefabToPlace = Resources.Load("Prefab/" + prefabList[obj.type].name) as GameObject;
+
+                        gameRef = Instantiate(prefabToPlace, currentCloudTransform);
+                        gameRef.transform.Find("textInfoWindow").gameObject.transform.GetComponent<TMP_Text>().text = obj.msg;
+                        prefabsOnMap.Add(gameRef);
+
                         _cachedComponents.Add(result.Anchor);
                     }
                 });
             }
 
-            Controller.ResolvingSet.Clear();
+            Controller.ResolvingSet = hash;
         }
 
         private void OnAnchorHostedFinished(bool success, string response)
