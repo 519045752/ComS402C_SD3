@@ -181,16 +181,16 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../../../../texture/info_0.svg</key>
-            <key type="filename">../../../../texture/info_1.svg</key>
-            <key type="filename">../../../../texture/info_2.svg</key>
-            <key type="filename">../../../../texture/info_3.svg</key>
-            <key type="filename">../../../../texture/info_4.svg</key>
-            <key type="filename">../../../../texture/info_5.svg</key>
-            <key type="filename">../../../../texture/info_6.svg</key>
+            <key type="filename">../../../../texture/stop/stop_0.svg</key>
+            <key type="filename">../../../../texture/stop/stop_1.svg</key>
+            <key type="filename">../../../../texture/stop/stop_2.svg</key>
+            <key type="filename">../../../../texture/stop/stop_3.svg</key>
+            <key type="filename">../../../../texture/stop/stop_4.svg</key>
+            <key type="filename">../../../../texture/stop/stop_5.svg</key>
+            <key type="filename">../../../../texture/stop/stop_6.svg</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -205,7 +205,7 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>../../../../texture</filename>
+            <filename>../../../../texture/stop</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
