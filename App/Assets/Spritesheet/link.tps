@@ -132,7 +132,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>info_anim.json</filename>
+                <filename>link_anim.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -177,20 +177,20 @@
             <key>defaultPivotPoint</key>
             <point_f>0,0</point_f>
             <key>writePivotPoints</key>
-            <true/>
+            <false/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../../../../texture/question/question_0.svg</key>
-            <key type="filename">../../../../texture/question/question_1.svg</key>
-            <key type="filename">../../../../texture/question/question_2.svg</key>
-            <key type="filename">../../../../texture/question/question_3.svg</key>
-            <key type="filename">../../../../texture/question/question_4.svg</key>
-            <key type="filename">../../../../texture/question/question_5.svg</key>
-            <key type="filename">../../../../texture/question/question_6.svg</key>
+            <key type="filename">../../../../texture/link/link_0.svg</key>
+            <key type="filename">../../../../texture/link/link_1.svg</key>
+            <key type="filename">../../../../texture/link/link_2.svg</key>
+            <key type="filename">../../../../texture/link/link_3.svg</key>
+            <key type="filename">../../../../texture/link/link_4.svg</key>
+            <key type="filename">../../../../texture/link/link_5.svg</key>
+            <key type="filename">../../../../texture/link/link_6.svg</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0,0</point_f>
+                <point_f>0.5,0.5</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -205,7 +205,7 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>../../../../texture/question</filename>
+            <filename>../../../../texture/link</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

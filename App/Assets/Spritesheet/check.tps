@@ -132,7 +132,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>info_anim.json</filename>
+                <filename>check_anim.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -177,17 +177,17 @@
             <key>defaultPivotPoint</key>
             <point_f>0,0</point_f>
             <key>writePivotPoints</key>
-            <true/>
+            <false/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../../../../texture/info_0.svg</key>
-            <key type="filename">../../../../texture/info_1.svg</key>
-            <key type="filename">../../../../texture/info_2.svg</key>
-            <key type="filename">../../../../texture/info_3.svg</key>
-            <key type="filename">../../../../texture/info_4.svg</key>
-            <key type="filename">../../../../texture/info_5.svg</key>
-            <key type="filename">../../../../texture/info_6.svg</key>
+            <key type="filename">../../../../texture/check/check_0.svg</key>
+            <key type="filename">../../../../texture/check/check_1.svg</key>
+            <key type="filename">../../../../texture/check/check_2.svg</key>
+            <key type="filename">../../../../texture/check/check_3.svg</key>
+            <key type="filename">../../../../texture/check/check_4.svg</key>
+            <key type="filename">../../../../texture/check/check_5.svg</key>
+            <key type="filename">../../../../texture/check/check_6.svg</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -205,7 +205,7 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>../../../../texture</filename>
+            <filename>../../../../texture/check</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
