@@ -9,6 +9,8 @@
     using UnityEngine.UI;
     using TMPro;
     using UnityEngine;
+    using cakeslice;
+
 using Assets.PersistentCloudAnchors.Scripts;
 
 #if ARCORE_IOS_SUPPORT
@@ -239,15 +241,18 @@ public class ARViewManager : MonoBehaviour
 
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
-            //Input_Tex.onSubmit.AddListener(Submit);
+        // Input_Tex.onSubmit.AddListener(Submit);
 
-            //Store all prefab from "Resources/Prefab" in the array
-            prefabList = Resources.LoadAll<GameObject>("Prefab");
+        
+
+        //Store all prefab from "Resources/Prefab" in the array
+        prefabList = Resources.LoadAll<GameObject>("Prefab");
             if (prefabList == null)
             {
                 Debug.Log("prefab List is null, Resources.LoadAll failed");
             }
-        confirmButton.onClick.AddListener(Submit);
+            confirmButton.onClick.AddListener(Submit);
+            //confirmButton.onValueChanged.AddListener(PreviewObj});
             objectType = 0;
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -441,6 +446,7 @@ public class ARViewManager : MonoBehaviour
                     if (tex.activeSelf)
                     {
                         prevText.transform.Find("textInfoWindow").gameObject.SetActive(false);
+                        //objName.componen
                         prevText = null;
                     }
                     else
@@ -450,8 +456,8 @@ public class ARViewManager : MonoBehaviour
                         tex.SetActive(true);
                         prevText = objName;
 
-                        //Debug.LogFormat(tex.transform.GetComponent<TMP_Text>().text);
-                        DebugText.text = tex.transform.GetComponent<TMP_Text>().text;
+                        Debug.LogFormat(tex.transform.GetComponent<TMP_Text>().text);
+                        objName.AddComponent(typeof(OutlineEffect));
                     }
                     return;
                 }
