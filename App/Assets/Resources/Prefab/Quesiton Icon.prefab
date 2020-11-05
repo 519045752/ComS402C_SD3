@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5405604415140768051, guid: 96fce847fe0ad2645993453741070512,
+  m_Sprite: {fileID: -2911367911617960265, guid: 6b1214e90e6b5c94a902341fc935d7d1,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -93,7 +93,7 @@ Animator:
   m_GameObject: {fileID: 1892502139382666785}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 86bd04320a639204c892bfad83b09be7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 898d78317b787dc449e59eee41044638, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -112,7 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3791642793868639770}
   m_Layer: 0
-  m_Name: question_anim
+  m_Name: Quesiton Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -164,7 +164,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5405604415140768051, guid: 96fce847fe0ad2645993453741070512,
+  m_Sprite: {fileID: -260726679107601958, guid: f85184faaf8897a4abeffadb21cafcb9,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -186,7 +186,7 @@ Animator:
   m_GameObject: {fileID: 5960292921763241189}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 86bd04320a639204c892bfad83b09be7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4e244193480382c40888ba8f6d066c18, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -205,7 +205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8965027994672215262}
   m_Layer: 0
-  m_Name: link_anim
+  m_Name: Link Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
