@@ -450,7 +450,8 @@ public class ARViewManager : MonoBehaviour
                         tex.SetActive(true);
                         prevText = objName;
 
-                        Debug.LogFormat(tex.transform.GetComponent<TMP_Text>().text);
+                        //Debug.LogFormat(tex.transform.GetComponent<TMP_Text>().text);
+                        DebugText.text = tex.transform.GetComponent<TMP_Text>().text;
                     }
                     return;
                 }
@@ -543,7 +544,7 @@ public class ARViewManager : MonoBehaviour
             if (_anchorComponent != null)
             {
             
-                Instantiate(CloudAnchorPrefab, _anchorComponent.transform);
+                gameRef = Instantiate(CloudAnchorPrefab, _anchorComponent.transform);
 
                 // Attach map quality indicator to this pawn.
                 var indicatorGO =
