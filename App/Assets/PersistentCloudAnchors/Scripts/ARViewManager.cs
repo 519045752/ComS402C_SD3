@@ -252,8 +252,16 @@ public class ARViewManager : MonoBehaviour
                 Debug.Log("prefab List is null, Resources.LoadAll failed");
             }
             confirmButton.onClick.AddListener(Submit);
-            //confirmButton.onValueChanged.AddListener(PreviewObj});
-            objectType = 0;
+
+            // //Fetch the Dropdown GameObject
+            // Dropdown m_Dropdown = GetComponent<Dropdown>();
+            // //Add listener for when the value of the Dropdown changes, to take action
+            // m_Dropdown.onValueChanged.AddListener(delegate {
+            //     DropdownVal();
+            // });
+
+        //confirmButton.onValueChanged.AddListener(PreviewObj});
+        objectType = 0;
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
@@ -577,6 +585,13 @@ public class ARViewManager : MonoBehaviour
 
         }
 
+        void DropdownVal()
+        {
+            prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name) as GameObject;
+            if (gameRef) Destroy(gameRef);
+            gameRef = Instantiate(prefabToPlace, currentCloudTransform);
+    }
+
         // If not text, msg = ""
         void Submit()
         {
@@ -591,7 +606,7 @@ public class ARViewManager : MonoBehaviour
                 //might be because of null exception, since nothing is chosen yet.
                 //Get the prefab from folder "Resources/Prefab/{Name of object selected}"
                 prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name) as GameObject;
-
+                if (gameRef) Destroy(gameRef);
                 gameRef = Instantiate(prefabToPlace,currentCloudTransform);
                 prefabsOnMap.Add(gameRef);
                 
