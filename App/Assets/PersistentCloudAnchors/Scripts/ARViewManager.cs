@@ -240,12 +240,7 @@ public class ARViewManager : MonoBehaviour
             svrObjects = new HashSet<ServerObject>();
             StartCoroutine(networker.getCloudIds(svrObjects));
             foreach (ServerObject obj in svrObjects) { Controller.ResolvingSet.Add(obj.cloudid); }
-
-            prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
-            // Input_Tex.onSubmit.AddListener(Submit);
-
-        
 
             //Store all prefab from "Resources/Prefab" in the array
             prefabList = Resources.LoadAll<GameObject>("Prefab");
@@ -431,22 +426,18 @@ public class ARViewManager : MonoBehaviour
 
                     HostingCloudAnchor();
                 }
-                else
-                {
-                    string msg = "Tap an icon to see more information";
-                    Debug.LogFormat(msg);
-                    DebugText.text = msg;
-                    if (prefabsOnMap[prevText].transform.localScale != new Vector3(0.5f, 0.5f, 0.5f))
-                    {
-                        prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);                      
-                    }
-                }
             }
         }
 
 
 
         }
+
+
+    private void addCloudAnchor()
+    {
+        _hitPose = null;
+    }
 
     private void iconsFaceCamera()
     {
