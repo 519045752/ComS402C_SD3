@@ -141,7 +141,7 @@ public class ARViewManager : MonoBehaviour
         private bool submitlock = false;
 
         private HashSet<ServerObject> svrObjects;
-        private Transform prevText;
+        private int prevText;
 
         // parent of placed objects
         public CanvasGroup canvasGroup;
@@ -435,9 +435,11 @@ public class ARViewManager : MonoBehaviour
                 {
                     string msg = "Tap an icon to see more information";
                     Debug.LogFormat(msg);
-                    InstructionText.text = msg;
                     DebugText.text = msg;
-                    prevText = null;
+                    if (prefabsOnMap[prevText].transform.localScale != new Vector3(0.5f, 0.5f, 0.5f))
+                    {
+                        prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);                      
+                    }
                 }
             }
         }
@@ -477,7 +479,7 @@ public class ARViewManager : MonoBehaviour
             Transform text = touchObj.transform.Find("textInfoWindow");
             if (text)
             {
-                if (text == prevText)
+                if (text == prefabsOnMap[prevText].transform)
                 {
                     Transform outlineObj = touchObj.transform.Find("icon");
                     if (outlineObj) {
@@ -489,14 +491,13 @@ public class ARViewManager : MonoBehaviour
                         else
                         {
                             //outlineObj.gameObject.AddComponent<Outline>();
-                            Debug.Log("outlineCom was null, not setting false");
+                            Debug.Log("outlineCom was null, not setting false" + outlineCom);
                         }
                     }
                     string msg = "Tap an icon to see more information";
                     Debug.LogFormat(msg);
-                    InstructionText.text = msg;
                     DebugText.text = msg;
-                    prevText = null;
+                    prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
                 else
                 {
@@ -510,7 +511,7 @@ public class ARViewManager : MonoBehaviour
                         else
                         {
                             //outlineObj.gameObject.AddComponent<Outline>();
-                            Debug.Log("outlineCom was null");
+                            Debug.Log("outlineCom was null" + outlineObj);
                         }
                     }
                     else
@@ -519,12 +520,23 @@ public class ARViewManager : MonoBehaviour
                     }
                     string msg = text.transform.GetComponent<TMP_Text>().text;
                     Debug.LogFormat(msg);
-                    InstructionText.text = msg;
                     DebugText.text = msg;
 
-                    touchObj.transform.localScale = new Vector3(1,1,1);
-                    prevText.localScale = new Vector3(1, 1, 1);
-                    prevText = touchObj.transform;
+                    touchObj.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                    prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    int k = 0;
+                    while (k < prefabsOnMap.Count)
+                    {
+                        if(prefabsOnMap[k] == touchObj)
+                        {
+                            prevText = k;
+                        }
+                        k++;
+                    }
+                    if (k == prefabsOnMap.Count)
+                    {
+                        Debug.Log("Unity is bad for debugging. K is not good.");
+                    }
                 
                 }
                     //objName.AddComponent(typeof(OutlineEffect));
@@ -690,6 +702,10 @@ public class ARViewManager : MonoBehaviour
                 StartCoroutine(networker.AddCloudID(id, description, 1, prefabDropdown.GetComponent<Dropdown>().value));
                 CanPlace = true;
 
+                
+                // reset view after added cloud anchor
+                UpdateInitialInstruction();
+                InstructionBar.SetActive(true);
                 _hitPose = null;
                 
                 
@@ -786,10 +802,11 @@ public class ARViewManager : MonoBehaviour
                     confirmButton.gameObject.SetActive(true);
                     Input_Tex.gameObject.SetActive(true);
 
-
                     currentCloudTransform = result.Anchor.transform;
-
-
+                    prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name) as GameObject;
+                    if (gameRef) Destroy(gameRef);
+                    gameRef = Instantiate(prefabToPlace, currentCloudTransform);                   
+          
                     Show();
                 }
             });
