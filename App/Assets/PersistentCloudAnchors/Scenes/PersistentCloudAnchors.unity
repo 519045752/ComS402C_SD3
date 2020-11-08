@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8450,7 +8450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2036432270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9144,7 +9144,7 @@ RectTransform:
   m_GameObject: {fileID: 2101966539}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5147848, y: 1.5147848, z: 1.5147848}
+  m_LocalScale: {x: 0.9214587, y: 0.9214587, z: 0.9214587}
   m_Children:
   - {fileID: 544728277}
   m_Father: {fileID: 2046636725}
@@ -9152,7 +9152,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 243, y: 130}
+  m_AnchoredPosition: {x: 138, y: 256}
   m_SizeDelta: {x: 200, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2101966541
@@ -9389,17 +9389,17 @@ PrefabInstance:
     - target: {fileID: 7217059861977599220, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -280.25
+      value: -116
       objectReference: {fileID: 0}
     - target: {fileID: 7217059861977599220, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 132
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 7217059861977599220, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 329.5
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 7217059861977599220, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
@@ -9439,22 +9439,27 @@ PrefabInstance:
     - target: {fileID: 7217059861977599220, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5114
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7217059861977599220, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7217059861977599220, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7217059861977599221, guid: 59b208916ea95f3499dfb2062a1b19df,
         type: 3}
       propertyPath: m_Name
       value: InputField (TMP)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7217059861977599221, guid: 59b208916ea95f3499dfb2062a1b19df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59b208916ea95f3499dfb2062a1b19df, type: 3}

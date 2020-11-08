@@ -379,67 +379,78 @@ public class ARViewManager : MonoBehaviour
 
         // Check if touching object
         if (Input.touchCount > 0) {
-            Touch touch = Input.GetTouch(0);
-            if (!((touch.phase != TouchPhase.Began) || EventSystem.current.IsPointerOverGameObject(touch.fingerId)))
+            Touch touchObj = Input.GetTouch(0);
+            if (!((touchObj.phase != TouchPhase.Began) || EventSystem.current.IsPointerOverGameObject(touchObj.fingerId)))
             {
                 // Detect if raycast hits object
                 Debug.Log("Raycasting to see if touch is on object.");
                 touchObject();
+            } else
+            {
+
+                // Give ARCore some time to prepare for hosting or resolving.
+                if (_timeSinceStart < _startPrepareTime)
+                {
+                    _timeSinceStart += Time.deltaTime;
+                    if (_timeSinceStart >= _startPrepareTime)
+                    {
+                        UpdateInitialInstruction();
+                    }
+
+                    return;
+                }
+
+                ARCoreLifecycleUpdate();
+                if (_isReturning)
+                {
+                    return;
+                }
+
+                if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Resolving)
+                {
+                    ResolvingCloudAnchors();    // called every update           
+                }
+                else if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Hosting)
+                {
+                    // Perform hit test and place an anchor on the hit test result.
+                    if (_hitPose == null)
+                    {
+
+                        if (!CanPlace)
+                            return;
+                        // If the player has not touched the screen then the update is complete.
+                        Touch touch;
+                        if ((Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began))
+                        {
+                            return;
+                        }
+
+                        // Ignore the touch if it's pointing on UI objects.
+                        if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                        {
+                            return;
+                        }
+
+                        // Perform hit test and place a pawn object.
+                        PerformHitTest(touch.position);
+                    }
+
+
+                    HostingCloudAnchor();
+                }
+                else
+                {
+                    string msg = "Tap an icon to see more information";
+                    Debug.LogFormat(msg);
+                    InstructionText.text = msg;
+                    DebugText.text = msg;
+                    prevText = null;
+                }
             }
         }
 
 
 
-        // Give ARCore some time to prepare for hosting or resolving.
-        if (_timeSinceStart < _startPrepareTime)
-            {
-                _timeSinceStart += Time.deltaTime;
-                if (_timeSinceStart >= _startPrepareTime)
-                {
-                    UpdateInitialInstruction();
-                }
-
-                return;
-            }
-
-            ARCoreLifecycleUpdate();
-            if (_isReturning)
-            {
-                return;
-            }
-
-            if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Resolving)
-            {
-                ResolvingCloudAnchors();    // called every update           
-            }
-            else if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Hosting)
-            {
-                // Perform hit test and place an anchor on the hit test result.
-                if (_hitPose == null)
-                {
-
-                    if (!CanPlace)
-                        return;
-                    // If the player has not touched the screen then the update is complete.
-                    Touch touch;
-                    if ((Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began))
-                    {
-                        return;
-                    }
-
-                    // Ignore the touch if it's pointing on UI objects.
-                    if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-                    {
-                        return;
-                    }
-
-                    // Perform hit test and place a pawn object.
-                    PerformHitTest(touch.position);
-                }
-            
-            
-            HostingCloudAnchor();
-        }
         }
 
     private void iconsFaceCamera()
@@ -449,7 +460,7 @@ public class ARViewManager : MonoBehaviour
             Transform icon = obj.transform.Find("icon");
             if (icon)
             {
-                icon.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+                icon.rotation = Quaternion.LookRotation(icon.position - cam.transform.position);
             }
             else
             {
