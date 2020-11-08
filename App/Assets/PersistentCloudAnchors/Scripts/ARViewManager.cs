@@ -163,6 +163,8 @@ public class ARViewManager : MonoBehaviour
 
         //the Dropdown menu for showing all placable prefab
         public Dropdown prefabDropdown;
+
+        private Camera cam;
         
         //Spawn prefab from dropdown menu;
         private PrefabGallery prefabGallery;
@@ -235,6 +237,10 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
+
+            cam = GameObject.Find("Camera").GetComponent<Camera>();
+            Debug.Log("Finding Camera");
+            transform.localPosition = new Vector3(0, 1, 0);
 
             svrObjects = new HashSet<ServerObject>();
             StartCoroutine(networker.getCloudIds(svrObjects));
@@ -371,6 +377,8 @@ public class ARViewManager : MonoBehaviour
         public void Update()
         {
 
+        iconsFaceCamera();
+
         if (submitlock) Debug.Log("Current value for " + prefabDropdown.GetComponent<Dropdown>().value + 
             " is: " + "Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name);
 
@@ -438,6 +446,19 @@ public class ARViewManager : MonoBehaviour
             HostingCloudAnchor();
         }
         }
+
+    private void iconsFaceCamera()
+    {
+        foreach (GameObject obj in prefabsOnMap)
+        {
+            Transform icon = obj.transform.Find("icon");
+            if (icon)
+            {
+                transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+            }
+
+        }
+    }
 
     private void touchObject()
     {
