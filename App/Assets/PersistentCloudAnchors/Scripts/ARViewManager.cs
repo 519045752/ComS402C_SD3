@@ -482,7 +482,15 @@ public class ARViewManager : MonoBehaviour
                     Transform outlineObj = touchObj.transform.Find("icon");
                     if (outlineObj) {
                         Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
-                        if (outlineCom) outlineCom.enabled = false;
+                        if (outlineCom)
+                        {
+                            outlineCom.enabled = false;
+                        }
+                        else
+                        {
+                            //outlineObj.gameObject.AddComponent<Outline>();
+                            Debug.Log("outlineCom was null, not setting false");
+                        }
                     }
                     string msg = "Tap an icon to see more information";
                     Debug.LogFormat(msg);
@@ -501,7 +509,7 @@ public class ARViewManager : MonoBehaviour
                         }
                         else
                         {
-                            outlineObj.gameObject.AddComponent<Outline>();
+                            //outlineObj.gameObject.AddComponent<Outline>();
                             Debug.Log("outlineCom was null");
                         }
                     }
@@ -513,7 +521,11 @@ public class ARViewManager : MonoBehaviour
                     Debug.LogFormat(msg);
                     InstructionText.text = msg;
                     DebugText.text = msg;
-                    prevText = text;
+
+                    touchObj.transform.localScale = new Vector3(1,1,1);
+                    prevText.localScale = new Vector3(1, 1, 1);
+                    prevText = touchObj.transform;
+                
                 }
                     //objName.AddComponent(typeof(OutlineEffect));
             }
