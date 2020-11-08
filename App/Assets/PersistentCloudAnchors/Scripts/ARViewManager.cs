@@ -45,6 +45,7 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public GameObject InstructionBar;
 
+    public Button add;
         
 
         /// <summary>
@@ -237,6 +238,8 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
+
+            
             svrObjects = new HashSet<ServerObject>();
             StartCoroutine(networker.getCloudIds(svrObjects));
             foreach (ServerObject obj in svrObjects) { Controller.ResolvingSet.Add(obj.cloudid); }
@@ -249,6 +252,9 @@ public class ARViewManager : MonoBehaviour
                     Debug.Log("prefab List is null, Resources.LoadAll failed");
                 }
             confirmButton.onClick.AddListener(Submit);
+            add.onClick.AddListener(addCloudAnchor);
+
+        prevText = -1;
 
         //Add listener for when the value of the Dropdown changes, to take action        
         prefabDropdown.onValueChanged.AddListener(delegate
@@ -436,6 +442,10 @@ public class ARViewManager : MonoBehaviour
 
     private void addCloudAnchor()
     {
+        // reset view after added cloud anchor
+        UpdateInitialInstruction();
+        InstructionBar.SetActive(true);
+        InstructionText.text = "Look around and tap to place a new cloud anchor";
         _hitPose = null;
     }
 
@@ -470,65 +480,72 @@ public class ARViewManager : MonoBehaviour
             Transform text = touchObj.transform.Find("textInfoWindow");
             if (text)
             {
-                if (text == prefabsOnMap[prevText].transform)
+                if (prevText != -1)
                 {
-                    Transform outlineObj = touchObj.transform.Find("icon");
-                    if (outlineObj) {
-                        Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
-                        if (outlineCom)
-                        {
-                            outlineCom.enabled = false;
-                        }
-                        else
-                        {
-                            //outlineObj.gameObject.AddComponent<Outline>();
-                            Debug.Log("outlineCom was null, not setting false" + outlineCom);
-                        }
-                    }
-                    string msg = "Tap an icon to see more information";
-                    Debug.LogFormat(msg);
-                    DebugText.text = msg;
-                    prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                }
-                else
-                {
-                    Transform outlineObj = touchObj.transform.Find("icon");
-                    if (outlineObj)
+                    if (text == prefabsOnMap[prevText].transform)
                     {
-                        Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
-                        if (outlineCom) {
-                            outlineCom.enabled = true;
-                        }
-                        else
+                        Transform outlineObj = touchObj.transform.Find("icon");
+                        if (outlineObj)
                         {
-                            //outlineObj.gameObject.AddComponent<Outline>();
-                            Debug.Log("outlineCom was null" + outlineObj);
+                            Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
+                            if (outlineCom)
+                            {
+                                outlineCom.enabled = false;
+                            }
+                            else
+                            {
+                                //outlineObj.gameObject.AddComponent<Outline>();
+                                Debug.Log("outlineCom was null, not setting false" + outlineCom);
+                            }
                         }
+                        string msg = "Tap an icon to see more information";
+                        Debug.LogFormat(msg);
+                        DebugText.text = msg;
+                        prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        prevText = -1;
                     }
                     else
                     {
-                        Debug.Log("outlineObj was null");
-                    }
-                    string msg = text.transform.GetComponent<TMP_Text>().text;
-                    Debug.LogFormat(msg);
-                    DebugText.text = msg;
-
-                    touchObj.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-                    prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                    int k = 0;
-                    while (k < prefabsOnMap.Count)
-                    {
-                        if(prefabsOnMap[k] == touchObj)
+                        Transform outlineObj = touchObj.transform.Find("icon");
+                        if (outlineObj)
                         {
-                            prevText = k;
+                            Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
+                            if (outlineCom)
+                            {
+                                outlineCom.enabled = true;
+                            }
+                            else
+                            {
+                                //outlineObj.gameObject.AddComponent<Outline>();
+                                Debug.Log("outlineCom was null" + outlineObj);
+                            }
                         }
-                        k++;
+                        else
+                        {
+                            Debug.Log("outlineObj was null");
+                        }
+                        string msg = text.transform.GetComponent<TMP_Text>().text;
+                        Debug.LogFormat(msg);
+                        DebugText.text = msg;
+
+                        touchObj.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                        prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        int k = 0;
+                        while (k < prefabsOnMap.Count)
+                        {
+                            if (prefabsOnMap[k] == touchObj)
+                            {
+                                prevText = k;
+                                break;
+                            }
+                            k++;
+                        }
+                        if (k == prefabsOnMap.Count)
+                        {
+                            Debug.Log("Unity is bad for debugging. K is not good.");
+                        }
+
                     }
-                    if (k == prefabsOnMap.Count)
-                    {
-                        Debug.Log("Unity is bad for debugging. K is not good.");
-                    }
-                
                 }
                     //objName.AddComponent(typeof(OutlineEffect));
             }
@@ -693,13 +710,9 @@ public class ARViewManager : MonoBehaviour
                 StartCoroutine(networker.AddCloudID(id, description, 1, prefabDropdown.GetComponent<Dropdown>().value));
                 CanPlace = true;
 
+               
                 
-                // reset view after added cloud anchor
-                UpdateInitialInstruction();
-                InstructionBar.SetActive(true);
-                _hitPose = null;
-                
-                
+             
             }
         }
 
