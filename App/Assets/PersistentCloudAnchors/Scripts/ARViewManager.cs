@@ -632,9 +632,13 @@ public class ARViewManager : MonoBehaviour
             //canvasGroup.alpha = 1f;
             //canvasGroup.blocksRaycasts = true;
             CanPlace = false;
+            InstructionText.gameObject.SetActive(false);
+            prefabDropdown.gameObject.SetActive(true);
+            confirmButton.gameObject.SetActive(true);
+            Input_Tex.gameObject.SetActive(true);
             // to debug: adb logcat -s Unity PackageManager dalvikvm DEBUG
 
-        }
+    }
 
         void DropdownVal()
         {
@@ -664,6 +668,7 @@ public class ARViewManager : MonoBehaviour
                 prefabDropdown.gameObject.SetActive(false);
                 confirmButton.gameObject.SetActive(false);
                 Input_Tex.gameObject.SetActive(false);
+
 
                 //canvasGroup.alpha = 0f; //this makes everything transparent
                // canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
@@ -762,15 +767,6 @@ public class ARViewManager : MonoBehaviour
                     submitlock = true;
                     _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
                     OnAnchorHostedFinished(true, result.Anchor.CloudId);
-                    //todo, work on this part
-                    //load available prefrab from Resource/Prefab
-                    //Do Dropdown List, allow user to select the prefab. 
-                    //then press confirm(Button) to spawn prefab at the hitpose.
-
-                    InstructionText.text = "Please select a prefab to place";
-                    prefabDropdown.gameObject.SetActive(true);
-                    confirmButton.gameObject.SetActive(true);
-                    Input_Tex.gameObject.SetActive(true);
 
                     currentCloudTransform = result.Anchor.transform;
                     prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name) as GameObject;

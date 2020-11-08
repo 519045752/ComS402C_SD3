@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4436,10 +4436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a78da3f00f3328541b4526c0b0b5ec5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineThickness: 2.54
-  lineIntensity: 3.54
+  lineThickness: 1.91
+  lineIntensity: 1.83
   fillAmount: 0.2
-  lineColor0: {r: 1, g: 1, b: 1, a: 1}
+  lineColor0: {r: 0.9386792, g: 1, b: 0.9972003, a: 1}
   lineColor1: {r: 0, g: 1, b: 0, a: 1}
   lineColor2: {r: 0, g: 0, b: 1, a: 1}
   additiveRendering: 0
@@ -4449,7 +4449,7 @@ MonoBehaviour:
   cornerOutlines: 0
   addLinesBetweenColors: 0
   scaleWithScreenSize: 1
-  alphaCutoff: 0.606
+  alphaCutoff: 0.28
   flipY: 0
   sourceCamera: {fileID: 0}
   autoEnableOutlines: 0
