@@ -427,17 +427,14 @@ public class ARViewManager : MonoBehaviour
 
                         // Perform hit test and place a pawn object.
                         PerformHitTest(touchObj.position);
-                    }
-
-
-                    HostingCloudAnchor();
+                    }                 
                 }
             }
         }
 
+        if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Hosting) HostingCloudAnchor();
 
-
-        }
+    }
 
 
     private void addCloudAnchor()
@@ -482,7 +479,7 @@ public class ARViewManager : MonoBehaviour
             {
                 if (prevText != -1)
                 {
-                    if (text == prefabsOnMap[prevText].transform)
+                    if (touchObj == prefabsOnMap[prevText])
                     {
                         Transform outlineObj = touchObj.transform.Find("icon");
                         if (outlineObj)
@@ -533,7 +530,7 @@ public class ARViewManager : MonoBehaviour
                         int k = 0;
                         while (k < prefabsOnMap.Count)
                         {
-                            if (prefabsOnMap[k] == touchObj)
+                            if (touchObj == prefabsOnMap[k])
                             {
                                 prevText = k;
                                 break;
@@ -548,6 +545,10 @@ public class ARViewManager : MonoBehaviour
                     }
                 }
                     //objName.AddComponent(typeof(OutlineEffect));
+                else
+                {
+                    Debug.Log("prevText was -1");
+                }
             }
             else
             {
