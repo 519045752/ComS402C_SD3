@@ -377,6 +377,24 @@ public class ARViewManager : MonoBehaviour
         // if (submitlock) Debug.Log("Current value for " + prefabDropdown.GetComponent<Dropdown>().value + 
         //     " is: " + "Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name);
 
+        // Give ARCore some time to prepare for hosting or resolving.
+        if (_timeSinceStart < _startPrepareTime)
+        {
+            _timeSinceStart += Time.deltaTime;
+            if (_timeSinceStart >= _startPrepareTime)
+            {
+                UpdateInitialInstruction();
+            }
+
+            return;
+        }
+
+        ARCoreLifecycleUpdate();
+        if (_isReturning)
+        {
+            return;
+        }
+
         // Check if touching object
         if (Input.touchCount > 0) {
             Touch touchObj = Input.GetTouch(0);
@@ -387,25 +405,6 @@ public class ARViewManager : MonoBehaviour
                 touchObject();
             } else
             {
-
-                // Give ARCore some time to prepare for hosting or resolving.
-                if (_timeSinceStart < _startPrepareTime)
-                {
-                    _timeSinceStart += Time.deltaTime;
-                    if (_timeSinceStart >= _startPrepareTime)
-                    {
-                        UpdateInitialInstruction();
-                    }
-
-                    return;
-                }
-
-                ARCoreLifecycleUpdate();
-                if (_isReturning)
-                {
-                    return;
-                }
-
                 if (Controller.Mode == PersistentCloudAnchorsController.ApplicationMode.Resolving)
                 {
                     ResolvingCloudAnchors();    // called every update           
@@ -418,21 +417,15 @@ public class ARViewManager : MonoBehaviour
 
                         if (!CanPlace)
                             return;
-                        // If the player has not touched the screen then the update is complete.
-                        Touch touch;
-                        if ((Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began))
-                        {
-                            return;
-                        }
 
                         // Ignore the touch if it's pointing on UI objects.
-                        if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                        if (EventSystem.current.IsPointerOverGameObject(touchObj.fingerId))
                         {
                             return;
                         }
 
                         // Perform hit test and place a pawn object.
-                        PerformHitTest(touch.position);
+                        PerformHitTest(touchObj.position);
                     }
 
 
@@ -508,6 +501,7 @@ public class ARViewManager : MonoBehaviour
                         }
                         else
                         {
+                            outlineObj.gameObject.AddComponent<Outline>();
                             Debug.Log("outlineCom was null");
                         }
                     }
