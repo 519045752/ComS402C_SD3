@@ -451,6 +451,10 @@ public class ARViewManager : MonoBehaviour
             {
                 transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
             }
+            else
+            {
+                Debug.Log(icon + " --> icon was null");
+            }
 
         }
     }
@@ -630,7 +634,7 @@ public class ARViewManager : MonoBehaviour
             prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name) as GameObject;
             if (gameRef) Destroy(gameRef);
             gameRef = Instantiate(prefabToPlace, currentCloudTransform);
-    }
+        }
 
         // If not text, msg = ""
         void Submit()
@@ -652,9 +656,10 @@ public class ARViewManager : MonoBehaviour
                 
                 prefabDropdown.gameObject.SetActive(false);
                 confirmButton.gameObject.SetActive(false);
+                Input_Tex.gameObject.SetActive(false);
 
-                canvasGroup.alpha = 0f; //this makes everything transparent
-                canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
+                //canvasGroup.alpha = 0f; //this makes everything transparent
+               // canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
 
                 gameRef.transform.Find("textInfoWindow").gameObject.transform.GetComponent<TMP_Text>().text = msg;
 
@@ -756,6 +761,7 @@ public class ARViewManager : MonoBehaviour
                     InstructionText.text = "Please select a prefab to place";
                     prefabDropdown.gameObject.SetActive(true);
                     confirmButton.gameObject.SetActive(true);
+                    Input_Tex.gameObject.SetActive(true);
 
 
                     currentCloudTransform = result.Anchor.transform;
