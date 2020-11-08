@@ -440,10 +440,9 @@ public class ARViewManager : MonoBehaviour
     private void addCloudAnchor()
     {
         // reset view after added cloud anchor
-        UpdateInitialInstruction();
-        InstructionBar.SetActive(true);
-        InstructionText.text = "Look around and tap to place a new cloud anchor";
         _hitPose = null;
+        OnDisable();
+        OnEnable();
     }
 
     private void iconsFaceCamera()
@@ -451,15 +450,7 @@ public class ARViewManager : MonoBehaviour
         foreach (GameObject obj in prefabsOnMap)
         {
             Transform icon = obj.transform.Find("icon");
-            if (icon)
-            {
-                icon.rotation = Quaternion.LookRotation(icon.position - cam.transform.position);
-            }
-            else
-            {
-                Debug.Log(icon + " --> icon was null");
-            }
-
+            if (icon)  icon.rotation = Quaternion.LookRotation(icon.position - cam.transform.position);     
         }
     }
 
@@ -469,96 +460,70 @@ public class ARViewManager : MonoBehaviour
         RaycastHit raycastHit;
         if (Physics.Raycast(raycast, out raycastHit))
         {
-           
+
             GameObject touchObj = raycastHit.collider.transform.parent.gameObject;
             string name = touchObj.name;
-            Debug.Log(name + " was hit");
-
             Transform text = touchObj.transform.Find("textInfoWindow");
+
             if (text)
             {
                 if (prevText != -1)
                 {
                     if (touchObj == prefabsOnMap[prevText])
                     {
-                        Transform outlineObj = touchObj.transform.Find("icon");
-                        if (outlineObj)
+                        Transform outlineOb = touchObj.transform.Find("icon");
+                        if (outlineOb)
                         {
-                            Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
-                            if (outlineCom)
-                            {
-                                outlineCom.enabled = false;
-                            }
-                            else
-                            {
-                                //outlineObj.gameObject.AddComponent<Outline>();
-                                Debug.Log("outlineCom was null, not setting false" + outlineCom);
-                            }
+                            Outline outlineCom = outlineOb.gameObject.GetComponent<Outline>();
+                            if (outlineCom) outlineCom.enabled = false;
                         }
-                        string msg = "Tap an icon to see more information";
-                        Debug.LogFormat(msg);
-                        DebugText.text = msg;
+                        string msgs = "Tap an icon to see more information";
+                        Debug.LogFormat(msgs);
+                        DebugText.text = msgs;
                         prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                         prevText = -1;
-                    }
-                    else
-                    {
-                        Transform outlineObj = touchObj.transform.Find("icon");
-                        if (outlineObj)
-                        {
-                            Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
-                            if (outlineCom)
-                            {
-                                outlineCom.enabled = true;
-                            }
-                            else
-                            {
-                                //outlineObj.gameObject.AddComponent<Outline>();
-                                Debug.Log("outlineCom was null" + outlineObj);
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("outlineObj was null");
-                        }
-                        string msg = text.transform.GetComponent<TMP_Text>().text;
-                        Debug.LogFormat(msg);
-                        DebugText.text = msg;
-
-                        touchObj.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-                        prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        int k = 0;
-                        while (k < prefabsOnMap.Count)
-                        {
-                            if (touchObj == prefabsOnMap[k])
-                            {
-                                prevText = k;
-                                break;
-                            }
-                            k++;
-                        }
-                        if (k == prefabsOnMap.Count)
-                        {
-                            Debug.Log("Unity is bad for debugging. K is not good.");
-                        }
-
+                        return;
                     }
                 }
-                    //objName.AddComponent(typeof(OutlineEffect));
-                else
+
+
+                // both cases above false, executing code here:
+                // set outline
+                Transform outlineObj = touchObj.transform.Find("icon");
+                if (outlineObj)
                 {
-                    Debug.Log("prevText was -1");
+                    Outline outlineCom = outlineObj.gameObject.GetComponent<Outline>();
+                    if (outlineCom) outlineCom.enabled = true;
+                  
                 }
-            }
-            else
-            {
-                Debug.LogFormat("Invalid Object – No text information given");
-            }
-        
+       
+                string msg = text.transform.GetComponent<TMP_Text>().text;
+                Debug.LogFormat(msg);
+                DebugText.text = msg;
 
-                
-            
+                touchObj.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                if (prevText != -1) prefabsOnMap[prevText].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                int k = 0;
+                while (k < prefabsOnMap.Count)
+                {
+                    if (touchObj == prefabsOnMap[k])
+                    {
+                        prevText = k;
+                        break;
+                    }
+                    k++;
+                }
+                if (k == prefabsOnMap.Count)
+                {
+                    Debug.Log("Unity is bad for debugging. K is not good.");
+                }
+
+            }    
+        else
+        {
+            Debug.LogFormat("Invalid Object – No text information given");
         }
+    }
     }
 
 
