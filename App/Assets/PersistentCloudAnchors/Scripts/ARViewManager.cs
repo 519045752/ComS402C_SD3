@@ -799,6 +799,8 @@ public class ARViewManager : MonoBehaviour
                 return;
             }
 
+            Debug.Log("Therea are " + Controller.ResolvingSet.Count + " anchors to resolve");
+
             Debug.LogFormat("Attempting to resolve {0} anchor(s): {1}",
                 Controller.ResolvingSet.Count,
                 string.Join(",", new List<string>(Controller.ResolvingSet).ToArray()));
