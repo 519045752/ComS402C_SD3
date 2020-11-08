@@ -374,8 +374,8 @@ public class ARViewManager : MonoBehaviour
 
         iconsFaceCamera();
 
-        if (submitlock) Debug.Log("Current value for " + prefabDropdown.GetComponent<Dropdown>().value + 
-            " is: " + "Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name);
+        // if (submitlock) Debug.Log("Current value for " + prefabDropdown.GetComponent<Dropdown>().value + 
+        //     " is: " + "Prefab/" + prefabList[prefabDropdown.GetComponent<Dropdown>().value].name);
 
         // Check if touching object
         if (Input.touchCount > 0) {
@@ -449,7 +449,7 @@ public class ARViewManager : MonoBehaviour
             Transform icon = obj.transform.Find("icon");
             if (icon)
             {
-                transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+                icon.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
             }
             else
             {
@@ -477,11 +477,13 @@ public class ARViewManager : MonoBehaviour
                 {
                     Transform outlineObj = touchObj.transform.Find("icon");
                     if (outlineObj) {
-                        Outline outlineCom = touchObj.GetComponent<Outline>();
+                        Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
                         if (outlineCom) outlineCom.enabled = false;
                     }
-                    Debug.LogFormat("Tap an icon to see more information");
-                    InstructionText.text = "Tap an icon to see more information";
+                    string msg = "Tap an icon to see more information";
+                    Debug.LogFormat(msg);
+                    InstructionText.text = msg;
+                    DebugText.text = msg;
                     prevText = null;
                 }
                 else
@@ -489,7 +491,7 @@ public class ARViewManager : MonoBehaviour
                     Transform outlineObj = touchObj.transform.Find("icon");
                     if (outlineObj)
                     {
-                        Outline outlineCom = touchObj.GetComponent<Outline>();
+                        Outline outlineCom = touchObj.gameObject.GetComponent<Outline>();
                         if (outlineCom) {
                             outlineCom.enabled = true;
                         }
@@ -502,8 +504,10 @@ public class ARViewManager : MonoBehaviour
                     {
                         Debug.Log("outlineObj was null");
                     }
-                    Debug.LogFormat(text.transform.GetComponent<TMP_Text>().text);
-                    InstructionText.text = text.transform.GetComponent<TMP_Text>().text;
+                    string msg = text.transform.GetComponent<TMP_Text>().text;
+                    Debug.LogFormat(msg);
+                    InstructionText.text = msg;
+                    DebugText.text = msg;
                     prevText = text;
                 }
                     //objName.AddComponent(typeof(OutlineEffect));
@@ -621,9 +625,9 @@ public class ARViewManager : MonoBehaviour
 
         void Show()
         {
-            Input_Tex.text = "";
-            canvasGroup.alpha = 1f;
-            canvasGroup.blocksRaycasts = true;
+            //Input_Tex.text = "";
+            //canvasGroup.alpha = 1f;
+            //canvasGroup.blocksRaycasts = true;
             CanPlace = false;
             // to debug: adb logcat -s Unity PackageManager dalvikvm DEBUG
 
@@ -668,6 +672,8 @@ public class ARViewManager : MonoBehaviour
                 int t = objectType;
                 StartCoroutine(networker.AddCloudID(id, description, 1, prefabDropdown.GetComponent<Dropdown>().value));
                 CanPlace = true;
+
+                _hitPose = null;
                 
                 
             }
