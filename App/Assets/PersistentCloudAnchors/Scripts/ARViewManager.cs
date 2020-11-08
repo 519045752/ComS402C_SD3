@@ -164,7 +164,7 @@ public class ARViewManager : MonoBehaviour
         //the Dropdown menu for showing all placable prefab
         public Dropdown prefabDropdown;
 
-        private Camera cam;
+        public Camera cam;
         
         //Spawn prefab from dropdown menu;
         private PrefabGallery prefabGallery;
@@ -237,11 +237,6 @@ public class ARViewManager : MonoBehaviour
         /// </summary>
         public void Awake()
         {
-
-            cam = GameObject.Find("Camera").GetComponent<Camera>();
-            Debug.Log("Finding Camera");
-            transform.localPosition = new Vector3(0, 1, 0);
-
             svrObjects = new HashSet<ServerObject>();
             StartCoroutine(networker.getCloudIds(svrObjects));
             foreach (ServerObject obj in svrObjects) { Controller.ResolvingSet.Add(obj.cloudid); }
@@ -482,6 +477,7 @@ public class ARViewManager : MonoBehaviour
                         if (outlineCom) outlineCom.enabled = false;
                     }
                     Debug.LogFormat("Tap an icon to see more information");
+                    InstructionText.text = "Tap an icon to see more information";
                     prevText = null;
                 }
                 else
@@ -490,9 +486,20 @@ public class ARViewManager : MonoBehaviour
                     if (outlineObj)
                     {
                         Outline outlineCom = touchObj.GetComponent<Outline>();
-                        if (outlineCom) outlineCom.enabled = true;
+                        if (outlineCom) {
+                            outlineCom.enabled = true;
+                        }
+                        else
+                        {
+                            Debug.Log("outlineCom was null");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("outlineObj was null");
                     }
                     Debug.LogFormat(text.transform.GetComponent<TMP_Text>().text);
+                    InstructionText.text = text.transform.GetComponent<TMP_Text>().text;
                     prevText = text;
                 }
                     //objName.AddComponent(typeof(OutlineEffect));
@@ -737,7 +744,6 @@ public class ARViewManager : MonoBehaviour
                 else
                 {
                     Debug.LogFormat("Succeed to host cloud anchor: {0}", result.Anchor.CloudId);
-                    int count = Controller.LoadCloudAnchorHistory().Collection.Count;
                     cloudid = result.Anchor.CloudId;
                     submitlock = true;
                     _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
