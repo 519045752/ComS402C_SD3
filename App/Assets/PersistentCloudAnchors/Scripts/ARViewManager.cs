@@ -12,6 +12,7 @@
     using cakeslice;
 
 using Assets.PersistentCloudAnchors.Scripts;
+using Outline = cakeslice.Outline;
 
 #if ARCORE_IOS_SUPPORT
     using UnityEngine.XR.iOS;
@@ -140,7 +141,7 @@ public class ARViewManager : MonoBehaviour
         private bool submitlock = false;
 
         private HashSet<ServerObject> svrObjects;
-        private GameObject prevText;
+        private Transform prevText;
 
         // parent of placed objects
         public CanvasGroup canvasGroup;
@@ -241,24 +242,26 @@ public class ARViewManager : MonoBehaviour
 
             prefabToPlace.transform.Find("textInfoWindow").gameObject.SetActive(false);
             prefabsOnMap = new List<GameObject>();
-        // Input_Tex.onSubmit.AddListener(Submit);
+            // Input_Tex.onSubmit.AddListener(Submit);
 
         
 
-        //Store all prefab from "Resources/Prefab" in the array
-        prefabList = Resources.LoadAll<GameObject>("Prefab");
-            if (prefabList == null)
-            {
-                Debug.Log("prefab List is null, Resources.LoadAll failed");
-            }
+            //Store all prefab from "Resources/Prefab" in the array
+            prefabList = Resources.LoadAll<GameObject>("Prefab");
+                if (prefabList == null)
+                {
+                    Debug.Log("prefab List is null, Resources.LoadAll failed");
+                }
             confirmButton.onClick.AddListener(Submit);
 
-            // //Fetch the Dropdown GameObject
-            // Dropdown m_Dropdown = GetComponent<Dropdown>();
-            // //Add listener for when the value of the Dropdown changes, to take action
-            // m_Dropdown.onValueChanged.AddListener(delegate {
-            //     DropdownVal();
-            // });
+        //Add listener for when the value of the Dropdown changes, to take action        
+        prefabDropdown.onValueChanged.AddListener(delegate
+        {
+           Debug.Log("Dropdown value changed");
+           DropdownVal();  
+        });
+        
+        
 
         //confirmButton.onValueChanged.AddListener(PreviewObj});
         objectType = 0;
@@ -442,36 +445,45 @@ public class ARViewManager : MonoBehaviour
         RaycastHit raycastHit;
         if (Physics.Raycast(raycast, out raycastHit))
         {
-            string name = raycastHit.collider.transform.parent.gameObject.name;
+           
+            GameObject touchObj = raycastHit.collider.transform.parent.gameObject;
+            string name = touchObj.name;
             Debug.Log(name + " was hit");
 
-            foreach (GameObject objName in prefabsOnMap)
+            Transform text = touchObj.transform.Find("textInfoWindow");
+            if (text)
             {
-                Debug.Log("The name was objname:" + objName.name);
-                if (objName.name == name)
+                if (text == prevText)
                 {
-                    var tex = objName.transform.Find("textInfoWindow").gameObject;
-                    if (tex.activeSelf)
-                    {
-                        prevText.transform.Find("textInfoWindow").gameObject.SetActive(false);
-                        //objName.componen
-                        prevText = null;
+                    Transform outlineObj = touchObj.transform.Find("icon");
+                    if (outlineObj) {
+                        Outline outlineCom = touchObj.GetComponent<Outline>();
+                        if (outlineCom) outlineCom.enabled = false;
                     }
-                    else
-                    {
-                        if (prevText) prevText.transform.Find("textInfoWindow").gameObject.SetActive(false);
-
-                        tex.SetActive(true);
-                        prevText = objName;
-
-                        Debug.LogFormat(tex.transform.GetComponent<TMP_Text>().text);
-                        objName.AddComponent(typeof(OutlineEffect));
-                    }
-                    return;
+                    Debug.LogFormat("Tap an icon to see more information");
+                    prevText = null;
                 }
+                else
+                {
+                    Transform outlineObj = touchObj.transform.Find("icon");
+                    if (outlineObj)
+                    {
+                        Outline outlineCom = touchObj.GetComponent<Outline>();
+                        if (outlineCom) outlineCom.enabled = true;
+                    }
+                    Debug.LogFormat(text.transform.GetComponent<TMP_Text>().text);
+                    prevText = text;
+                }
+                    //objName.AddComponent(typeof(OutlineEffect));
+            }
+            else
+            {
+                Debug.LogFormat("Invalid Object – No text information given");
+            }
+        
 
                 
-            }
+            
         }
     }
 
