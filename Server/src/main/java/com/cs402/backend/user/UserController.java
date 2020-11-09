@@ -3,6 +3,7 @@ package com.cs402.backend.user;
 import com.cs402.backend.respond.RespondCodeEnum;
 import com.cs402.backend.respond.RespondJson;
 import com.cs402.backend.utility.Utility;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -35,6 +36,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/{uid}")
+	@JsonIgnoreProperties(value={"password"})
 	@ApiOperation(value = "visit user page by uid", notes = "")
 	@ApiImplicitParam(name = "uid", value = "uid", required = true, dataType = "Long")
 	public Object test(@PathVariable Long uid) {

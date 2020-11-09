@@ -1,6 +1,8 @@
 package com.cs402.backend.user;
 
 import com.cs402.backend.house.House;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -8,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="user")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uid")
 public class User {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)

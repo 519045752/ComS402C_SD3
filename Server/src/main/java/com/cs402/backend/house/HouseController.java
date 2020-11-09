@@ -4,6 +4,7 @@ import com.cs402.backend.respond.RespondCodeEnum;
 import com.cs402.backend.respond.RespondJson;
 import com.cs402.backend.user.User;
 import com.cs402.backend.user.UserRepository;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,6 +39,7 @@ public class HouseController {
 		return RespondJson.out(RespondCodeEnum.SUCCESS, houseRepository.findAll());
 	}
 	
+	// @JsonIgnoreProperties(value={"rent_houses","own_houses","password"})
 	@GetMapping("/{hid}")
 	@ApiOperation(value = "visit info page of houses", notes = "")
 	@ApiImplicitParam(name = "hid", value = "house id", required = true, dataType = "Long")
@@ -94,7 +96,9 @@ public class HouseController {
 			house.setData(data);
 			house.setInfo(info);
 			houseRepository.save(house);
-			return RespondJson.out(RespondCodeEnum.SUCCESS, house);
+			landlord.getOwn_houses().add(house);
+			userRepository.save(landlord);
+			return RespondJson.out(RespondCodeEnum.SUCCESS);
 		}
 	}
 	
@@ -125,6 +129,8 @@ public class HouseController {
 			Set<User> tenant = house.getTenant();
 			tenant.add(user);
 			houseRepository.save(house);
+			user.getRent_houses().add(house);
+			userRepository.save(user);
 			return RespondJson.out(RespondCodeEnum.SUCCESS, house);
 		}
 	}
@@ -149,6 +155,8 @@ public class HouseController {
 			Set<User> tenant = house.getTenant();
 			tenant.remove(user);
 			houseRepository.save(house);
+			user.getRent_houses().remove(house);
+			userRepository.save(user);
 			return RespondJson.out(RespondCodeEnum.SUCCESS, house);
 		}
 	}

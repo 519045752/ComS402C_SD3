@@ -1,12 +1,15 @@
 package com.cs402.backend.house;
 
 import com.cs402.backend.user.User;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.*;
 import javax.persistence.*;
 
 @Entity
 @Table(name="house")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "hid")
 public class House {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
