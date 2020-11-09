@@ -2,6 +2,7 @@ package com.cs402.backend.user;
 
 import com.cs402.backend.house.House;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="user")
+// @JsonIgnoreProperties(value={"password"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uid")
 public class User {
 	@Id

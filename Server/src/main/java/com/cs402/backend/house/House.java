@@ -30,10 +30,10 @@ public class House {
 	private String data;
 	
 	@ManyToOne(cascade=CascadeType.DETACH)
-	@JoinColumn(name = "user" , referencedColumnName = "uid")
+	@JoinColumn(name = "landlord" , referencedColumnName = "uid")
 	private User landlord;
 	
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.DETACH)
 	private Set<User> tenant = new HashSet<>();
 	
 	@OneToMany

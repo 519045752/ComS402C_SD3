@@ -96,9 +96,10 @@ public class HouseController {
 			house.setData(data);
 			house.setInfo(info);
 			houseRepository.save(house);
+			
 			landlord.getOwn_houses().add(house);
 			userRepository.save(landlord);
-			return RespondJson.out(RespondCodeEnum.SUCCESS);
+			return RespondJson.out(RespondCodeEnum.SUCCESS,house);
 		}
 	}
 	
@@ -201,6 +202,15 @@ public class HouseController {
 			return RespondJson.out(RespondCodeEnum.FAIL_Hid_NOT_FOUND);
 		}
 		else {
+			House house = this.houseRepository.getHouseByHid(hid);
+			User landlord = house.getLandlord();
+			landlord.getOwn_houses().remove(house);
+			this.userRepository.save(landlord);
+			for (User user: house.getTenant()){
+				user.getRent_houses().remove(house);
+				this.userRepository.save(user);
+			}
+
 			this.houseRepository.deleteById(hid);
 			return RespondJson.out(RespondCodeEnum.SUCCESS);
 		}
