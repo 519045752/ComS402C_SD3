@@ -1427,6 +1427,7 @@ MonoBehaviour:
   hids:
     data: 
   houses: []
+  drop: {fileID: 0}
 --- !u!4 &1876838287
 Transform:
   m_ObjectHideFlags: 0
@@ -1539,8 +1540,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1221719837}
-        m_MethodName: ChangeScene
+      - m_Target: {fileID: 1876838288}
+        m_MethodName: ConfirmHouse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
