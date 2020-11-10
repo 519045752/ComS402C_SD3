@@ -37,6 +37,7 @@ public class LoginHandler : MonoBehaviour
         StartCoroutine(Login());
 
     }
+    /*Attempts Login using user info, then saves successful attempt to global*/
     IEnumerator Login()
     {
         var txt = loginResult.GetComponent<TextMeshProUGUI>();
@@ -48,6 +49,9 @@ public class LoginHandler : MonoBehaviour
         {
             case 200:
                 txt.text = "Login Sucessful!";
+                User.userData = user.data;
+                SceneManager.LoadScene("HouseSelection");
+
                 break;
             case 502:
                 txt.text = "Username/Password Incorrect";
@@ -58,6 +62,7 @@ public class LoginHandler : MonoBehaviour
 
         }
     }
+    /*sends Get request to constructed URL*/
     IEnumerator Upload()
     { 
         request = UnityWebRequest.Get(CreateURL(username,password));
@@ -74,6 +79,7 @@ public class LoginHandler : MonoBehaviour
             Debug.Log(request.downloadHandler.text);
         }
     }
+    /*Constructs URL for GET request. Would've preffered making a POST request, but this works */
     private string CreateURL(string username, string password)
     {
         string urlText = login_url + "?password=" + password + "&username=" + username;
@@ -85,4 +91,11 @@ public class LoginHandler : MonoBehaviour
     {
         SceneManager.LoadScene("Register");
     }
+
 }
+
+static public class User //global variable to store user info
+{
+    public static UserData userData;
+}
+
