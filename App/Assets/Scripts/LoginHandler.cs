@@ -97,5 +97,6 @@ public class LoginHandler : MonoBehaviour
 static public class User //global variable to store user info
 {
     public static UserData userData;
+    public static House house;
 }
 

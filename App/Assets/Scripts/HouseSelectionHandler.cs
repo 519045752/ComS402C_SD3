@@ -10,6 +10,7 @@ public class HouseSelectionHandler : MonoBehaviour
 
     public Hid hids;
     public List<HouseResponse> houses;
+    public DropDown drop;
 
     private static string house_url = "coms-402-sd-8.cs.iastate.edu:8080/house/";
     private static string ownedHouses_url = "coms-402-sd-8.cs.iastate.edu:8080/user/getOwnedHouse?uid=";
@@ -68,12 +69,8 @@ public class HouseSelectionHandler : MonoBehaviour
             houses.Add(JsonUtility.FromJson<HouseResponse>(requestHouses.downloadHandler.text)); //again, dumb but works
         }
 
-
-    }
-
-    public void fillDropDown()
-    {
-        
+        drop = gameObject.GetComponent<DropDown>(); //invoking dropdown population now
+        drop.PopulateDropdown();
     }
 }
 
@@ -94,7 +91,6 @@ public class House
 {
     public string address;
     public int hid;
-    public string addressOpt;
     public string info;
     public string price;
 }
