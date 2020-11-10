@@ -22,6 +22,6 @@ public class ButtonManager : MonoBehaviour
     public void ChangeScene()
     {
         txt.GetComponent<TextMeshProUGUI>().text = "Loading Camera...";
-        SceneManager.LoadScene("AR_Edit");
+        SceneManager.LoadScene("PersistentCloudAnchors");
     }
 }

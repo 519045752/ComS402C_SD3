@@ -632,33 +632,40 @@ public class ARViewManager : MonoBehaviour
                 else
                 {
                     Debug.LogFormat("Succeed to host cloud anchor: {0}", result.Anchor.CloudId);
-                    int count = Controller.LoadCloudAnchorHistory().Collection.Count;
+                    //int count = Controller.LoadCloudAnchorHistory().Collection.Count;
                     cloudid = result.Anchor.CloudId;
                     submitlock = true;
                     _hostedCloudAnchor = new CloudAnchorHistory(cloudid, cloudid);
+                    Debug.LogFormat("Cloud Anchor Name: {0}", _hostedCloudAnchor.Id);
                     OnAnchorHostedFinished(true, result.Anchor.CloudId);
                     //todo, work on this part
                     //load available prefrab from Resource/Prefab
                     //Do Dropdown List, allow user to select the prefab. 
                     //then press confirm(Button) to spawn prefab at the hitpose.
+                    Debug.Log("Test of Debug message 1");
 
-                    
                     //Store all prefab from "Resources/Prefab" in the array
                     prefabList = Resources.LoadAll<GameObject>("Prefab");
+                    Debug.Log("Test of Debug message 2");
                     if (prefabList == null)
                     {
                         Debug.Log("prefab List is null, Resources.LoadAll failed");
                     }
+                    Debug.Log("Test of Debug message 3");
                     //get the index of prefab selected by user from the dropdown menu
                     //might be because of null exception, since nothing is chosen yet.
                     int prefabSelectedIndex = prefabDropdown.GetComponent<Dropdown>().value;
-                   
+                    Debug.Log("Test of Debug message 4");
+
                     //Get the prefab from folder "Resources/Prefab/{Name of object selected}"
                     prefabToPlace = Resources.Load("Prefab/" + prefabList[prefabSelectedIndex].name) as GameObject;
-                    
-                    
+                    Debug.Log("Test of Debug message 5");
+
+
                     gameRef = Instantiate(prefabToPlace, result.Anchor.transform);
+                    Debug.Log("Test of Debug message 6");
                     prefabsOnMap.Add(gameRef);
+                    Debug.Log("Test of Debug message 7");
 
                     int typeObj = 0; // check if this is the correct type
                     if (typeObj == 0) { Show(); }
@@ -719,11 +726,14 @@ public class ARViewManager : MonoBehaviour
             if (success)
             {
                 InstructionText.text = "Finish!";
+                Debug.LogFormat("Cloud Anchor Status: {0}", InstructionText.text);
                 Invoke("DoHideInstructionBar", 1.5f);
+                Debug.Log("Cloud Anchor Status: HideInstructionBar");
                 DebugText.text = "Succeed to host cloud anchor: " + response;
 
                 _hostedCloudAnchor.Name = cloudid;
-                Controller.SaveCloudAnchorHistory(_hostedCloudAnchor);
+                //Controller.SaveCloudAnchorHistory(_hostedCloudAnchor);
+                Debug.Log("Cloud Anchor Status: SaveCloudAnchorHistory");
                 DebugText.text = string.Format("Saved Cloud Anchor:\n{0}.", _hostedCloudAnchor.Name);
             }
             else
