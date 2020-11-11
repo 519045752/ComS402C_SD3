@@ -222,10 +222,10 @@ public class ARViewManager : MonoBehaviour
             CopyPanel.SetActive(false);
         }
 
-        /// <summary>
-        /// The Unity Awake() method.
-        /// </summary>
-        public void Awake()
+    /// <summary>
+    /// The Unity Awake() method.
+    /// </summary>
+    public void Awake()
         {
             StartCoroutine(networker.getCloudIds(Controller.ResolvingSet));
             
@@ -233,6 +233,7 @@ public class ARViewManager : MonoBehaviour
             prefabsOnMap = new List<GameObject>();
             Input_Tex.onSubmit.AddListener(Submit);
             objectType = 0;
+
 #if ARCORE_IOS_SUPPORT
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
