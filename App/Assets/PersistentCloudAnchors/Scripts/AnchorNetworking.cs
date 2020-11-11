@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.IO;
 using SimpleJSON;
+using Assets.PersistentCloudAnchors.Scripts;
 
 public class AnchorNetworking : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class AnchorNetworking : MonoBehaviour
         }
     }
 
-    public IEnumerator getCloudIds(HashSet<string> cloudids)
+    public IEnumerator getCloudIds(HashSet<ServerObject> cloudids)
     {
 
         Debug.Log("Begin getCloudIds");
@@ -74,7 +75,9 @@ public class AnchorNetworking : MonoBehaviour
                         "hid: " + record["hid"].AsInt + "\n" +
                         "type: " + record["type"].AsInt + "\n" +
                         "oid: " + record["oid"].AsInt);
-                    cloudids.Add(record["cloudid"].Value);
+
+                    var obj = new ServerObject(record["cloudid"].Value, record["description"].Value, record["type"].AsInt);
+                    cloudids.Add(obj);
                 }
                 Debug.Log("Num of cloudids = " + cloudids.Count);
             }

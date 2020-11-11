@@ -1,6 +1,10 @@
 package com.cs402.backend.user;
 
 import com.cs402.backend.house.House;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -8,6 +12,8 @@ import java.util.Set;
 
 @Entity
 @Table(name="user")
+// @JsonIgnoreProperties(value={"password"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uid")
 public class User {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -77,7 +83,7 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public Set<House> getRent_houses() {
 		return rent_houses;
 	}
