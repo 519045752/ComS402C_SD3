@@ -244,7 +244,6 @@ public class ARViewManager : MonoBehaviour
             StartCoroutine(networker.getCloudIds(svrObjects));
             foreach (ServerObject obj in svrObjects) { Controller.ResolvingSet.Add(obj.cloudid); }
             prefabsOnMap = new List<GameObject>();
-            Input_Tex.onSubmit.AddListener(Submit);
             objectType = 0;
 
 
