@@ -50,7 +50,7 @@ public class LoginHandler : MonoBehaviour
             case 200:
                 txt.text = "Login Sucessful!";
                 User.userData = user.data;
-                SceneManager.LoadScene("HouseSelection");
+                SceneManager.LoadScene("ViewEdit");
 
                 break;
             case 502:
@@ -98,5 +98,7 @@ static public class User //global variable to store user info
 {
     public static UserData userData;
     public static House house;
+    public static PersistentCloudAnchorsController.ApplicationMode mode;
+
 }
 

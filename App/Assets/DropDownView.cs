@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class DropDown : MonoBehaviour
+public class DropDownView : MonoBehaviour
 {
-    public HouseSelectionHandler hsh;
+    public HouseSelectionViewHandler hsh;
     public int val;
     public TMP_Dropdown dropdown;
     public List<string> options;
@@ -15,15 +14,15 @@ public class DropDown : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hsh = gameObject.GetComponent<HouseSelectionHandler>();
+        hsh = gameObject.GetComponent<HouseSelectionViewHandler>();
     }
 
     public void PopulateDropdown()
     {
-        foreach (HouseResponse house in hsh.houses)
+        foreach (House house in hsh.houses.data)
         {
-            Debug.Log(house.data + "\n" + house.data.address);
-            options.Add(house.data.address);
+            Debug.Log(house + "\n" + house.address);
+            options.Add(house.address);
         }
         dropdown.AddOptions(options);
     }
@@ -35,7 +34,7 @@ public class DropDown : MonoBehaviour
 
     public void ConfirmHouse()
     {
-        User.house = hsh.houses[val].data;
+        User.house = hsh.houses.data[val];
         Debug.Log(User.house.address + " " + User.house.hid);
         SceneManager.LoadScene("PersistentCloudAnchors");
     }
