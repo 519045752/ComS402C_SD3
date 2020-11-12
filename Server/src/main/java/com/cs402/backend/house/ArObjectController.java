@@ -178,6 +178,22 @@ public class ArObjectController {
 		}
 	}
 	
+	@PostMapping(path = "/removeByCloudID")
+	@ApiOperation(value = "remove the arObject by cloudID")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "cloudID", value = "arObject cloudID", required = true, paramType = "query", dataType = "string")
+	})
+	public Object removeByCloudID(@RequestParam String cloudID) {
+		if (!checkArObjectExistByCloudID(cloudID)) {
+			return RespondJson.out(RespondCodeEnum.FAIL_Aid_NOT_FOUND);
+		}
+		else {
+			ArObject anchor = this.arObjectRepository.findObjectByCloudId(cloudID);
+			this.arObjectRepository.deleteById(anchor.getOid());
+			return RespondJson.out(RespondCodeEnum.SUCCESS);
+		}
+	}
+	
 	@PostMapping(path = "/removeAll")
 	@ApiOperation(value = "remove ALL the arObject")
 	public Object removeAll() {
@@ -209,6 +225,11 @@ public class ArObjectController {
 	
 	public Boolean checkArObjectExist(Long oid) {
 		ArObject ancbor = this.arObjectRepository.findObjectByOid(oid);
+		return !(ancbor == null);
+	}
+	
+	public Boolean checkArObjectExistByCloudID(String cloudID) {
+		ArObject ancbor = this.arObjectRepository.findObjectByCloudId(cloudID);
 		return !(ancbor == null);
 	}
 	

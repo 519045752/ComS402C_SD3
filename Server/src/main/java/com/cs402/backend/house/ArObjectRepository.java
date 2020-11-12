@@ -16,6 +16,7 @@ public interface ArObjectRepository extends CrudRepository<ArObject, Long> {
 	@Query(value="select * from ar_project.ar_object where hid=?1",nativeQuery=true)
 	List<ArObject> findObjectByHid(Long hid);
 	
+	
 	@Query(value="select * from ar_project.ar_object where oid=?1",nativeQuery=true)
 	ArObject findObjectByOid(Long oid);
 	
