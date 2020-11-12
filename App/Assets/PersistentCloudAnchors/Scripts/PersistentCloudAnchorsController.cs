@@ -150,10 +150,29 @@
             }
         }
 
-        /// <summary>
-        /// Callback handling "Begin to host" button click event in Home Page.
-        /// </summary>
-        public void OnHostButtonClicked()
+    public void Start()
+    {
+        Debug.Log(User.mode);
+        switch (User.mode)
+        {
+            case PersistentCloudAnchorsController.ApplicationMode.Hosting:
+                Debug.Log("User came from Edit Screen");
+                OnHostButtonClicked();
+                break;
+
+            case PersistentCloudAnchorsController.ApplicationMode.Resolving:
+                Debug.Log("User came from View Screen");
+                OnResolveButtonClicked();
+                break;
+
+            default:
+                break;
+        }
+    }
+    /// <summary>
+    /// Callback handling "Begin to host" button click event in Home Page.
+    /// </summary>
+    public void OnHostButtonClicked()
         {
             Mode = ApplicationMode.Hosting;
             SwitchToPrivacyPrompt();

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
+using SimpleJSON;
+
 [Serializable]
 public class Credentials 
 {
