@@ -8,6 +8,7 @@ One usage example for hiking: Let’s presume there is a nice hiking trail about
 
 # Important Links
 Website: https://seniord.cs.iastate.edu/2020-Dec-SD3/
+
 Trello: https://trello.com/b/eIL2WDEr/coms-402c
 
 # Instructions to run
