@@ -674,7 +674,7 @@ public class ARViewManager : MonoBehaviour
                 string id = cloudid;
                 string description = msg;
                 int t = objectType;
-                StartCoroutine(networker.AddCloudID(id, description, 1, prefabDropdown.GetComponent<Dropdown>().value));
+                StartCoroutine(networker.AddCloudID(id, description, User.house.hid, prefabDropdown.GetComponent<Dropdown>().value));
                 CanPlace = true;
                 canvasGroup.alpha = 0f;
                 canvasGroup.blocksRaycasts = false;

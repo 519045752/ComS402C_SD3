@@ -35,7 +35,7 @@ public class DropDownView : MonoBehaviour
     public void ConfirmHouse()
     {
         User.house = hsh.houses.data[val];
-        Debug.Log(User.house.address + " " + User.house.hid);
+        //Debug.Log(User.house.address + " " + User.house.hid);
         SceneManager.LoadScene("PersistentCloudAnchors");
     }
 }
