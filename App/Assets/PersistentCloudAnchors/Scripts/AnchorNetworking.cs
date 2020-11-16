@@ -77,7 +77,12 @@ public class AnchorNetworking : MonoBehaviour
                         "oid: " + record["oid"].AsInt);
 
                     var obj = new ServerObject(record["cloudid"].Value, record["description"].Value, record["type"].AsInt);
-                    cloudids.Add(obj);
+                    int id = record["hid"].AsInt;
+
+
+                    Debug.Log("The house id is " + User.house.hid + "  | " + id);
+                    if (id == User.house.hid) { cloudids.Add(obj); }
+                    //User.house.hid
                 }
                 Debug.Log("Num of cloudids = " + cloudids.Count);
             }
